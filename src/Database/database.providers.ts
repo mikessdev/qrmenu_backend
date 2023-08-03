@@ -1,8 +1,9 @@
-import { DataSourceOptions } from 'typeorm';
+import { SequelizeModuleOptions } from '@nestjs/sequelize';
+import { join } from 'path';
 
-export const config: DataSourceOptions = {
-  type: 'sqlite',
-  database: '.db/sql',
-  synchronize: true, // Obs: use synchronize: true somente em desenvolvimento.
-  entities: [__dirname + '/**/*.entity{.ts,.js}'],
+export const dataBaseConfig: SequelizeModuleOptions = {
+  dialect: 'sqlite',
+  host: join(__dirname, 'database.sqlite'),
+  autoLoadModels: true,
+  synchronize: false,
 };

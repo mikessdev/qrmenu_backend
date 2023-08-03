@@ -1,16 +1,15 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Table, Model } from 'sequelize-typescript';
 
-@Entity()
-export class Product {
-  @PrimaryColumn()
-  id: string;
-
-  @Column()
+@Table({
+  tableName: 'products',
+})
+export class Product extends Model {
+  @Column
   title: string;
 
-  @Column()
+  @Column
   description: string;
 
-  @Column()
+  @Column
   value: string;
 }

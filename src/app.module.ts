@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { config } from './Database/database.providers';
+import { dataBaseConfig } from './Database/database.providers';
+import { SequelizeModule } from '@nestjs/sequelize';
 
 @Module({
-  imports: [ProductsModule, TypeOrmModule.forRoot(config)],
+  imports: [ProductsModule, SequelizeModule.forRoot(dataBaseConfig)],
   controllers: [AppController],
   providers: [AppService],
 })

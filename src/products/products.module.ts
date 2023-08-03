@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
-import { Repository } from 'typeorm';
-import { config } from 'src/Database/database.providers';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { BullModule } from '@nestjs/bull';
+import { Product } from './entities/product.entity';
 
 @Module({
-  imports: [config],
+  imports: [
+    SequelizeModule.forFeature([Product]),
+    BullModule.registerQueue({ name: 'emails' }),
+  ],
   controllers: [ProductsController],
-  providers: [Repository, ProductsService],
+  providers: [ProductsService],
 })
 export class ProductsModule {}
