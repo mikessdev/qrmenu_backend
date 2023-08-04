@@ -3,7 +3,7 @@ import { join } from 'path';
 
 export const dataBaseConfig: SequelizeModuleOptions = {
   dialect: 'sqlite',
-  host: join(__dirname, 'database.sqlite'),
+  storage: join('.db', 'data.sqlite3'),
   autoLoadModels: true,
   synchronize: false,
 };
