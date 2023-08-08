@@ -9,6 +9,11 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
       },
+      categoryId: {
+        type: Sequelize.STRING,
+        autoIncrement: false,
+        allowNull: false,
+      },
       title: {
         type: Sequelize.STRING(150),
         allowNull: false,
