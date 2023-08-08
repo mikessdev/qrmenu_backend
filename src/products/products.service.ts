@@ -19,15 +19,17 @@ export class ProductsService {
     return this.productRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  findOne(id: string) {
+    return this.productRepository.findByPk(id);
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  update(id: string, updateProductDto: UpdateProductDto) {
+    return this.productRepository.update(updateProductDto, {
+      where: { id: id },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  remove(id: string) {
+    return this.productRepository.destroy({ where: { id: id } });
   }
 }
