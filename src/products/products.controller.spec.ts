@@ -10,9 +10,9 @@ import { INestApplication } from '@nestjs/common';
 
 const createProductDto: CreateProductDto = {
   id: '1',
-  title: 'Hamburguer',
-  description: 'Hamburguer with fries and coca',
-  price: 'R$ 15.00',
+  title: 'Iscas de Frango',
+  description: '300g de filézinho empanado',
+  price: 'R$ 15,00',
   createdAT: new Date(),
   updateAt: new Date(),
 };
@@ -35,6 +35,7 @@ describe('ProductsController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ProductsController],
       providers: [
+        ProductsService,
         {
           provide: ProductsService,
           useValue: {
@@ -99,7 +100,7 @@ describe('ProductsController', () => {
     ).resolves.toEqual(1);
   });
 
-  it('should remove 1 when a product is removed', () => {
+  it('should return 1 when a product is removed', () => {
     expect(productsController.remove(createProductDto.id)).resolves.toEqual(1);
   });
 });
