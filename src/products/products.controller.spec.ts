@@ -127,6 +127,14 @@ describe('HTTP response testing', () => {
     });
   });
 
+  afterAll(async () => {
+    await app.close();
+  });
+
+  // afterEach(async () => {
+  //   await sequelize.close();
+  // });
+
   it('should return code: 500 when there no in the request body', () => {
     const body = {};
     return request(app.getHttpServer())
