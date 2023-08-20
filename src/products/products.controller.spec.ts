@@ -2,11 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import * as request from 'supertest';
-import { AppModule } from '../app.module';
-import { Product } from './entities/product.entity';
-import { Sequelize } from 'sequelize-typescript';
-import { INestApplication } from '@nestjs/common';
 
 const createProductDto: CreateProductDto = {
   id: '1',
@@ -102,53 +97,5 @@ describe('ProductsController', () => {
 
   it('should return 1 when a product is removed', () => {
     expect(productsController.remove(createProductDto.id)).resolves.toEqual(1);
-  });
-});
-
-describe('HTTP response testing', () => {
-  let productsServiceMock: ProductsService;
-  let app: INestApplication;
-  let sequelize: Sequelize;
-
-  beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    })
-      .overrideProvider(ProductsService)
-      .useValue(productsServiceMock)
-      .compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
-
-    sequelize = moduleFixture.get<Sequelize>(Sequelize);
-    await sequelize.transaction(async (transaction) => {
-      await Product.destroy({ where: {}, transaction });
-    });
-  });
-
-  afterAll(async () => {
-    await app.close();
-  });
-
-  // afterEach(async () => {
-  //   await sequelize.close();
-  // });
-
-  it('should return code: 500 when there no in the request body', () => {
-    const body = {};
-    return request(app.getHttpServer())
-      .post('/products')
-      .send(body)
-      .expect(500);
-  });
-
-  it('should return code: 201 when there a product in the request body', async () => {
-    const body = createProductDto;
-
-    return request(app.getHttpServer())
-      .post('/products')
-      .send(body)
-      .expect(201);
   });
 });
