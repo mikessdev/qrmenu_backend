@@ -1,4 +1,12 @@
-import { Column, Table, Model, DataType } from 'sequelize-typescript';
+import {
+  Column,
+  Table,
+  Model,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
+import { Category } from 'src/categories/entities/category.entity';
 
 @Table({
   tableName: 'products',
@@ -11,6 +19,14 @@ export class Product extends Model {
     primaryKey: true,
   })
   id: string;
+
+  @ForeignKey(() => Category)
+  @Column({
+    type: DataType.STRING,
+    autoIncrement: false,
+    allowNull: false,
+  })
+  categoryId: string;
 
   @Column({
     type: DataType.STRING(150),
@@ -41,4 +57,7 @@ export class Product extends Model {
     allowNull: false,
   })
   updatedAt: Date;
+
+  @BelongsTo(() => Category)
+  category: Category;
 }
