@@ -18,13 +18,17 @@ describe('ProductsService', () => {
   let productsService: ProductsService;
   let productsRepositoryMock: typeof Product;
 
-  const cleanDataForFindAllMethod = (productsRepositoryMock) => {
-    const Empty = [];
+  const cleanDataForFindAllMethod = (
+    productsRepositoryMock: typeof Product,
+  ) => {
+    const Empty: Product[] = [];
     jest.spyOn(productsRepositoryMock, 'findAll').mockResolvedValue(Empty);
   };
 
-  const cleanDataForFindOneMethod = (productsRepositoryMock) => {
-    const Empty = {};
+  const cleanDataForFindOneMethod = (
+    productsRepositoryMock: typeof Product,
+  ) => {
+    const Empty: Product = {} as Product;
     jest.spyOn(productsRepositoryMock, 'findByPk').mockResolvedValue(Empty);
   };
 
@@ -78,23 +82,24 @@ describe('ProductsService', () => {
   });
 
   it('should return product by Id if it exists', () => {
-    expect(productsService.findOne(createProductDto.id)).resolves.toEqual(
-      createProductDto,
-    );
+    const { id } = createProductDto;
+    expect(productsService.findOne(id)).resolves.toEqual(createProductDto);
   });
 
   it('should not return product by Id if it not exists', () => {
+    const { id } = createProductDto;
     cleanDataForFindOneMethod(productsRepositoryMock);
-    expect(productsService.findOne(createProductDto.id)).resolves.toEqual({});
+    expect(productsService.findOne(id)).resolves.toEqual({});
   });
 
   it('should return 1 when a product is updated', () => {
-    expect(
-      productsService.update(createProductDto.id, createProductDto),
-    ).resolves.toEqual(1);
+    const { id } = createProductDto;
+    const requestBody = createProductDto;
+    expect(productsService.update(id, requestBody)).resolves.toEqual(1);
   });
 
   it('should return 1 when a product is removed', () => {
-    expect(productsService.remove(createProductDto.id)).resolves.toEqual(1);
+    const { id } = createProductDto;
+    expect(productsService.remove(id)).resolves.toEqual(1);
   });
 });
