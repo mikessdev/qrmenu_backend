@@ -6,6 +6,7 @@ import { Product } from './entities/product.entity';
 
 const createProductDto: CreateProductDto = {
   id: '1',
+  categoryId: '1',
   title: 'Iscas de Frango',
   description: '300g de filézinho empanado',
   price: 'R$ 15,00',

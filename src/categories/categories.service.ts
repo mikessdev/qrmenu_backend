@@ -10,6 +10,7 @@ export class CategoriesService {
     @InjectModel(Category)
     private categoryRepository: typeof Category,
   ) {}
+
   create(createCategoryDto: CreateCategoryDto) {
     return this.categoryRepository.create(createCategoryDto as any);
   }

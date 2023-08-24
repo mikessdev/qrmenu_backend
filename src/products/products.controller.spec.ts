@@ -2,9 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
+import { Product } from './entities/product.entity';
 
 const createProductDto: CreateProductDto = {
   id: '1',
+  categoryId: '1',
   title: 'Iscas de Frango',
   description: '300g de filézinho empanado',
   price: 'R$ 15,00',
@@ -16,13 +18,13 @@ describe('ProductsController', () => {
   let productsController: ProductsController;
   let productsServiceMock: ProductsService;
 
-  const cleanDataForFindAllMethod = (productsServiceMock) => {
-    const Empty = [];
+  const cleanDataForFindAllMethod = (productsServiceMock: ProductsService) => {
+    const Empty: Product[] = [];
     jest.spyOn(productsServiceMock, 'findAll').mockResolvedValue(Empty);
   };
 
-  const cleanDataForFindOneMethod = (productsServiceMock) => {
-    const Empty = {};
+  const cleanDataForFindOneMethod = (productsServiceMock: ProductsService) => {
+    const Empty: Product = {} as Product;
     jest.spyOn(productsServiceMock, 'findOne').mockResolvedValue(Empty);
   };
 
@@ -77,25 +79,24 @@ describe('ProductsController', () => {
   });
 
   it('should return product by Id if it exists', () => {
-    expect(productsController.findOne(createProductDto.id)).resolves.toEqual(
-      createProductDto,
-    );
+    const { id } = createProductDto;
+    expect(productsController.findOne(id)).resolves.toEqual(createProductDto);
   });
 
   it('should not return product by Id if it not exists', () => {
+    const { id } = createProductDto;
     cleanDataForFindOneMethod(productsServiceMock);
-    expect(productsController.findOne(createProductDto.id)).resolves.toEqual(
-      {},
-    );
+    expect(productsController.findOne(id)).resolves.toEqual({});
   });
 
   it('should return 1 when a product is updated', () => {
-    expect(
-      productsController.update(createProductDto.id, createProductDto),
-    ).resolves.toEqual(1);
+    const { id } = createProductDto;
+    const requestBody = createProductDto;
+    expect(productsController.update(id, requestBody)).resolves.toEqual(1);
   });
 
   it('should return 1 when a product is removed', () => {
-    expect(productsController.remove(createProductDto.id)).resolves.toEqual(1);
+    const { id } = createProductDto;
+    expect(productsController.remove(id)).resolves.toEqual(1);
   });
 });
