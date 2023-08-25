@@ -60,13 +60,13 @@ describe('ProductsController', () => {
     expect(productsController).toBeDefined();
   });
 
-  it('should return the created product', () => {
+  it('should create a product', () => {
     expect(productsController.create(createProductDto)).resolves.toEqual(
       createProductDto,
     );
   });
 
-  it('should return all of products that were created', () => {
+  it('should return all of products', () => {
     expect(productsController.findAll()).resolves.toEqual([
       createProductDto,
       createProductDto,

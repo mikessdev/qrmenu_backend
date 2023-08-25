@@ -63,13 +63,13 @@ describe('ProductsService', () => {
     expect(productsService).toBeDefined();
   });
 
-  it('should return the created product', () => {
+  it('should create a product', () => {
     expect(productsService.create(createProductDto)).resolves.toEqual(
       createProductDto,
     );
   });
 
-  it('should return all of products that were created', () => {
+  it('should return all of products', () => {
     expect(productsService.findAll()).resolves.toEqual([
       createProductDto,
       createProductDto,

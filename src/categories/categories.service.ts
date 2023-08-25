@@ -19,17 +19,17 @@ export class CategoriesService {
     return this.categoryRepository.findAll();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.categoryRepository.findByPk(id);
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
+  update(id: string, updateCategoryDto: UpdateCategoryDto) {
     return this.categoryRepository.update(updateCategoryDto, {
       where: { id: id },
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.categoryRepository.destroy({ where: { id: id } });
   }
 }

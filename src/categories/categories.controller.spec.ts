@@ -62,13 +62,13 @@ describe('CategoriesController', () => {
     expect(categoriesController).toBeDefined();
   });
 
-  it('should return the created category', () => {
+  it('should create a category', () => {
     expect(categoriesController.create(createCategoryDto)).resolves.toEqual(
       createCategoryDto,
     );
   });
 
-  it('should return all of categories that were created', () => {
+  it('should return all of categories', () => {
     expect(categoriesController.findAll()).resolves.toEqual([
       createCategoryDto,
       createCategoryDto,
