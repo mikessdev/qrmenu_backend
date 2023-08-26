@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response } from 'express';
-import admin from 'firebase-admin';
+import * as admin from 'firebase-admin';
 
 type FirebaseAdmin = admin.app.App;
 
@@ -19,7 +19,7 @@ interface ServiceAccount {
 
 @Injectable()
 export class PreauthMiddleware implements NestMiddleware {
-  private defaultApp: FirebaseAdmin;
+  private firabase: FirebaseAdmin;
 
   constructor() {
     const serviceAccount: ServiceAccount = {
@@ -35,7 +35,7 @@ export class PreauthMiddleware implements NestMiddleware {
       clientC509CertUrl: process.env.FIREBASE_CLIENT_x509_CERT_URL,
     };
 
-    this.defaultApp = admin.initializeApp({
+    this.firabase = admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
     });
   }
@@ -44,8 +44,8 @@ export class PreauthMiddleware implements NestMiddleware {
     const { authorization } = req.headers;
     const token = authorization;
 
-    if (token != null && token != '') {
-      this.defaultApp
+    if (!!token) {
+      this.firabase
         .auth()
         .verifyIdToken(token.replace('Bearer ', ''))
         .then(async (decodedToken) => {
