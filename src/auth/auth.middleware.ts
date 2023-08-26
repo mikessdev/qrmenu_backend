@@ -52,13 +52,14 @@ export class AuthMiddleware implements NestMiddleware {
     }
   }
 
-  async use(req: Request, res: Response) {
+  async use(req: Request, res: Response, next: () => void) {
     const { authorization } = req.headers;
     const token = authorization;
 
     if (!!token) {
       try {
         await this.firebase.auth().verifyIdToken(token.replace('Bearer ', ''));
+        next();
       } catch (error) {
         console.log(error);
         this.accessDenied(req.url, res);
@@ -82,8 +83,8 @@ export class AuthMiddleware implements NestMiddleware {
   }
 
   private accessDenied(url: string, res: Response) {
-    res.status(403).json({
-      statusCode: 403,
+    res.status(401).json({
+      statusCode: 401,
       timestamp: new Date().toISOString(),
       path: url,
       message: 'Access Denied',
