@@ -1,35 +1,53 @@
+import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { AppController } from './app.controller';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { AuthMiddleware } from './auth/auth.middleware';
+import { ProductsModule } from './products/products.module';
+import { dataBaseConfig } from './database/database.providers';
+import { CategoriesModule } from './categories/categories.module';
+import { ProductsController } from './products/products.controller';
 import {
   MiddlewareConsumer,
   Module,
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ProductsModule } from './products/products.module';
-import { dataBaseConfig } from './database/database.providers';
-import { SequelizeModule } from '@nestjs/sequelize';
-import { CategoriesModule } from './categories/categories.module';
-import { ConfigModule } from '@nestjs/config';
-import { AuthMiddleware } from './auth/auth.middleware';
-import { AuthModule } from './auth/auth.module';
+import { CategoriesController } from './categories/categories.controller';
 
 @Module({
   imports: [
+    AuthModule,
     ProductsModule,
     CategoriesModule,
-    SequelizeModule.forRoot(dataBaseConfig),
     ConfigModule.forRoot(),
-    AuthModule,
+    SequelizeModule.forRoot(dataBaseConfig),
   ],
-  controllers: [AppController],
   providers: [AppService],
+  controllers: [AppController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes({
-      path: '/',
-      method: RequestMethod.ALL,
-    });
+    consumer
+      .apply(AuthMiddleware)
+      .exclude(
+        {
+          path: 'auth',
+          method: RequestMethod.GET,
+        },
+        {
+          path: 'categories',
+          method: RequestMethod.GET,
+        },
+        {
+          path: 'products',
+          method: RequestMethod.GET,
+        },
+      )
+      .forRoutes({
+        path: '*',
+        method: RequestMethod.ALL,
+      });
   }
 }
