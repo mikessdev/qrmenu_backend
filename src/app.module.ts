@@ -11,7 +11,7 @@ import { dataBaseConfig } from './database/database.providers';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { CategoriesModule } from './categories/categories.module';
 import { ConfigModule } from '@nestjs/config';
-import { PreauthMiddleware } from './auth/preauth.middleware';
+import { AuthMiddleware } from './auth/auth.middleware';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -27,8 +27,8 @@ import { AuthModule } from './auth/auth.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(PreauthMiddleware).forRoutes({
-      path: '*',
+    consumer.apply(AuthMiddleware).forRoutes({
+      path: '/',
       method: RequestMethod.ALL,
     });
   }
