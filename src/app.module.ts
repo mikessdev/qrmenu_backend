@@ -7,14 +7,12 @@ import { AuthMiddleware } from './auth/auth.middleware';
 import { ProductsModule } from './products/products.module';
 import { dataBaseConfig } from './database/database.providers';
 import { CategoriesModule } from './categories/categories.module';
-import { ProductsController } from './products/products.controller';
 import {
   MiddlewareConsumer,
   Module,
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { CategoriesController } from './categories/categories.controller';
 
 @Module({
   imports: [
@@ -37,11 +35,11 @@ export class AppModule implements NestModule {
           method: RequestMethod.GET,
         },
         {
-          path: 'categories',
+          path: 'products/(.*)',
           method: RequestMethod.GET,
         },
         {
-          path: 'products',
+          path: 'categories/(.*)',
           method: RequestMethod.GET,
         },
       )
