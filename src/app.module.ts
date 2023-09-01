@@ -1,6 +1,5 @@
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AuthMiddleware } from './auth/auth.middleware';
@@ -16,7 +15,6 @@ import {
 
 @Module({
   imports: [
-    AuthModule,
     ProductsModule,
     CategoriesModule,
     ConfigModule.forRoot(),
