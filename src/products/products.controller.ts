@@ -21,8 +21,8 @@ export class ProductsController {
   }
 
   @Get(':id')
-  findAllByCategoryId(@Param('id') id: string) {
-    return this.productsService.findAllByCategoryId(id);
+  findAll(@Param('id') id: string) {
+    return this.productsService.findAll(id);
   }
 
   @Get(':id')

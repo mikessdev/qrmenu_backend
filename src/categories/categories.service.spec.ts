@@ -3,7 +3,6 @@ import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category } from './entities/category.entity';
 import { getModelToken } from '@nestjs/sequelize';
-import { CreateProductDto } from 'src/products/dto/create-product.dto';
 
 const createCategoryDto: CreateCategoryDto = {
   id: '1',
@@ -12,18 +11,7 @@ const createCategoryDto: CreateCategoryDto = {
   updateAt: new Date(),
 };
 
-const createProductDto: CreateProductDto = {
-  id: '1',
-  categoryId: '1',
-  title: 'Iscas de Frango',
-  description: '300g de filézinho empanado',
-  price: 'R$ 15,00',
-  createdAT: new Date(),
-  updateAt: new Date(),
-};
-
 describe('CategoriesService', () => {
-  const { id } = createCategoryDto;
   let categoriesService: CategoriesService;
   let categoriesRepositoryMock: typeof Category;
 
@@ -32,6 +20,13 @@ describe('CategoriesService', () => {
   ) => {
     const Empty: Category[] = [];
     jest.spyOn(categoriesRepositoryMock, 'findAll').mockResolvedValue(Empty);
+  };
+
+  const cleanDataForFindOneMethod = (
+    categoriesRepositoryMock: typeof Category,
+  ) => {
+    const Empty: Category = {} as Category;
+    jest.spyOn(categoriesRepositoryMock, 'findByPk').mockResolvedValue(Empty);
   };
 
   beforeEach(async () => {
@@ -46,14 +41,10 @@ describe('CategoriesService', () => {
               .mockImplementation((category: CreateCategoryDto) => {
                 return Promise.resolve(category);
               }),
-
-            findByPk: jest.fn().mockResolvedValue({
-              ...createCategoryDto,
-              product: [createProductDto],
-            }),
             findAll: jest
               .fn()
               .mockResolvedValue([createCategoryDto, createCategoryDto]),
+            findByPk: jest.fn().mockResolvedValue(createCategoryDto),
             update: jest.fn().mockResolvedValue(1),
             destroy: jest.fn().mockResolvedValue(1),
           },
@@ -89,19 +80,25 @@ describe('CategoriesService', () => {
     expect(categoriesService.findAll()).resolves.toEqual([]);
   });
 
-  it('should return one categories whith all products related', () => {
-    expect(categoriesService.findOneWithProducts(id)).resolves.toEqual({
-      ...createCategoryDto,
-      product: [createProductDto],
-    });
+  it('should return category by Id if it exists', () => {
+    const { id } = createCategoryDto;
+    expect(categoriesService.findOne(id)).resolves.toEqual(createCategoryDto);
+  });
+
+  it('should not return category by Id if it not exists', () => {
+    const { id } = createCategoryDto;
+    cleanDataForFindOneMethod(categoriesRepositoryMock);
+    expect(categoriesService.findOne(id)).resolves.toEqual({});
   });
 
   it('should return 1 when a category is updated', () => {
+    const { id } = createCategoryDto;
     const requestBody = createCategoryDto;
     expect(categoriesService.update(id, requestBody)).resolves.toEqual(1);
   });
 
   it('should return 1 when a category is removed', () => {
+    const { id } = createCategoryDto;
     expect(categoriesService.remove(id)).resolves.toEqual(1);
   });
 });
