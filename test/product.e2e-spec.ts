@@ -10,6 +10,7 @@ import * as request from 'supertest';
 const createProductDto: CreateProductDto = {
   id: '1',
   title: 'Iscas de Frango',
+  categoryId: '1',
   description: '300g de filézinho empanado',
   price: 'R$ 15,00',
   createdAT: new Date(),
