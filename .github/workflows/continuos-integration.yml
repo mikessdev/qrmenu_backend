@@ -8,7 +8,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
       - name: 'Debug'
         run: 'ls -la'
       - name: 'Install Dependencies'
