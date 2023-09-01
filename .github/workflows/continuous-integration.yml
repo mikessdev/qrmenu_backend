@@ -24,3 +24,9 @@ jobs:
 
       - name: Lint
         run: 'npm run lint'
+
+      - name: Unit test
+        run: 'npm run test'
+
+      - name: E2e test
+        run: 'npm run test:e2e'
