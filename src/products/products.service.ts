@@ -15,8 +15,10 @@ export class ProductsService {
     return this.productRepository.create(createProductDto as any);
   }
 
-  findAll() {
-    return this.productRepository.findAll();
+  findAllByCategoryId(id: string) {
+    return this.productRepository.findAll({
+      where: { categoryId: id },
+    });
   }
 
   findOne(id: string) {
