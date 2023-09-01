@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Lint'
-        run: 'Rodando lint'
+        run: 'pnpm run lint'

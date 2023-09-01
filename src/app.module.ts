@@ -7,14 +7,12 @@ import { AuthMiddleware } from './auth/auth.middleware';
 import { ProductsModule } from './products/products.module';
 import { dataBaseConfig } from './database/database.providers';
 import { CategoriesModule } from './categories/categories.module';
-import { ProductsController } from './products/products.controller';
 import {
   MiddlewareConsumer,
   Module,
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { CategoriesController } from './categories/categories.controller';
 
 @Module({
   imports: [
