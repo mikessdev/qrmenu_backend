@@ -9,6 +9,7 @@ import * as request from 'supertest';
 
 const createProductDto: CreateProductDto = {
   id: '1',
+  categoryId: '1',
   title: 'Iscas de Frango',
   categoryId: '1',
   description: '300g de filézinho empanado',
@@ -18,9 +19,11 @@ const createProductDto: CreateProductDto = {
 };
 
 const addProductsDataBase = async () => {
-  const { title, description, price, createdAT, updateAt } = createProductDto;
+  const { categoryId, title, description, price, createdAT, updateAt } =
+    createProductDto;
   await Product.create({
     id: '1',
+    categoryId,
     title,
     description,
     price,
@@ -30,6 +33,7 @@ const addProductsDataBase = async () => {
 
   await Product.create({
     id: '2',
+    categoryId,
     title,
     description,
     price,

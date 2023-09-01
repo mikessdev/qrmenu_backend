@@ -1,0 +1,12 @@
+name: '[CI] Continuous Integration'
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Lint'
+        run: ''
