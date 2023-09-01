@@ -8,10 +8,17 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: pnpm/action-setup@v2.4.0
-      - name: 'Debug'
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: pnpm setup
+        uses: pnpm/action-setup@v2.4.0
+
+      - name: Debug
         run: 'ls -la'
-      - name: 'Install Dependencies'
+
+      - name: Install Dependencies
         run: 'pnpm install'
-      - name: 'Lint'
+
+      - name: Lint
         run: 'pnpm run lint'
