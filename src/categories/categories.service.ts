@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
+import { Product } from 'src/products/entities/product.entity';
 
 @Injectable()
 export class CategoriesService {
@@ -19,8 +20,10 @@ export class CategoriesService {
     return this.categoryRepository.findAll();
   }
 
-  findOne(id: string) {
-    return this.categoryRepository.findByPk(id);
+  findOneWithProducts(id: string) {
+    return this.categoryRepository.findByPk(id, {
+      include: { model: Product },
+    });
   }
 
   update(id: string, updateCategoryDto: UpdateCategoryDto) {
