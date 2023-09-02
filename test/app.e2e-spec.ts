@@ -5,6 +5,8 @@ import { AppModule } from './../src/app.module';
 import { firebaseAuth } from './firebaseAuth/app.firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
 
+console.log('🚀🚀', ${{secrets.MY_NAME}})
+
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let accessToken: string;
