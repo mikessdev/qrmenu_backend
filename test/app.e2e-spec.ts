@@ -6,6 +6,7 @@ import { firebaseAuth } from './firebaseAuth/app.firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
 
 console.log('🚀🚀', process.env.MY_NAME);
+console.log('🚀');
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
