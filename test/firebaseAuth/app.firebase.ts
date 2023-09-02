@@ -1,14 +1,27 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import * as core from '@actions/core';
 
 export const firebaseConfig = {
-  apiKey: process.env.FIREBASE_APP_API_KEY,
-  authDomain: process.env.FIREBASE_APP_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_APP_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_APP_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_APP_ID,
-  measurementId: process.env.FIREBASE_APP_MEASUREMENT_ID,
+  apiKey:
+    process.env.FIREBASE_APP_API_KEY ?? core.getInput('FIREBASE_APP_API_KEY'),
+  authDomain:
+    process.env.FIREBASE_APP_AUTH_DOMAIN ??
+    core.getInput('FIREBASE_APP_AUTH_DOMAIN'),
+  projectId:
+    process.env.FIREBASE_APP_PROJECT_ID ??
+    core.getInput('FIREBASE_APP_PROJECT_ID'),
+  storageBucket:
+    process.env.FIREBASE_APP_STORAGE_BUCKET ??
+    core.getInput('FIREBASE_APP_STORAGE_BUCKET'),
+  messagingSenderId:
+    process.env.FIREBASE_APP_MESSAGING_SENDER_ID ??
+    core.getInput('FIREBASE_APP_MESSAGING_SENDER_ID'),
+  appId:
+    process.env.FIREBASE_APP_APP_ID ?? core.getInput('FIREBASE_APP_APP_ID'),
+  measurementId:
+    process.env.FIREBASE_APP_MEASUREMENT_ID ??
+    core.getInput('FIREBASE_APP_MEASUREMENT_ID'),
 };
 
 const firebaseApp = initializeApp(firebaseConfig);

@@ -8,6 +8,7 @@ import { ProductsService } from '../src/products/products.service';
 import * as request from 'supertest';
 import { signInWithEmailAndPassword } from '@firebase/auth';
 import { firebaseAuth } from './firebaseAuth/app.firebase';
+import * as core from '@actions/core';
 
 const createProductDto: CreateProductDto = {
   id: '1',
@@ -73,8 +74,8 @@ describe('ProductController (e2e)', () => {
 
     const userLogin = await signInWithEmailAndPassword(
       firebaseAuth,
-      process.env.USER_EMAIL,
-      process.env.USER_PASSWORD,
+      process.env.USER_EMAIL ?? core.getInput('USER_EMAIL'),
+      process.env.USER_PASSWORD ?? core.getInput('USER_PASSWORD'),
     );
 
     accessToken = userLogin.user['accessToken'];
