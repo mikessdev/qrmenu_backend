@@ -47,6 +47,8 @@ jobs:
 
   E2Etest:
     runs-on: ubuntu-latest
+    env:
+      MY_NAME: ${{secrets.MY_NAME}}
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
