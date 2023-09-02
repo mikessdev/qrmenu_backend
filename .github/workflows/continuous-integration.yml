@@ -60,7 +60,7 @@ jobs:
         run: 'ls -la'
 
       - name: Install Dependencies
-        run: 'npm ci'
+        run: 'npm install'
 
       - name: E2e test
         run: 'npm run test:e2e'
