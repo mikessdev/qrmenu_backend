@@ -6,8 +6,8 @@ import { CreateProductDto } from '../src/products/dto/create-product.dto';
 import { Product } from '../src/products/entities/product.entity';
 import { ProductsService } from '../src/products/products.service';
 import * as request from 'supertest';
-import { firebaseAuth } from './firebaseAuth/app.firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
+import { firebaseAuth } from './firebaseAuth/app.firebase';
 
 const createProductDto: CreateProductDto = {
   id: '1',
