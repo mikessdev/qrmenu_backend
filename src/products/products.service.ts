@@ -15,16 +15,6 @@ export class ProductsService {
     return this.productRepository.create(createProductDto as any);
   }
 
-  findAll(id: string) {
-    return this.productRepository.findAll({
-      where: { categoryId: id },
-    });
-  }
-
-  findOne(id: string) {
-    return this.productRepository.findByPk(id);
-  }
-
   update(id: string, updateProductDto: UpdateProductDto) {
     return this.productRepository.update(updateProductDto, {
       where: { id: id },

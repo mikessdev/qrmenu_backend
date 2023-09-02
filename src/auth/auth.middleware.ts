@@ -18,12 +18,6 @@ interface ServiceAccount {
   clientC509CertUrl: string;
 }
 
-export interface AccessToken {
-  token: {
-    value: string;
-  };
-}
-
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   private firebase: FirebaseAdmin;
@@ -61,24 +55,10 @@ export class AuthMiddleware implements NestMiddleware {
         await this.firebase.auth().verifyIdToken(token.replace('Bearer ', ''));
         next();
       } catch (error) {
-        console.log(error);
         this.accessDenied(req.url, res);
       }
     } else {
       this.accessDenied(req.url, res);
-    }
-  }
-
-  async getAccesToken(uid: string): Promise<AccessToken> {
-    try {
-      const accessToken: AccessToken = {
-        token: {
-          value: await this.firebase.auth().createCustomToken(uid),
-        },
-      };
-      return accessToken;
-    } catch (error) {
-      console.log('Error creating custom token:', error);
     }
   }
 
