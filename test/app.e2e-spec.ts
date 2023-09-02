@@ -4,7 +4,6 @@ import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { firebaseAuth } from './firebaseAuth/app.firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
-import * as core from '@actions/core';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -20,8 +19,8 @@ describe('AppController (e2e)', () => {
 
     const getUser = await signInWithEmailAndPassword(
       firebaseAuth,
-      process.env.USER_EMAIL ?? core.getInput('USER_EMAIL'),
-      process.env.USER_PASSWORD ?? core.getInput('USER_PASSWORD'),
+      process.env.USER_EMAIL,
+      process.env.USER_PASSWORD,
     );
 
     accessToken = getUser.user['accessToken'];
