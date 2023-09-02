@@ -48,7 +48,15 @@ jobs:
   E2Etest:
     runs-on: ubuntu-latest
     env:
-      MY_NAME: ${{secrets.MY_NAME}}
+      FIREBASE_APP_API_KEY: ${{secrets.FIREBASE_APP_API_KEY}}
+      FIREBASE_APP_AUTH_DOMAIN: ${{secrets.FIREBASE_APP_AUTH_DOMAIN}}
+      FIREBASE_APP_PROJECT_ID: ${{secrets.FIREBASE_APP_PROJECT_ID}}
+      FIREBASE_APP_STORAGE_BUCKET: ${{secrets.FIREBASE_APP_STORAGE_BUCKET}}
+      FIREBASE_APP_MESSAGING_SENDER_ID: ${{secrets.FIREBASE_APP_MESSAGING_SENDER_ID}}
+      FIREBASE_APP_APP_ID: ${{secrets.FIREBASE_APP_APP_ID}}
+      FIREBASE_APP_MEASUREMENT_ID: ${{secrets.FIREBASE_APP_MEASUREMENT_ID}}
+      USER_EMAIL: ${{secrets.USER_EMAIL}}
+      USER_PASSWORD: ${{secrets.USER_PASSWORD}}
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
