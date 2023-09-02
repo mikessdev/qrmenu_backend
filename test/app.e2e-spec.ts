@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { firebaseAuth } from './firebaseAuth/app.firebase';
-import { signInWithEmailAndPassword } from '@firebase/auth';
+// import { firebaseAuth } from './firebaseAuth/app.firebase';
+// import { signInWithEmailAndPassword } from '@firebase/auth';
 
 console.log('🚀🚀', process.env.MY_NAME);
 console.log('🚀');
