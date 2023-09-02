@@ -26,7 +26,9 @@ describe('CategoriesController', () => {
     categoriesServiceMock: CategoriesService,
   ) => {
     const Empty: Category = {} as Category;
-    jest.spyOn(categoriesServiceMock, 'findOne').mockResolvedValue(Empty);
+    jest
+      .spyOn(categoriesServiceMock, 'findOneWithProducts')
+      .mockResolvedValue(Empty);
   };
 
   beforeEach(async () => {
@@ -45,7 +47,7 @@ describe('CategoriesController', () => {
             findAll: jest
               .fn()
               .mockResolvedValue([createCategoryDto, createCategoryDto]),
-            findOne: jest.fn().mockResolvedValue(createCategoryDto),
+            findOneWithProducts: jest.fn().mockResolvedValue(createCategoryDto),
             update: jest.fn().mockResolvedValue(1),
             remove: jest.fn().mockResolvedValue(1),
           },
@@ -82,7 +84,7 @@ describe('CategoriesController', () => {
 
   it('should return category by Id if it exists', () => {
     const { id } = createCategoryDto;
-    expect(categoriesController.findOne(id)).resolves.toEqual(
+    expect(categoriesController.findOneWithProducts(id)).resolves.toEqual(
       createCategoryDto,
     );
   });
@@ -90,7 +92,7 @@ describe('CategoriesController', () => {
   it('should not return category by Id if it not exists', () => {
     const { id } = createCategoryDto;
     cleanDataForFindOneMethod(categoriesServiceMock);
-    expect(categoriesController.findOne(id)).resolves.toEqual({});
+    expect(categoriesController.findOneWithProducts(id)).resolves.toEqual({});
   });
 
   it('should return 1 when a category is updated', () => {
