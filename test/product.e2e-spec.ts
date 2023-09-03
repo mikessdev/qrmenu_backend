@@ -6,12 +6,13 @@ import { CreateProductDto } from '../src/products/dto/create-product.dto';
 import { Product } from '../src/products/entities/product.entity';
 import { ProductsService } from '../src/products/products.service';
 import * as request from 'supertest';
+import { firebaseAuth } from './firebaseAuth/app.firebase';
+import { signInWithEmailAndPassword } from '@firebase/auth';
 
 const createProductDto: CreateProductDto = {
   id: '1',
-  categoryId: '1',
+  categoryId: '0c8822f5-add0-4a68-abed-afa880df5096',
   title: 'Iscas de Frango',
-  categoryId: '1',
   description: '300g de filézinho empanado',
   price: 'R$ 15,00',
   createdAT: new Date(),
@@ -52,6 +53,7 @@ describe('ProductController (e2e)', () => {
   let productsServiceMock: ProductsService;
   let app: INestApplication;
   let sequelize: Sequelize;
+  let accessToken: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -68,6 +70,14 @@ describe('ProductController (e2e)', () => {
     await sequelize.transaction(async (transaction) => {
       await Product.destroy({ where: {}, transaction });
     });
+
+    const userLogin = await signInWithEmailAndPassword(
+      firebaseAuth,
+      process.env.USER_EMAIL,
+      process.env.USER_PASSWORD,
+    );
+
+    accessToken = userLogin.user['accessToken'];
   });
 
   afterAll(async () => {
@@ -82,6 +92,7 @@ describe('ProductController (e2e)', () => {
     const body = {};
     const response = await request(app.getHttpServer())
       .post('/products')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(body);
     expect(response.statusCode).toEqual(500);
   });
@@ -90,54 +101,9 @@ describe('ProductController (e2e)', () => {
     const body = createProductDto;
     const response = await request(app.getHttpServer())
       .post('/products')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(body);
     expect(response.statusCode).toEqual(201);
-  });
-
-  it('/products (GET): should return all products', async () => {
-    await addProductsDataBase();
-
-    const response = await request(app.getHttpServer()).get('/products');
-    expect(response.statusCode).toEqual(200);
-    expect(response.body.length).toEqual(2);
-  });
-
-  it('/products (GET): should not return anything if I had no products', async () => {
-    const response = await request(app.getHttpServer()).get('/products');
-
-    expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([]);
-  });
-
-  it('/products (GET): should return a product by id', async () => {
-    await addProductsDataBase();
-
-    const { title, description, price } = createProductDto;
-    const queryParams = 2;
-    const product = { id: `${queryParams}`, title, description, price };
-
-    const response = await request(app.getHttpServer()).get(
-      `/products/${queryParams}?id=${queryParams}`,
-    );
-
-    expect(response.statusCode).toEqual(200);
-    expect(response.body.id).toEqual(product.id);
-    expect(response.body.title).toEqual(product.title);
-    expect(response.body.description).toEqual(product.description);
-    expect(response.body.price).toEqual(product.price);
-  });
-
-  it('/products (GET): should not return a product by id if it does not exist', async () => {
-    const queryParams = 999;
-
-    await addProductsDataBase();
-
-    const response = await request(app.getHttpServer()).get(
-      `/products/${queryParams}?id=${queryParams}`,
-    );
-
-    expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual({});
   });
 
   it('/products (PATCH): should update a product', async () => {
@@ -154,18 +120,12 @@ describe('ProductController (e2e)', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .patch(`/products/${queryParams}?id=${queryParams}`)
+      .patch(`/products/${queryParams}`)
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(updateUserDto);
 
     expect(response.statusCode).toEqual(200);
     expect(response.body).toEqual([1]);
-
-    const updatedUser = await request(app.getHttpServer()).get(
-      `/products/${queryParams}?id=${queryParams}`,
-    );
-
-    expect(updatedUser.body.title).toEqual(updateUserDto.title);
-    expect(updatedUser.body.description).toEqual(updateUserDto.description);
   });
 
   it('/products (PATCH): should no update a product if does not exist', async () => {
@@ -181,6 +141,7 @@ describe('ProductController (e2e)', () => {
 
     const response = await request(app.getHttpServer())
       .patch(`/products/${queryParams}?id=${queryParams}`)
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(updateUserDto);
 
     expect(response.statusCode).toEqual(200);
@@ -192,18 +153,11 @@ describe('ProductController (e2e)', () => {
 
     const queryParams = 1;
 
-    const response = await request(app.getHttpServer()).del(
-      `/products/${queryParams}?id=${queryParams}`,
-    );
+    const response = await request(app.getHttpServer())
+      .del(`/products/${queryParams}?id=${queryParams}`)
+      .set('Authorization', `Bearer ${accessToken}`);
 
     expect(response.statusCode).toEqual(200);
     expect(response.body).toEqual({});
-
-    const updatedUser = await request(app.getHttpServer()).get(
-      `/products/${queryParams}?id=${queryParams}`,
-    );
-
-    expect(updatedUser.statusCode).toEqual(200);
-    expect(updatedUser.body).toEqual({});
   });
 });

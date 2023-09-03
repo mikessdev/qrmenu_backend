@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import { Product } from './entities/product.entity';
 
 const createProductDto: CreateProductDto = {
   id: '1',
@@ -16,17 +15,6 @@ const createProductDto: CreateProductDto = {
 
 describe('ProductsController', () => {
   let productsController: ProductsController;
-  let productsServiceMock: ProductsService;
-
-  const cleanDataForFindAllMethod = (productsServiceMock: ProductsService) => {
-    const Empty: Product[] = [];
-    jest.spyOn(productsServiceMock, 'findAll').mockResolvedValue(Empty);
-  };
-
-  const cleanDataForFindOneMethod = (productsServiceMock: ProductsService) => {
-    const Empty: Product = {} as Product;
-    jest.spyOn(productsServiceMock, 'findOne').mockResolvedValue(Empty);
-  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -41,10 +29,6 @@ describe('ProductsController', () => {
               .mockImplementation((product: CreateProductDto) => {
                 return Promise.resolve(product);
               }),
-            findAll: jest
-              .fn()
-              .mockResolvedValue([createProductDto, createProductDto]),
-            findOne: jest.fn().mockResolvedValue(createProductDto),
             update: jest.fn().mockResolvedValue(1),
             remove: jest.fn().mockResolvedValue(1),
           },
@@ -53,7 +37,6 @@ describe('ProductsController', () => {
     }).compile();
 
     productsController = module.get<ProductsController>(ProductsController);
-    productsServiceMock = module.get<ProductsService>(ProductsService);
   });
 
   it('should be defined', () => {
@@ -64,29 +47,6 @@ describe('ProductsController', () => {
     expect(productsController.create(createProductDto)).resolves.toEqual(
       createProductDto,
     );
-  });
-
-  it('should return all of products', () => {
-    expect(productsController.findAll()).resolves.toEqual([
-      createProductDto,
-      createProductDto,
-    ]);
-  });
-
-  it('should return an empty array if there is no product in database ', () => {
-    cleanDataForFindAllMethod(productsServiceMock);
-    expect(productsController.findAll()).resolves.toEqual([]);
-  });
-
-  it('should return product by Id if it exists', () => {
-    const { id } = createProductDto;
-    expect(productsController.findOne(id)).resolves.toEqual(createProductDto);
-  });
-
-  it('should not return product by Id if it not exists', () => {
-    const { id } = createProductDto;
-    cleanDataForFindOneMethod(productsServiceMock);
-    expect(productsController.findOne(id)).resolves.toEqual({});
   });
 
   it('should return 1 when a product is updated', () => {

@@ -16,21 +16,6 @@ const createProductDto: CreateProductDto = {
 
 describe('ProductsService', () => {
   let productsService: ProductsService;
-  let productsRepositoryMock: typeof Product;
-
-  const cleanDataForFindAllMethod = (
-    productsRepositoryMock: typeof Product,
-  ) => {
-    const Empty: Product[] = [];
-    jest.spyOn(productsRepositoryMock, 'findAll').mockResolvedValue(Empty);
-  };
-
-  const cleanDataForFindOneMethod = (
-    productsRepositoryMock: typeof Product,
-  ) => {
-    const Empty: Product = {} as Product;
-    jest.spyOn(productsRepositoryMock, 'findByPk').mockResolvedValue(Empty);
-  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -44,10 +29,6 @@ describe('ProductsService', () => {
               .mockImplementation((product: CreateProductDto) => {
                 return Promise.resolve(product);
               }),
-            findAll: jest
-              .fn()
-              .mockResolvedValue([createProductDto, createProductDto]),
-            findByPk: jest.fn().mockResolvedValue(createProductDto),
             update: jest.fn().mockResolvedValue(1),
             destroy: jest.fn().mockResolvedValue(1),
           },
@@ -56,7 +37,6 @@ describe('ProductsService', () => {
     }).compile();
 
     productsService = module.get<ProductsService>(ProductsService);
-    productsRepositoryMock = module.get<typeof Product>(getModelToken(Product));
   });
 
   it('should be defined', () => {
@@ -67,29 +47,6 @@ describe('ProductsService', () => {
     expect(productsService.create(createProductDto)).resolves.toEqual(
       createProductDto,
     );
-  });
-
-  it('should return all of products', () => {
-    expect(productsService.findAll()).resolves.toEqual([
-      createProductDto,
-      createProductDto,
-    ]);
-  });
-
-  it('should return an empty array if there is no product in database ', () => {
-    cleanDataForFindAllMethod(productsRepositoryMock);
-    expect(productsService.findAll()).resolves.toEqual([]);
-  });
-
-  it('should return product by Id if it exists', () => {
-    const { id } = createProductDto;
-    expect(productsService.findOne(id)).resolves.toEqual(createProductDto);
-  });
-
-  it('should not return product by Id if it not exists', () => {
-    const { id } = createProductDto;
-    cleanDataForFindOneMethod(productsRepositoryMock);
-    expect(productsService.findOne(id)).resolves.toEqual({});
   });
 
   it('should return 1 when a product is updated', () => {

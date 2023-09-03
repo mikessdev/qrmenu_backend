@@ -82,13 +82,15 @@ describe('CategoriesService', () => {
 
   it('should return category by Id if it exists', () => {
     const { id } = createCategoryDto;
-    expect(categoriesService.findOne(id)).resolves.toEqual(createCategoryDto);
+    expect(categoriesService.findOneWithProducts(id)).resolves.toEqual(
+      createCategoryDto,
+    );
   });
 
   it('should not return category by Id if it not exists', () => {
     const { id } = createCategoryDto;
     cleanDataForFindOneMethod(categoriesRepositoryMock);
-    expect(categoriesService.findOne(id)).resolves.toEqual({});
+    expect(categoriesService.findOneWithProducts(id)).resolves.toEqual({});
   });
 
   it('should return 1 when a category is updated', () => {
