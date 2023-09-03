@@ -4,9 +4,7 @@ import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { firebaseAuth } from './firebaseAuth/app.firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
-import * as core from '@actions/core';
-console.log('🚀🚀🚀🚀🚀🚀🚀');
-console.log('🚀🚀', core.getInput('USER_EMAIL'));
+
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let accessToken: string;
