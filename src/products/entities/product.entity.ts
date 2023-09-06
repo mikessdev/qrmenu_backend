@@ -11,7 +11,7 @@ import { Category } from '../../categories/entities/category.entity';
 @Table({
   tableName: 'products',
 })
-export class Product extends Model {
+export class Product extends Model<Product> {
   @Column({
     type: DataType.STRING,
     autoIncrement: false,

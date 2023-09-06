@@ -1,8 +1,10 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { Product } from '../../products/entities/product.entity';
 
-@Table
-export class Category extends Model {
+@Table({
+  tableName: 'categories',
+})
+export class Category extends Model<Category> {
   @Column({
     type: DataType.STRING,
     autoIncrement: false,
@@ -16,6 +18,18 @@ export class Category extends Model {
     allowNull: false,
   })
   title: string;
+
+  @Column({
+    type: DataType.DATE(11),
+    allowNull: false,
+  })
+  createdAt: Date;
+
+  @Column({
+    type: DataType.DATE(11),
+    allowNull: false,
+  })
+  updatedAt: Date;
 
   @HasMany(() => Product)
   product: Product[];

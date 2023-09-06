@@ -8,6 +8,7 @@ import { ProductsService } from '../src/products/products.service';
 import * as request from 'supertest';
 import { firebaseAuth } from './firebaseAuth/app.firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
+import { Transaction } from 'sequelize';
 
 const createProductDto: CreateProductDto = {
   id: '1',
@@ -15,12 +16,12 @@ const createProductDto: CreateProductDto = {
   title: 'Iscas de Frango',
   description: '300g de filézinho empanado',
   price: 'R$ 15,00',
-  createdAT: new Date(),
-  updateAt: new Date(),
+  createdAt: new Date(),
+  updatedAt: new Date(),
 };
 
 const addProductsDataBase = async () => {
-  const { categoryId, title, description, price, createdAT, updateAt } =
+  const { categoryId, title, description, price, createdAt, updatedAt } =
     createProductDto;
   await Product.create({
     id: '1',
@@ -28,8 +29,8 @@ const addProductsDataBase = async () => {
     title,
     description,
     price,
-    createdAT,
-    updateAt,
+    createdAt,
+    updatedAt,
   });
 
   await Product.create({
@@ -38,15 +39,15 @@ const addProductsDataBase = async () => {
     title,
     description,
     price,
-    createdAT,
-    updateAt,
+    createdAt,
+    updatedAt,
   });
 };
 
-const cleanDataBase = async (sequelize) => {
-  const t = await sequelize.transaction();
-  await Product.destroy({ where: {}, transaction: t });
-  await t.commit();
+const cleanDataBase = async (sequelize: Sequelize) => {
+  const transaction: Transaction = await sequelize.transaction();
+  await Product.destroy({ where: {}, transaction });
+  await transaction.commit();
 };
 
 describe('ProductController (e2e)', () => {
@@ -67,7 +68,7 @@ describe('ProductController (e2e)', () => {
     await app.init();
 
     sequelize = moduleFixture.get<Sequelize>(Sequelize);
-    await sequelize.transaction(async (transaction) => {
+    sequelize.transaction(async (transaction) => {
       await Product.destroy({ where: {}, transaction });
     });
 
@@ -78,6 +79,7 @@ describe('ProductController (e2e)', () => {
     );
 
     accessToken = userLogin.user['accessToken'];
+    console.log(accessToken);
   });
 
   afterAll(async () => {

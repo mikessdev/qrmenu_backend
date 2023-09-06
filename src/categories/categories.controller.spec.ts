@@ -7,8 +7,8 @@ import { Category } from './entities/category.entity';
 const createCategoryDto: CreateCategoryDto = {
   id: '1',
   title: 'Porções',
-  createdAT: new Date(),
-  updateAt: new Date(),
+  createdAt: new Date(),
+  updatedAt: new Date(),
 };
 
 describe('CategoriesController', () => {
