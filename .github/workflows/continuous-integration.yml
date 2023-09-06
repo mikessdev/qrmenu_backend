@@ -54,7 +54,6 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_DB: postgres
           POSTGRES_USER: ${{ DATABASE_USERNAME }}
           POSTGRES_PASSWORD: ${{ DATABASE_PASSWORD }}
 
