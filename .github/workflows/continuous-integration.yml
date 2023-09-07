@@ -101,5 +101,8 @@ jobs:
       - name: Install Dependencies
         run: 'npm install'
 
+      - name: Run migrations for create db tables
+        run: cd db | npx sequelize-cli db:migrate
+
       - name: E2e test
         run: 'npm run test:e2e'
