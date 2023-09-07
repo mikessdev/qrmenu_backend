@@ -47,6 +47,14 @@ jobs:
 
   E2Etest:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRES_PORT: ${{ secrets.DATABASE_PORT }}
+
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
@@ -81,6 +89,11 @@ jobs:
 
           envkey_USER_EMAIL: ${{ secrets.USER_EMAIL }}
           envkey_USER_PASSWORD: ${{ secrets.USER_PASSWORD}}
+
+          envkey_DATABASE_DIALECT: ${{ secrets.DATABASE_DIALECT }}
+          envkey_DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+          envkey_DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          envkey_DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
       - name: Debug
         run: 'ls -la'
