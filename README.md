@@ -2,7 +2,6 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-
 ## Installation
 
 ```bash
@@ -36,7 +35,6 @@ $ npm run test:cov
 ```
 
 ## Running Migrations and Seeders
-#Commands for migrations and seeders must be run in the .db/ folder...
 
 ```bash
 # migrations
