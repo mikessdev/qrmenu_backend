@@ -47,14 +47,6 @@ jobs:
 
   E2Etest:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          POSTGRES_PORT: ${{ secrets.DATABASE_PORT }}
-
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
@@ -102,7 +94,7 @@ jobs:
         run: 'npm install'
 
       - name: Run docker
-        run: 'docker compose up'
+        run: 'docker compose up -d'
 
       - name: Run migrations
         run: npx sequelize-cli db:migrate
