@@ -94,8 +94,7 @@ jobs:
         run: 'npm install'
 
       - name: Run PostgreSQL Container
-        run: |
-          docker run -d --name postgres-container -e POSTGRES_USERNAME= ${{ secrets.DATABASE_PASSWORD }} POSTGRES_PASSWORD=${{ secrets.DATABASE_PASSWORD }} -p 5432:5432 postgres:latest
+        run: docker compose up -d
 
       - name: Run migrations
         run: npx sequelize-cli db:migrate
