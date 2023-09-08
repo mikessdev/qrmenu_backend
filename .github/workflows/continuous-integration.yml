@@ -101,7 +101,10 @@ jobs:
       - name: Install Dependencies
         run: 'npm install'
 
-      - name: Run migrations for create db tables
+      - name: Run docker
+        run: 'docker compose up'
+
+      - name: Run migrations
         run: npx sequelize-cli db:migrate
 
       - name: E2e test
