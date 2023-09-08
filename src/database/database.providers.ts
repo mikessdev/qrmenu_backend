@@ -12,8 +12,8 @@ export const dataBaseConfig: SequelizeModuleOptions = {
   port: Number(process.env.DATABASE_PORT),
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
-  autoLoadModels: false,
-  synchronize: false,
+  autoLoadModels: true,
+  synchronize: true,
 };
 
 const sequelize: Sequelize = new Sequelize(dataBaseConfig);

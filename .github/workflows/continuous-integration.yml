@@ -93,11 +93,17 @@ jobs:
       - name: Install Dependencies
         run: 'npm install'
 
-      - name: Run docker
-        run: 'docker compose up -d'
+      - name: Run PostgreSQL Container
+        run: |
+          docker run -d --name postgres-container -e POSTGRES_USERNAME= ${{ secrets.DATABASE_PASSWORD }} POSTGRES_PASSWORD=${{ secrets.DATABASE_PASSWORD }} -p 5432:5432 postgres:latest
 
       - name: Run migrations
         run: npx sequelize-cli db:migrate
 
       - name: E2e test
         run: 'npm run test:e2e'
+
+      - name: Cleanup PostgreSQL Container
+        run: |
+          docker stop postgres-container
+          docker rm postgres-container
