@@ -47,6 +47,15 @@ jobs:
 
   E2Etest:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11.7-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v3
@@ -89,9 +98,6 @@ jobs:
 
       - name: Debug
         run: 'ls -la'
-
-      - name: Build docker-composer
-        run: docker-compose up -d
 
       - name: Install Dependencies
         run: 'npm install'
