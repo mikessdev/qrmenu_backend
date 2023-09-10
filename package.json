@@ -6,10 +6,10 @@
   "private": true,
   "license": "UNLICENSED",
   "engines": {
-    "node": "20.4.0"
+    "node": "18.x"
   },
   "scripts": {
-    "build": "nest build",
+    "vercel-build": "npx sequelize-cli db:migrate --env production && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

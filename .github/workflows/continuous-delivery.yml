@@ -1,0 +1,26 @@
+name: '[CD] Continuous Delivery'
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.17.1'
+
+      - name: 'Debug'
+        run: 'ls -la'
+
+      - name: 'Install Dependencies'
+        run: 'npm install'
+
+      - name: 'Deploy to vercel'
+        run: 'npx vercel'

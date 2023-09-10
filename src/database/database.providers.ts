@@ -3,17 +3,18 @@ import * as dotenv from 'dotenv';
 import { Sequelize } from 'sequelize-typescript';
 import { Category } from '../categories/entities/category.entity';
 import { Product } from '../products/entities/product.entity';
-import { Dialect } from 'sequelize';
+import * as pg from 'pg';
 
 dotenv.config();
 
 export const dataBaseConfig: SequelizeModuleOptions = {
-  dialect: process.env.DATABASE_DIALECT as Dialect,
-  port: Number(process.env.DATABASE_PORT),
+  dialect: 'postgres',
+  host: process.env.DATABASE_HOST,
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
-  autoLoadModels: true,
-  synchronize: true,
+  database: process.env.DATABASE,
+  dialectModule: pg,
+  dialectOptions: { ssl: Boolean(process.env.DATABASE_ENABLE_SSL) },
 };
 
 const sequelize: Sequelize = new Sequelize(dataBaseConfig);
