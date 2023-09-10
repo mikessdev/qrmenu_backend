@@ -53,8 +53,8 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          POSTGRES_USERNAME: "postgres"
+          POSTGRES_PASSWORD: "12345"
       
     steps:
       - name: Check out Git repository
