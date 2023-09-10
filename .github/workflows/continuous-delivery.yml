@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
 
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,5 +26,5 @@ jobs:
       - name: 'Install Dependencies'
         run: 'npm install'
 
-      - name: 'Deploy to vercel --token=${{ secrets.VERCEL_TOKEN }}'
-        run: 'npx vercel'
+      - name: 'Deploy to vercel'
+        run: 'npx vercel  --prod --token=${{ secrets.VERCEL_TOKEN }}'
