@@ -37,10 +37,12 @@ const addProduct = async (product: CreateProductDto) => {
   await Product.create(product);
 };
 
-const cleanDataBase = async (sequelize: Sequelize) => {
-  const transaction: Transaction = await sequelize.transaction();
-  await Product.destroy({ where: {}, transaction });
-  await transaction.commit();
+const cleanProduct = async () => {
+  await Product.destroy({ where: {} });
+};
+
+const cleanCategory = async () => {
+  await Category.destroy({ where: {} });
 };
 
 describe('ProductController (e2e)', () => {
@@ -48,6 +50,7 @@ describe('ProductController (e2e)', () => {
   let app: INestApplication;
   let sequelize: Sequelize;
   let accessToken: string;
+
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -74,11 +77,12 @@ describe('ProductController (e2e)', () => {
   });
 
   afterAll(async () => {
-    await app.close();
+    await cleanCategory();
+    // await app.close();
   });
 
   afterEach(async () => {
-    await cleanDataBase(sequelize);
+    await cleanProduct();
   });
 
   it('/products (POST): should not create a product', async () => {
