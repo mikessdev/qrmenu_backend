@@ -10,8 +10,8 @@ const createProductDto: CreateProductDto = {
   title: 'Iscas de Frango',
   description: '300g de filézinho empanado',
   price: 'R$ 15,00',
-  createdAT: new Date(),
-  updateAt: new Date(),
+  createdAt: new Date(),
+  updatedAt: new Date(),
 };
 
 describe('ProductsService', () => {

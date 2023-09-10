@@ -13,7 +13,7 @@ export class CategoriesService {
   ) {}
 
   create(createCategoryDto: CreateCategoryDto) {
-    return this.categoryRepository.create(createCategoryDto as any);
+    return this.categoryRepository.create(createCategoryDto);
   }
 
   findAll() {

@@ -4,6 +4,6 @@ export class CreateProductDto {
   readonly title: string;
   readonly description: string;
   readonly price: string;
-  readonly createdAT: Date;
-  readonly updateAt: Date;
+  readonly createdAt: Date;
+  readonly updatedAt: Date;
 }
