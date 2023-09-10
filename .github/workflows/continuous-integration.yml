@@ -107,8 +107,3 @@ jobs:
 
       - name: E2e test
         run: 'npm run test:e2e'
-
-      - name: Cleanup PostgreSQL Container
-        run: |
-          docker stop postgres:11.7-alpine
-          docker rm postgres:11.7-alpine
