@@ -1,6 +1,5 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Sequelize } from 'sequelize-typescript';
 import { AppModule } from '../src/app.module';
 import { CreateProductDto } from '../src/products/dto/create-product.dto';
 import { Product } from '../src/products/entities/product.entity';
@@ -8,9 +7,9 @@ import { ProductsService } from '../src/products/products.service';
 import * as request from 'supertest';
 import { firebaseAuth } from './firebaseAuth/app.firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
-import { Transaction } from 'sequelize';
 import { CreateCategoryDto } from '../src/categories/dto/create-category.dto';
 import { Category } from '../src/categories/entities/category.entity';
+import { UserCredential } from 'firebase/auth';
 
 const createProductDto: CreateProductDto = {
   id: '1',
@@ -48,7 +47,6 @@ const cleanCategory = async () => {
 describe('ProductController (e2e)', () => {
   let productsServiceMock: ProductsService;
   let app: INestApplication;
-  let sequelize: Sequelize;
   let accessToken: string;
 
   beforeAll(async () => {
@@ -62,30 +60,35 @@ describe('ProductController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
 
-    sequelize = moduleFixture.get<Sequelize>(Sequelize);
-    sequelize.transaction(async (transaction) => {
-      await Product.destroy({ where: {}, transaction });
-    });
-
-    const userLogin = await signInWithEmailAndPassword(
+    const userLogin: UserCredential = await signInWithEmailAndPassword(
       firebaseAuth,
       process.env.USER_EMAIL,
       process.env.USER_PASSWORD,
     );
 
-    accessToken = userLogin.user['accessToken'];
+    accessToken = await userLogin.user.getIdToken();
+    await addCategory(createCategoryDto);
   });
 
   afterAll(async () => {
     await cleanCategory();
-    // await app.close();
+    await app.close();
   });
 
   afterEach(async () => {
     await cleanProduct();
   });
 
-  it('/products (POST): should not create a product', async () => {
+  it('/products (POST): should create a product', async () => {
+    const body = createProductDto;
+    const response = await request(app.getHttpServer())
+      .post('/products')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(body);
+    expect(response.statusCode).toEqual(201);
+  });
+
+  it('/products (POST): should not create a product if the body is empty', async () => {
     const body = {};
     const response = await request(app.getHttpServer())
       .post('/products')
@@ -94,14 +97,14 @@ describe('ProductController (e2e)', () => {
     expect(response.statusCode).toEqual(500);
   });
 
-  it('/products (POST): should create a product', async () => {
-    await addCategory(createCategoryDto);
+  it('/products (POST): should not create a product if dont have the bearer token', async () => {
     const body = createProductDto;
     const response = await request(app.getHttpServer())
       .post('/products')
-      .set('Authorization', `Bearer ${accessToken}`)
+      .set('Authorization', 'Bearer ')
       .send(body);
-    expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(401);
+    expect(response.body.message).toEqual('Access Denied');
   });
 
   it('/products (PATCH): should update a product', async () => {
@@ -126,7 +129,29 @@ describe('ProductController (e2e)', () => {
     expect(response.body).toEqual([1]);
   });
 
-  it('/products (PATCH): should no update a product if does not exist', async () => {
+  it('/products (PATCH): should not update a product if dont have the bearer token', async () => {
+    await addProduct(createProductDto);
+
+    const queryParams = 1;
+    const updateUserDto = {
+      id: `${queryParams}`,
+      title: 'Iscas de Frango atualizadas',
+      description: '150g de filézinho empanado',
+      price: 'R$ 15,00',
+      createdAT: new Date(),
+      updateAt: new Date(),
+    };
+
+    const response = await request(app.getHttpServer())
+      .patch(`/products/${queryParams}`)
+      .set('Authorization', 'Bearer ')
+      .send(updateUserDto);
+
+    expect(response.statusCode).toEqual(401);
+    expect(response.body.message).toEqual('Access Denied');
+  });
+
+  it('/products (PATCH): should not update a product if does not exist', async () => {
     const productId = 1;
     const updateUserDto = {
       id: `${productId}`,
@@ -156,5 +181,17 @@ describe('ProductController (e2e)', () => {
 
     expect(response.statusCode).toEqual(200);
     expect(response.body).toEqual({});
+  });
+
+  it('/products (DEL): should not delete a product if dont have the bearer token', async () => {
+    await addProduct(createProductDto);
+    const productId = 1;
+
+    const response = await request(app.getHttpServer())
+      .del(`/products/${productId}`)
+      .set('Authorization', 'Bearer ');
+
+    expect(response.statusCode).toEqual(401);
+    expect(response.body.message).toEqual('Access Denied');
   });
 });
