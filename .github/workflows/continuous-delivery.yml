@@ -2,7 +2,7 @@ name: '[CD] Continuous Delivery'
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main]
 
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -27,9 +27,4 @@ jobs:
         run: 'npm ci'
 
       - name: 'Deploy to vercel (prod)'
-        if: github.ref == 'refs/heads/main'
         run: 'npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }}'
-
-      # - name: 'Deploy to vercel (dev)'
-      #   if: github.ref == 'refs/heads/dev'
-      #   run: 'npx vercel dev --token=${{ secrets.VERCEL_TOKEN }}'
