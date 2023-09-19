@@ -30,6 +30,6 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: 'npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }}'
 
-      - name: 'Deploy to vercel (dev)'
-        if: github.ref == 'refs/heads/dev'
-        run: 'npx vercel dev --token=${{ secrets.VERCEL_TOKEN }}'
+      # - name: 'Deploy to vercel (dev)'
+      #   if: github.ref == 'refs/heads/dev'
+      #   run: 'npx vercel dev --token=${{ secrets.VERCEL_TOKEN }}'
