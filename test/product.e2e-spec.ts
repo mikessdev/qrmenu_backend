@@ -1,15 +1,40 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
-import { CreateProductDto } from '../src/products/dto/create-product.dto';
-import { Product } from '../src/products/entities/product.entity';
 import { ProductsService } from '../src/products/products.service';
 import * as request from 'supertest';
 import { firebaseAuth } from './firebaseAuth/app.firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
-import { CreateCategoryDto } from '../src/categories/dto/create-category.dto';
-import { Category } from '../src/categories/entities/category.entity';
 import { UserCredential } from 'firebase/auth';
+import { CreateProductDto } from '../src/products/dto/create-product.dto';
+import { CreateCategoryDto } from '../src/categories/dto/create-category.dto';
+import { CreateMenuDto } from '../src/menus/dto/create-menu.dto';
+import { CreateUserDto } from '../src/users/dto/create-user.dto';
+import { Product } from '../src/products/entities/product.entity';
+import { Category } from '../src/categories/entities/category.entity';
+import { Menu } from '../src/menus/entities/menu.entity';
+import { User } from '../src/users/entities/user.entity';
+
+const createUserDto: CreateUserDto = {
+  id: '1',
+  name: 'Japa',
+  lastName: 'da Silva',
+  email: 'japa@gmail.com',
+  emailVerified: false,
+  phoneNumber: '123',
+};
+
+const createMenuDto: CreateMenuDto = {
+  id: '1',
+  userId: '1',
+  headerImg: 'dddddddddd',
+  profileImg: 'ddddddddddddd',
+  name: 'restaurant do Japa',
+  phoneNumber: '123',
+  instagram: 'dddddddddddd',
+  openDays: 'ddddddddd',
+  address: 'dddddddddd',
+};
 
 const createProductDto: CreateProductDto = {
   id: '1',
@@ -29,6 +54,14 @@ const createCategoryDto: CreateCategoryDto = {
   updatedAt: new Date(),
 };
 
+const addUser = async (user: CreateUserDto) => {
+  await User.create(user);
+};
+
+const addMenu = async (menu: CreateMenuDto) => {
+  await Menu.create(menu);
+};
+
 const addCategory = async (category: CreateCategoryDto) => {
   await Category.create(category);
 };
@@ -43,6 +76,14 @@ const cleanProduct = async () => {
 
 const cleanCategory = async () => {
   await Category.destroy({ where: {} });
+};
+
+const cleanUser = async () => {
+  await User.destroy({ where: {} });
+};
+
+const cleanMenu = async () => {
+  await Menu.destroy({ where: {} });
 };
 
 describe('ProductController (e2e)', () => {
@@ -68,11 +109,15 @@ describe('ProductController (e2e)', () => {
     );
 
     accessToken = await userLogin.user.getIdToken();
+    await addUser(createUserDto);
+    await addMenu(createMenuDto);
     await addCategory(createCategoryDto);
   });
 
   afterAll(async () => {
     await cleanCategory();
+    await cleanUser();
+    await cleanMenu();
     await app.close();
   });
 

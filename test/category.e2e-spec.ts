@@ -10,6 +10,39 @@ import { CreateCategoryDto } from '../src/categories/dto/create-category.dto';
 import { Category } from '../src/categories/entities/category.entity';
 import { CategoriesService } from '../src/categories/categories.service';
 import { UserCredential } from 'firebase/auth';
+import { CreateMenuDto } from '../src/menus/dto/create-menu.dto';
+import { CreateUserDto } from '../src/users/dto/create-user.dto';
+import { Menu } from '../src/menus/entities/menu.entity';
+import { User } from '../src/users/entities/user.entity';
+
+const createUserDto: CreateUserDto = {
+  id: '1',
+  name: 'Japa',
+  lastName: 'da Silva',
+  email: 'japa@gmail.com',
+  emailVerified: false,
+  phoneNumber: '123',
+};
+
+const createMenuDto: CreateMenuDto = {
+  id: '1',
+  userId: '1',
+  headerImg: 'dddddddddd',
+  profileImg: 'ddddddddddddd',
+  name: 'restaurant do Japa',
+  phoneNumber: '123',
+  instagram: 'dddddddddddd',
+  openDays: 'ddddddddd',
+  address: 'dddddddddd',
+};
+
+const createCategoryDto: CreateCategoryDto = {
+  id: '1',
+  menuId: '1',
+  title: 'Petiscos',
+  createdAt: new Date('2023-09-16T18:21:20.454Z'),
+  updatedAt: new Date('2023-09-16T18:21:27.454Z'),
+};
 
 const createProductDto: CreateProductDto = {
   id: '1',
@@ -21,12 +54,12 @@ const createProductDto: CreateProductDto = {
   updatedAt: new Date('2023-09-16T18:21:27.454Z'),
 };
 
-const createCategoryDto: CreateCategoryDto = {
-  id: '1',
-  menuId: '1',
-  title: 'Petiscos',
-  createdAt: new Date('2023-09-16T18:21:20.454Z'),
-  updatedAt: new Date('2023-09-16T18:21:27.454Z'),
+const addUser = async (user: CreateUserDto) => {
+  await User.create(user);
+};
+
+const addMenu = async (menu: CreateMenuDto) => {
+  await Menu.create(menu);
 };
 
 const addCategory = async (category: CreateCategoryDto) => {
@@ -43,6 +76,14 @@ const cleanProduct = async () => {
 
 const cleanCategory = async () => {
   await Category.destroy({ where: {} });
+};
+
+const cleanUser = async () => {
+  await User.destroy({ where: {} });
+};
+
+const cleanMenu = async () => {
+  await Menu.destroy({ where: {} });
 };
 
 describe('CategoryController (e2e)', () => {
@@ -68,9 +109,13 @@ describe('CategoryController (e2e)', () => {
     );
 
     accessToken = await userLogin.user.getIdToken();
+    await addUser(createUserDto);
+    await addMenu(createMenuDto);
   });
 
   afterAll(async () => {
+    await cleanUser();
+    await cleanMenu();
     await app.close();
   });
 
