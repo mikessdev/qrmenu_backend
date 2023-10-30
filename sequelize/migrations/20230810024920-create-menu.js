@@ -15,6 +15,11 @@ module.exports = {
         allowNull: false,
       },
 
+      headerImg: {
+        type: Sequelize.STRING(150),
+        allowNull: true,
+      },
+
       profileImg: {
         type: Sequelize.STRING(150),
         allowNull: true,

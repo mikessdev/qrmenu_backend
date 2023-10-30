@@ -21,17 +21,17 @@ export class MenusController {
   }
 
   @Get(':id')
-  findAll(@Param('id') id: string) {
-    return this.menusService.findAll(id);
+  findAllById(@Param('id') id: string) {
+    return this.menusService.findAllById(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
-    return this.menusService.update(+id, updateMenuDto);
+    return this.menusService.update(id, updateMenuDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.menusService.remove(+id);
+    return this.menusService.remove(id);
   }
 }

@@ -8,23 +8,23 @@ import { Menu } from './entities/menu.entity';
 export class MenusService {
   constructor(
     @InjectModel(Menu)
-    private userRepository: typeof Menu,
+    private menuRepository: typeof Menu,
   ) {}
   create(createMenuDto: CreateMenuDto) {
-    return this.userRepository.create(createMenuDto);
+    return this.menuRepository.create(createMenuDto);
   }
 
-  findAll(userId: string) {
-    return this.userRepository.findAll({ where: { userId: userId } });
+  findAllById(userId: string) {
+    return this.menuRepository.findAll({ where: { userId: userId } });
   }
 
-  update(id: number, updateMenuDto: UpdateMenuDto) {
-    return this.userRepository.update(updateMenuDto, {
+  update(id: string, updateMenuDto: UpdateMenuDto) {
+    return this.menuRepository.update(updateMenuDto, {
       where: { id: id },
     });
   }
 
-  remove(id: number) {
-    return this.userRepository.destroy({ where: { id: id } });
+  remove(id: string) {
+    return this.menuRepository.destroy({ where: { id: id } });
   }
 }
