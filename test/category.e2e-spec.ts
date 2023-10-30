@@ -13,7 +13,7 @@ import { UserCredential } from 'firebase/auth';
 
 const createProductDto: CreateProductDto = {
   id: '1',
-  categoryId: '2',
+  categoryId: '1',
   title: 'Iscas de Frango',
   description: '300g de filézinho empanado',
   price: 'R$ 15,00',
@@ -22,7 +22,8 @@ const createProductDto: CreateProductDto = {
 };
 
 const createCategoryDto: CreateCategoryDto = {
-  id: '2',
+  id: '1',
+  menuId: '1',
   title: 'Petiscos',
   createdAt: new Date('2023-09-16T18:21:20.454Z'),
   updatedAt: new Date('2023-09-16T18:21:27.454Z'),
@@ -109,10 +110,11 @@ describe('CategoryController (e2e)', () => {
   it('/categories (PATCH): should update a category', async () => {
     await addCategory(createCategoryDto);
 
-    const queryParams = 2;
-    const updateUserDto = {
+    const queryParams = 1;
+    const updateCategoryDto = {
       id: `${queryParams}`,
       title: 'Petiscos atualizadas',
+      menuId: '1',
       createdAT: new Date(),
       updatedAt: new Date(),
     };
@@ -120,7 +122,7 @@ describe('CategoryController (e2e)', () => {
     const response = await request(app.getHttpServer())
       .patch(`/categories/${queryParams}`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send(updateUserDto);
+      .send(updateCategoryDto);
 
     expect(response.statusCode).toEqual(200);
     expect(response.body).toEqual([1]);
@@ -191,19 +193,22 @@ describe('CategoryController (e2e)', () => {
   it('/categories (GET): should get all categories', async () => {
     const categories: CreateCategoryDto[] = [
       {
-        id: '2',
+        id: '1',
+        menuId: '1',
         title: 'Petiscos',
         createdAt: new Date('2023-09-16T18:21:27.454Z'),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       },
       {
         id: '3',
+        menuId: '1',
         title: 'Bebidas',
         createdAt: new Date('2023-09-16T18:21:27.454Z'),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       },
       {
         id: '4',
+        menuId: '1',
         title: 'Pasteis',
         createdAt: new Date('2023-09-16T18:21:27.454Z'),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
@@ -219,10 +224,11 @@ describe('CategoryController (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`);
 
     const responseTimestamps = response.body.map((category) => {
-      const { id, title, createdAt } = category;
+      const { id, title, menuId, createdAt } = category;
       return {
         id,
         title,
+        menuId,
         createdAt: new Date(createdAt),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       };

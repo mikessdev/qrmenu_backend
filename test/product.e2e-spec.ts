@@ -13,7 +13,7 @@ import { UserCredential } from 'firebase/auth';
 
 const createProductDto: CreateProductDto = {
   id: '1',
-  categoryId: '2',
+  categoryId: '1',
   title: 'Iscas de Frango',
   description: '300g de filézinho empanado',
   price: 'R$ 15,00',
@@ -22,7 +22,8 @@ const createProductDto: CreateProductDto = {
 };
 
 const createCategoryDto: CreateCategoryDto = {
-  id: '2',
+  id: '1',
+  menuId: '1',
   title: 'Iscas de Frango',
   createdAt: new Date(),
   updatedAt: new Date(),
