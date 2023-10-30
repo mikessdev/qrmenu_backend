@@ -7,6 +7,7 @@ import { getModelToken } from '@nestjs/sequelize';
 const createCategoryDto: CreateCategoryDto = {
   id: '1',
   title: 'Porções',
+  menuId: '1',
   createdAt: new Date(),
   updatedAt: new Date(),
 };

@@ -39,9 +39,9 @@ export class User extends Model<User> {
 
   @Column({
     type: DataType.STRING(60),
-    allowNull: false,
+    allowNull: true,
   })
-  phoneNumber: boolean;
+  phoneNumber: string;
 
   @Column({
     type: DataType.DATE(11),

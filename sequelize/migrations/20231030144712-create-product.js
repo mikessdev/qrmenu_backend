@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('menus', {
+    await queryInterface.createTable('products', {
       id: {
         type: Sequelize.STRING,
         autoIncrement: false,
@@ -10,38 +10,23 @@ module.exports = {
         primaryKey: true,
       },
 
-      userId: {
+      categoryId: {
         type: Sequelize.STRING,
         allowNull: false,
       },
 
-      profileImg: {
+      title: {
         type: Sequelize.STRING(150),
         allowNull: false,
       },
-      name: {
-        type: Sequelize.STRING(60),
+      description: {
+        type: Sequelize.STRING(150),
         allowNull: false,
       },
-      phoneNumber: {
-        type: Sequelize.STRING(60),
+      price: {
+        type: Sequelize.STRING(11),
         allowNull: false,
       },
-      instagram: {
-        type: Sequelize.STRING(60),
-        allowNull: false,
-      },
-
-      openDays: {
-        type: Sequelize.STRING(60),
-        allowNull: false,
-      },
-
-      address: {
-        type: Sequelize.STRING(60),
-        allowNull: false,
-      },
-
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -52,12 +37,12 @@ module.exports = {
       },
     });
 
-    await queryInterface.addConstraint('menus', {
-      fields: ['userId'],
+    await queryInterface.addConstraint('products', {
+      fields: ['categoryId'],
       type: 'foreign key',
-      name: 'fk_user_id',
+      name: 'fk_category_id',
       references: {
-        table: 'users',
+        table: 'categories',
         field: 'id',
       },
       onDelete: 'CASCADE',
@@ -66,7 +51,7 @@ module.exports = {
   },
 
   async down(queryInterface) {
-    await queryInterface.removeConstraint('users', 'fk_user_id');
-    await queryInterface.dropTable('menus');
+    await queryInterface.removeConstraint('products', 'fk_category_id');
+    await queryInterface.dropTable('products');
   },
 };

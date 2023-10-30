@@ -2,29 +2,19 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('products', {
+    await queryInterface.createTable('categories', {
       id: {
         type: Sequelize.STRING,
         autoIncrement: false,
         allowNull: false,
         primaryKey: true,
       },
-
-      categoryId: {
+      menuId: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-
       title: {
         type: Sequelize.STRING(150),
-        allowNull: false,
-      },
-      description: {
-        type: Sequelize.STRING(150),
-        allowNull: false,
-      },
-      price: {
-        type: Sequelize.STRING(11),
         allowNull: false,
       },
       createdAt: {
@@ -36,22 +26,19 @@ module.exports = {
         type: Sequelize.DATE,
       },
     });
-
-    await queryInterface.addConstraint('products', {
-      fields: ['categoryId'],
+    await queryInterface.addConstraint('categories', {
+      fields: ['menuId'],
       type: 'foreign key',
-      name: 'fk_category_id',
+      name: 'fk_menu_id',
       references: {
-        table: 'categories',
+        table: 'menus',
         field: 'id',
       },
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
     });
   },
-
-  async down(queryInterface, Sequelize) {
-    await queryInterface.removeConstraint('products', 'fk_category_id');
-    await queryInterface.dropTable('products');
+  async down(queryInterface) {
+    await queryInterface.dropTable('categories');
   },
 };
