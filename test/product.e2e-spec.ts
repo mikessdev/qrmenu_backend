@@ -6,85 +6,18 @@ import * as request from 'supertest';
 import { firebaseAuth } from './firebaseAuth/app.firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
 import { UserCredential } from 'firebase/auth';
-import { CreateProductDto } from '../src/products/dto/create-product.dto';
-import { CreateCategoryDto } from '../src/categories/dto/create-category.dto';
-import { CreateMenuDto } from '../src/menus/dto/create-menu.dto';
-import { CreateUserDto } from '../src/users/dto/create-user.dto';
-import { Product } from '../src/products/entities/product.entity';
-import { Category } from '../src/categories/entities/category.entity';
-import { Menu } from '../src/menus/entities/menu.entity';
-import { User } from '../src/users/entities/user.entity';
-
-const createUserDto: CreateUserDto = {
-  id: '1',
-  name: 'Japa',
-  lastName: 'da Silva',
-  email: 'japa@gmail.com',
-  emailVerified: false,
-  phoneNumber: '123',
-};
-
-const createMenuDto: CreateMenuDto = {
-  id: '1',
-  userId: '1',
-  headerImg: 'dddddddddd',
-  profileImg: 'ddddddddddddd',
-  name: 'restaurant do Japa',
-  phoneNumber: '123',
-  instagram: 'dddddddddddd',
-  openDays: 'ddddddddd',
-  address: 'dddddddddd',
-};
-
-const createProductDto: CreateProductDto = {
-  id: '1',
-  categoryId: '1',
-  title: 'Iscas de Frango',
-  description: '300g de filézinho empanado',
-  price: 'R$ 15,00',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
-const createCategoryDto: CreateCategoryDto = {
-  id: '1',
-  menuId: '1',
-  title: 'Iscas de Frango',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
-const addUser = async (user: CreateUserDto) => {
-  await User.create(user);
-};
-
-const addMenu = async (menu: CreateMenuDto) => {
-  await Menu.create(menu);
-};
-
-const addCategory = async (category: CreateCategoryDto) => {
-  await Category.create(category);
-};
-
-const addProduct = async (product: CreateProductDto) => {
-  await Product.create(product);
-};
-
-const cleanProduct = async () => {
-  await Product.destroy({ where: {} });
-};
-
-const cleanCategory = async () => {
-  await Category.destroy({ where: {} });
-};
-
-const cleanUser = async () => {
-  await User.destroy({ where: {} });
-};
-
-const cleanMenu = async () => {
-  await Menu.destroy({ where: {} });
-};
+import { createUserDto, addUser, cleanUser } from './utils/objects/User';
+import { createMenuDto, addMenu, cleanMenu } from './utils/objects/Menu';
+import {
+  createProductDto,
+  addProduct,
+  cleanProduct,
+} from './utils/objects/Product';
+import {
+  createCategoryDto,
+  addCategory,
+  cleanCategory,
+} from './utils/objects/Category';
 
 describe('ProductController (e2e)', () => {
   let productsServiceMock: ProductsService;
