@@ -12,7 +12,7 @@ export class ProductsService {
   ) {}
 
   create(createProductDto: CreateProductDto) {
-    return this.productRepository.create(createProductDto as any);
+    return this.productRepository.create(createProductDto);
   }
 
   update(id: string, updateProductDto: UpdateProductDto) {

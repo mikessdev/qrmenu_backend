@@ -43,3 +43,10 @@ $ npx sequelize-cli db:migrate
 # seeders
 $ npx sequelize-cli db:seed:all
 ```
+
+## To generate a new module nestjs
+
+```bash
+$ nest g res moduleName --no-spec
+
+```

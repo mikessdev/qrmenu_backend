@@ -34,7 +34,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: '20.4.0'
+          node-version: '18.17.1'
 
       - name: Debug
         run: 'ls -la'
@@ -63,7 +63,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: '20.4.0'
+          node-version: '18.17.1'
 
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v2.0

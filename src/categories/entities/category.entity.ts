@@ -1,5 +1,14 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  HasMany,
+  Model,
+  Table,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
 import { Product } from '../../products/entities/product.entity';
+import { Menu } from '../../menus/entities/menu.entity';
 
 @Table({
   tableName: 'categories',
@@ -12,6 +21,14 @@ export class Category extends Model<Category> {
     primaryKey: true,
   })
   id: string;
+
+  @ForeignKey(() => Menu)
+  @Column({
+    type: DataType.STRING,
+    autoIncrement: false,
+    allowNull: false,
+  })
+  menuId: string;
 
   @Column({
     type: DataType.STRING(150),
@@ -33,4 +50,7 @@ export class Category extends Model<Category> {
 
   @HasMany(() => Product)
   product: Product[];
+
+  @BelongsTo(() => Menu)
+  menu: Menu;
 }
