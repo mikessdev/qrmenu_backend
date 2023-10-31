@@ -1,5 +1,5 @@
-import { User } from '../../../src/users/entities/user.entity';
-import { CreateUserDto } from '../../../src/users/dto/create-user.dto';
+import { User } from '@database/entities/user.entity';
+import { CreateUserDto } from '@dtos/create/create-user.dto';
 
 export const createUserDto: CreateUserDto = {
   id: '1',

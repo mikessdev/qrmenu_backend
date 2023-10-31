@@ -1,5 +1,5 @@
-import { CreateCategoryDto } from '../../../src/categories/dto/create-category.dto';
-import { Category } from '../../../src/categories/entities/category.entity';
+import { Category } from '@database/entities/category.entity';
+import { CreateCategoryDto } from '@dtos/create/create-category.dto';
 
 export const createCategoryDto: CreateCategoryDto = {
   id: '1',

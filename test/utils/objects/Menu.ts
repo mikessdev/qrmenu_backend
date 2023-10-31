@@ -1,5 +1,5 @@
-import { Menu } from '../../../src/menus/entities/menu.entity';
-import { CreateMenuDto } from '../../../src/menus/dto/create-menu.dto';
+import { Menu } from '@database/entities/menu.entity';
+import { CreateMenuDto } from '@dtos/create/create-menu.dto';
 
 export const createMenuDto: CreateMenuDto = {
   id: '1',

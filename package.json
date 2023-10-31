@@ -71,7 +71,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": "./",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -83,7 +83,13 @@
     "testEnvironment": "node",
     "verbose": true,
     "moduleNameMapper": {
-      "^src/(.*)$": "<rootDir>/$1"
+      "^~/(.*)$": "<rootDir>/src/$1",
+      "@modules/(.*)": "<rootDir>/src/modules/$1",
+      "@services/(.*)": "<rootDir>/src/services/$1",
+      "@dtos/(.*)": "<rootDir>/src/dtos/$1",
+      "@controllers/(.*)": "<rootDir>/src/controllers/$1",
+      "@middlewares/(.*)": "<rootDir>/src/middlewares/$1",
+      "@database/(.*)": "<rootDir>/src/database/$1"
     }
   }
 }

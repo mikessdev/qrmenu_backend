@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../src/app.module';
-import { ProductsService } from '../src/products/products.service';
+import { AppModule } from '@modules/app.module';
+import { ProductsService } from '@services/products.service';
 import * as request from 'supertest';
 import { firebaseAuth } from './firebaseAuth/app.firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
@@ -19,7 +19,7 @@ import {
   cleanCategory,
 } from './utils/objects/Category';
 
-describe('ProductController (e2e)', () => {
+describe('Product (e2e)', () => {
   let productsServiceMock: ProductsService;
   let app: INestApplication;
   let accessToken: string;

@@ -1,11 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
 import { firebaseAuth } from './firebaseAuth/app.firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
+import { AppModule } from '@modules/app.module';
+import { UserCredential } from 'firebase/auth';
 
-describe('AppController (e2e)', () => {
+describe('App (e2e)', () => {
   let app: INestApplication;
   let accessToken: string;
 
@@ -17,13 +18,12 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
 
-    const getUser = await signInWithEmailAndPassword(
+    const userLogin: UserCredential = await signInWithEmailAndPassword(
       firebaseAuth,
       process.env.USER_EMAIL,
       process.env.USER_PASSWORD,
     );
-
-    accessToken = getUser.user['accessToken'];
+    accessToken = await userLogin.user.getIdToken();
   });
 
   it('/ (GET)', () => {

@@ -1,11 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../src/app.module';
+import { AppModule } from '@modules/app.module';
 import * as request from 'supertest';
 import { firebaseAuth } from './firebaseAuth/app.firebase';
 import { signInWithEmailAndPassword } from '@firebase/auth';
-import { CreateCategoryDto } from '../src/categories/dto/create-category.dto';
-import { CategoriesService } from '../src/categories/categories.service';
+import { CreateCategoryDto } from '@dtos/create/create-category.dto';
+import { CategoriesService } from '@services/categories.service';
 import { UserCredential } from 'firebase/auth';
 import { createUserDto, addUser, cleanUser } from './utils/objects/User';
 import { createMenuDto, addMenu, cleanMenu } from './utils/objects/Menu';
@@ -20,7 +20,7 @@ import {
   cleanCategory,
 } from './utils/objects/Category';
 
-describe('CategoryController (e2e)', () => {
+describe('Category (e2e)', () => {
   let categoriesServiceMock: CategoriesService;
   let app: INestApplication;
   let accessToken: string;

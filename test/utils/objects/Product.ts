@@ -1,5 +1,5 @@
-import { Product } from '../../../src/products/entities/product.entity';
-import { CreateProductDto } from '../../../src/products/dto/create-product.dto';
+import { Product } from '@database/entities/product.entity';
+import { CreateProductDto } from '@dtos/create/create-product.dto';
 
 export const createProductDto: CreateProductDto = {
   id: '1',
