@@ -1,10 +1,10 @@
 import { SequelizeModuleOptions } from '@nestjs/sequelize';
 import * as dotenv from 'dotenv';
 import { Sequelize } from 'sequelize-typescript';
-import { Category } from '../categories/entities/category.entity';
-import { Product } from '../products/entities/product.entity';
-import { Menu } from '../menus/entities/menu.entity';
-import { User } from '../users/entities/user.entity';
+import { Category } from '@database/entities/category.entity';
+import { Product } from '@database/entities/product.entity';
+import { Menu } from '@database/entities/menu.entity';
+import { User } from '@database/entities/user.entity';
 import * as pg from 'pg';
 
 dotenv.config();
