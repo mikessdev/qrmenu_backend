@@ -1,50 +1,24 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../src/app.module';
-import { CreateProductDto } from '../src/products/dto/create-product.dto';
-import { Product } from '../src/products/entities/product.entity';
+import { AppModule } from '@modules/app.module';
 import * as request from 'supertest';
-import { firebaseAuth } from './firebaseAuth/app.firebase';
-import { signInWithEmailAndPassword } from '@firebase/auth';
-import { CreateCategoryDto } from '../src/categories/dto/create-category.dto';
-import { Category } from '../src/categories/entities/category.entity';
-import { CategoriesService } from '../src/categories/categories.service';
-import { UserCredential } from 'firebase/auth';
+import { CreateCategoryDto } from '@dtos/create/create-category.dto';
+import { CategoriesService } from '@services/categories.service';
+import { createUserDto, addUser, cleanUser } from './utils/objects/User';
+import { createMenuDto, addMenu, cleanMenu } from './utils/objects/Menu';
+import {
+  createProductDto,
+  addProduct,
+  cleanProduct,
+} from './utils/objects/Product';
+import {
+  createCategoryDto,
+  addCategory,
+  cleanCategory,
+} from './utils/objects/Category';
+import { getAccessToken } from './firebaseAuth/accessToken';
 
-const createProductDto: CreateProductDto = {
-  id: '1',
-  categoryId: '2',
-  title: 'Iscas de Frango',
-  description: '300g de filézinho empanado',
-  price: 'R$ 15,00',
-  createdAt: new Date('2023-09-16T18:21:20.454Z'),
-  updatedAt: new Date('2023-09-16T18:21:27.454Z'),
-};
-
-const createCategoryDto: CreateCategoryDto = {
-  id: '2',
-  title: 'Petiscos',
-  createdAt: new Date('2023-09-16T18:21:20.454Z'),
-  updatedAt: new Date('2023-09-16T18:21:27.454Z'),
-};
-
-const addCategory = async (category: CreateCategoryDto) => {
-  await Category.create(category);
-};
-
-const addProduct = async (product: CreateProductDto) => {
-  await Product.create(product);
-};
-
-const cleanProduct = async () => {
-  await Product.destroy({ where: {} });
-};
-
-const cleanCategory = async () => {
-  await Category.destroy({ where: {} });
-};
-
-describe('CategoryController (e2e)', () => {
+describe('Category (e2e)', () => {
   let categoriesServiceMock: CategoriesService;
   let app: INestApplication;
   let accessToken: string;
@@ -60,16 +34,15 @@ describe('CategoryController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
 
-    const userLogin: UserCredential = await signInWithEmailAndPassword(
-      firebaseAuth,
-      process.env.USER_EMAIL,
-      process.env.USER_PASSWORD,
-    );
+    accessToken = await getAccessToken();
 
-    accessToken = await userLogin.user.getIdToken();
+    await addUser(createUserDto);
+    await addMenu(createMenuDto);
   });
 
   afterAll(async () => {
+    await cleanUser();
+    await cleanMenu();
     await app.close();
   });
 
@@ -109,10 +82,11 @@ describe('CategoryController (e2e)', () => {
   it('/categories (PATCH): should update a category', async () => {
     await addCategory(createCategoryDto);
 
-    const queryParams = 2;
-    const updateUserDto = {
+    const queryParams = 1;
+    const updateCategoryDto = {
       id: `${queryParams}`,
       title: 'Petiscos atualizadas',
+      menuId: '1',
       createdAT: new Date(),
       updatedAt: new Date(),
     };
@@ -120,7 +94,7 @@ describe('CategoryController (e2e)', () => {
     const response = await request(app.getHttpServer())
       .patch(`/categories/${queryParams}`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send(updateUserDto);
+      .send(updateCategoryDto);
 
     expect(response.statusCode).toEqual(200);
     expect(response.body).toEqual([1]);
@@ -191,19 +165,22 @@ describe('CategoryController (e2e)', () => {
   it('/categories (GET): should get all categories', async () => {
     const categories: CreateCategoryDto[] = [
       {
-        id: '2',
+        id: '1',
+        menuId: '1',
         title: 'Petiscos',
         createdAt: new Date('2023-09-16T18:21:27.454Z'),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       },
       {
         id: '3',
+        menuId: '1',
         title: 'Bebidas',
         createdAt: new Date('2023-09-16T18:21:27.454Z'),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       },
       {
         id: '4',
+        menuId: '1',
         title: 'Pasteis',
         createdAt: new Date('2023-09-16T18:21:27.454Z'),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
@@ -219,10 +196,11 @@ describe('CategoryController (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`);
 
     const responseTimestamps = response.body.map((category) => {
-      const { id, title, createdAt } = category;
+      const { id, title, menuId, createdAt } = category;
       return {
         id,
         title,
+        menuId,
         createdAt: new Date(createdAt),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       };

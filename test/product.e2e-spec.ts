@@ -1,50 +1,23 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../src/app.module';
-import { CreateProductDto } from '../src/products/dto/create-product.dto';
-import { Product } from '../src/products/entities/product.entity';
-import { ProductsService } from '../src/products/products.service';
+import { AppModule } from '@modules/app.module';
+import { ProductsService } from '@services/products.service';
 import * as request from 'supertest';
-import { firebaseAuth } from './firebaseAuth/app.firebase';
-import { signInWithEmailAndPassword } from '@firebase/auth';
-import { CreateCategoryDto } from '../src/categories/dto/create-category.dto';
-import { Category } from '../src/categories/entities/category.entity';
-import { UserCredential } from 'firebase/auth';
+import { createUserDto, addUser, cleanUser } from './utils/objects/User';
+import { createMenuDto, addMenu, cleanMenu } from './utils/objects/Menu';
+import {
+  createProductDto,
+  addProduct,
+  cleanProduct,
+} from './utils/objects/Product';
+import {
+  createCategoryDto,
+  addCategory,
+  cleanCategory,
+} from './utils/objects/Category';
+import { getAccessToken } from './firebaseAuth/accessToken';
 
-const createProductDto: CreateProductDto = {
-  id: '1',
-  categoryId: '2',
-  title: 'Iscas de Frango',
-  description: '300g de filézinho empanado',
-  price: 'R$ 15,00',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
-const createCategoryDto: CreateCategoryDto = {
-  id: '2',
-  title: 'Iscas de Frango',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
-const addCategory = async (category: CreateCategoryDto) => {
-  await Category.create(category);
-};
-
-const addProduct = async (product: CreateProductDto) => {
-  await Product.create(product);
-};
-
-const cleanProduct = async () => {
-  await Product.destroy({ where: {} });
-};
-
-const cleanCategory = async () => {
-  await Category.destroy({ where: {} });
-};
-
-describe('ProductController (e2e)', () => {
+describe('Product (e2e)', () => {
   let productsServiceMock: ProductsService;
   let app: INestApplication;
   let accessToken: string;
@@ -60,18 +33,16 @@ describe('ProductController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
 
-    const userLogin: UserCredential = await signInWithEmailAndPassword(
-      firebaseAuth,
-      process.env.USER_EMAIL,
-      process.env.USER_PASSWORD,
-    );
-
-    accessToken = await userLogin.user.getIdToken();
+    accessToken = await getAccessToken();
+    await addUser(createUserDto);
+    await addMenu(createMenuDto);
     await addCategory(createCategoryDto);
   });
 
   afterAll(async () => {
     await cleanCategory();
+    await cleanUser();
+    await cleanMenu();
     await app.close();
   });
 
