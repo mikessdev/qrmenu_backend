@@ -3,9 +3,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@modules/app.module';
 import { ProductsService } from '@services/products.service';
 import * as request from 'supertest';
-import { firebaseAuth } from './firebaseAuth/app.firebase';
-import { signInWithEmailAndPassword } from '@firebase/auth';
-import { UserCredential } from 'firebase/auth';
 import { createUserDto, addUser, cleanUser } from './utils/objects/User';
 import { createMenuDto, addMenu, cleanMenu } from './utils/objects/Menu';
 import {
@@ -18,6 +15,7 @@ import {
   addCategory,
   cleanCategory,
 } from './utils/objects/Category';
+import { getAccessToken } from './firebaseAuth/accessToken';
 
 describe('Product (e2e)', () => {
   let productsServiceMock: ProductsService;
@@ -35,13 +33,7 @@ describe('Product (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
 
-    const userLogin: UserCredential = await signInWithEmailAndPassword(
-      firebaseAuth,
-      process.env.USER_EMAIL,
-      process.env.USER_PASSWORD,
-    );
-
-    accessToken = await userLogin.user.getIdToken();
+    accessToken = await getAccessToken();
     await addUser(createUserDto);
     await addMenu(createMenuDto);
     await addCategory(createCategoryDto);

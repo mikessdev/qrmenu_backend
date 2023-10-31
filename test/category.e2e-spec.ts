@@ -2,11 +2,8 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@modules/app.module';
 import * as request from 'supertest';
-import { firebaseAuth } from './firebaseAuth/app.firebase';
-import { signInWithEmailAndPassword } from '@firebase/auth';
 import { CreateCategoryDto } from '@dtos/create/create-category.dto';
 import { CategoriesService } from '@services/categories.service';
-import { UserCredential } from 'firebase/auth';
 import { createUserDto, addUser, cleanUser } from './utils/objects/User';
 import { createMenuDto, addMenu, cleanMenu } from './utils/objects/Menu';
 import {
@@ -19,6 +16,7 @@ import {
   addCategory,
   cleanCategory,
 } from './utils/objects/Category';
+import { getAccessToken } from './firebaseAuth/accessToken';
 
 describe('Category (e2e)', () => {
   let categoriesServiceMock: CategoriesService;
@@ -36,13 +34,8 @@ describe('Category (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
 
-    const userLogin: UserCredential = await signInWithEmailAndPassword(
-      firebaseAuth,
-      process.env.USER_EMAIL,
-      process.env.USER_PASSWORD,
-    );
+    accessToken = await getAccessToken();
 
-    accessToken = await userLogin.user.getIdToken();
     await addUser(createUserDto);
     await addMenu(createMenuDto);
   });
