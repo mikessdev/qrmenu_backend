@@ -22,9 +22,7 @@ describe('MenusService', () => {
 
   const cleanDataForFindAllMethod = (menusRepositoryMock: typeof Menu) => {
     const Empty: Menu[] = [];
-    jest
-      .spyOn(MenusService.prototype, 'findAllByUserId')
-      .mockImplementation(Empty);
+    jest.spyOn(menusRepositoryMock, 'findAll').mockResolvedValue(Empty);
   };
 
   beforeEach(async () => {
@@ -49,7 +47,7 @@ describe('MenusService', () => {
     }).compile();
 
     menusService = module.get<MenusService>(MenusService);
-    // menusRepositoryMock = module.get<typeof Menu>(getModelToken(Menu));
+    menusRepositoryMock = module.get<typeof Menu>(getModelToken(Menu));
   });
 
   it('should be defined', () => {
