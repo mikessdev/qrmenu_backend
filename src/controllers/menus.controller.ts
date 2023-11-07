@@ -21,8 +21,8 @@ export class MenusController {
   }
 
   @Get(':id')
-  findAllById(@Param('id') id: string) {
-    return this.menusService.findAllById(id);
+  findAllByUserId(@Param('id') id: string) {
+    return this.menusService.findAllByUserId(id);
   }
 
   @Patch(':id')

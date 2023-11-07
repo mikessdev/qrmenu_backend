@@ -14,7 +14,7 @@ export class MenusService {
     return this.menuRepository.create(createMenuDto);
   }
 
-  findAllById(userId: string) {
+  findAllByUserId(userId: string) {
     return this.menuRepository.findAll({ where: { userId: userId } });
   }
 
