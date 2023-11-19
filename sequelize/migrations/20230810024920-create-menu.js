@@ -16,16 +16,20 @@ module.exports = {
       },
 
       headerImg: {
-        type: Sequelize.STRING(150),
+        type: Sequelize.STRING(300),
         allowNull: true,
       },
 
       profileImg: {
-        type: Sequelize.STRING(150),
+        type: Sequelize.STRING(300),
         allowNull: true,
       },
       name: {
         type: Sequelize.STRING(60),
+        allowNull: true,
+      },
+      url: {
+        type: Sequelize.STRING(30),
         allowNull: false,
       },
       phoneNumber: {

@@ -20,14 +20,9 @@ export class CategoriesController {
     return this.categoriesService.create(createCategoryDto);
   }
 
-  @Get()
-  findAll() {
-    return this.categoriesService.findAll();
-  }
-
-  @Get(':id')
-  findOneWithProducts(@Param('id') id: string) {
-    return this.categoriesService.findOneWithProducts(id);
+  @Get(':menuId')
+  findAll(@Param('menuId') menuId: string) {
+    return this.categoriesService.findAll(menuId);
   }
 
   @Patch(':id')

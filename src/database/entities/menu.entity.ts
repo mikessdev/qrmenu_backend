@@ -31,44 +31,50 @@ export class Menu extends Model<Menu> {
   userId: string;
 
   @Column({
-    type: DataType.STRING(150),
-    allowNull: false,
+    type: DataType.STRING(300),
+    allowNull: true,
   })
   headerImg: string;
 
   @Column({
-    type: DataType.STRING(150),
-    allowNull: false,
+    type: DataType.STRING(300),
+    allowNull: true,
   })
   profileImg: string;
 
   @Column({
     type: DataType.STRING(60),
-    allowNull: false,
+    allowNull: true,
   })
   name: string;
 
   @Column({
-    type: DataType.STRING(60),
+    type: DataType.STRING(30),
     allowNull: false,
+  })
+  url: string;
+
+  @Column({
+    type: DataType.STRING(60),
+    allowNull: true,
   })
   phoneNumber: string;
 
   @Column({
     type: DataType.STRING(60),
-    allowNull: false,
+    allowNull: true,
   })
   instagram: string;
 
   @Column({
     type: DataType.STRING(60),
-    allowNull: false,
+    allowNull: true,
   })
   openDays: string;
 
   @Column({
     type: DataType.STRING(60),
-    allowNull: false,
+    allowNull: true,
   })
   address: string;
 

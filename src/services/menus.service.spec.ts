@@ -10,6 +10,7 @@ const createMenuDto: CreateMenuDto = {
   headerImg: 'dddddddddd',
   profileImg: 'ddddddddddddd',
   name: 'restaurant do Japa',
+  url: 'test-test',
   phoneNumber: '123',
   instagram: 'dddddddddddd',
   openDays: 'ddddddddd',
