@@ -19,18 +19,37 @@ module.exports = {
         type: Sequelize.STRING(150),
         allowNull: false,
       },
+
+      productImg: {
+        type: Sequelize.STRING(300),
+        allowNull: false,
+      },
+
       description: {
         type: Sequelize.STRING(150),
         allowNull: false,
       },
+
       price: {
         type: Sequelize.STRING(11),
         allowNull: false,
       },
+
+      unit: {
+        type: Sequelize.STRING(18),
+        allowNull: false,
+      },
+
+      likes: {
+        type: Sequelize.INTEGER(),
+        allowNull: false,
+      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
+
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,

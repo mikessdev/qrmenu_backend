@@ -11,6 +11,13 @@ export class ProductsService {
     private productRepository: typeof Product,
   ) {}
 
+  findAll(categoryId: string) {
+    return this.productRepository.findAll({
+      where: { categoryId: categoryId },
+      order: [['createdAt', 'ASC']],
+    });
+  }
+
   create(createProductDto: CreateProductDto) {
     return this.productRepository.create(createProductDto);
   }

@@ -49,6 +49,12 @@ export class Menu extends Model<Menu> {
   name: string;
 
   @Column({
+    type: DataType.STRING(10),
+    allowNull: true,
+  })
+  primaryColor: string;
+
+  @Column({
     type: DataType.STRING(30),
     allowNull: false,
   })
@@ -57,6 +63,7 @@ export class Menu extends Model<Menu> {
   @Column({
     type: DataType.STRING(60),
     allowNull: true,
+    defaultValue: '00000000000',
   })
   phoneNumber: string;
 

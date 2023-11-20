@@ -35,6 +35,12 @@ export class Product extends Model<Product> {
   title: string;
 
   @Column({
+    type: DataType.STRING(300),
+    allowNull: true,
+  })
+  productImg: string;
+
+  @Column({
     type: DataType.STRING(150),
     allowNull: false,
   })
@@ -47,13 +53,25 @@ export class Product extends Model<Product> {
   price: string;
 
   @Column({
-    type: DataType.DATE(11),
+    type: DataType.STRING(18),
+    allowNull: false,
+  })
+  unit: string;
+
+  @Column({
+    type: DataType.INTEGER(),
+    allowNull: false,
+  })
+  likes: number;
+
+  @Column({
+    type: DataType.DATE(),
     allowNull: false,
   })
   createdAt: Date;
 
   @Column({
-    type: DataType.DATE(11),
+    type: DataType.DATE(),
     allowNull: false,
   })
   updatedAt: Date;
