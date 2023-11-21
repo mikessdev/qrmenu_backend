@@ -49,7 +49,7 @@ export class Category extends Model<Category> {
   updatedAt: Date;
 
   @HasMany(() => Product)
-  product: Product[];
+  products: Product[];
 
   @BelongsTo(() => Menu)
   menu: Menu;
