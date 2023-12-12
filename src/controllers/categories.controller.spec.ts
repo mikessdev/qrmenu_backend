@@ -20,15 +20,8 @@ describe('CategoriesController', () => {
     categoriesServiceMock: CategoriesService,
   ) => {
     const Empty: Category[] = [];
-    jest.spyOn(categoriesServiceMock, 'findAll').mockResolvedValue(Empty);
-  };
-
-  const cleanDataForFindOneMethod = (
-    categoriesServiceMock: CategoriesService,
-  ) => {
-    const Empty: Category = {} as Category;
     jest
-      .spyOn(categoriesServiceMock, 'findOneWithProducts')
+      .spyOn(categoriesServiceMock, 'findAllIncludingProducts')
       .mockResolvedValue(Empty);
   };
 
@@ -45,10 +38,9 @@ describe('CategoriesController', () => {
               .mockImplementation((category: CreateCategoryDto) => {
                 return Promise.resolve(category);
               }),
-            findAll: jest
+            findAllIncludingProducts: jest
               .fn()
               .mockResolvedValue([createCategoryDto, createCategoryDto]),
-            findOneWithProducts: jest.fn().mockResolvedValue(createCategoryDto),
             update: jest.fn().mockResolvedValue(1),
             remove: jest.fn().mockResolvedValue(1),
           },
@@ -72,28 +64,18 @@ describe('CategoriesController', () => {
   });
 
   it('should return all of categories', () => {
-    expect(categoriesController.findAll()).resolves.toEqual([
-      createCategoryDto,
-      createCategoryDto,
-    ]);
+    const menuId = '1';
+    expect(
+      categoriesController.findAllIncludingProducts(menuId),
+    ).resolves.toEqual([createCategoryDto, createCategoryDto]);
   });
 
   it('should return an empty array if there is no category in database ', () => {
+    const menuId = '1';
     cleanDataForFindAllMethod(categoriesServiceMock);
-    expect(categoriesController.findAll()).resolves.toEqual([]);
-  });
-
-  it('should return category by Id if it exists', () => {
-    const { id } = createCategoryDto;
-    expect(categoriesController.findOneWithProducts(id)).resolves.toEqual(
-      createCategoryDto,
-    );
-  });
-
-  it('should not return category by Id if it not exists', () => {
-    const { id } = createCategoryDto;
-    cleanDataForFindOneMethod(categoriesServiceMock);
-    expect(categoriesController.findOneWithProducts(id)).resolves.toEqual({});
+    expect(
+      categoriesController.findAllIncludingProducts(menuId),
+    ).resolves.toEqual([]);
   });
 
   it('should return 1 when a category is updated', () => {
