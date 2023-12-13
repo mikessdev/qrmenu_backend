@@ -81,9 +81,9 @@ describe('Product (e2e)', () => {
   it('/products (PATCH): should update a product', async () => {
     await addProduct(createProductDto);
 
-    const queryParams = 1;
+    const queryParams = '1';
     const updateUserDto = {
-      id: `${queryParams}`,
+      id: queryParams,
       title: 'Iscas de Frango atualizadas',
       description: '150g de filézinho empanado',
       price: 'R$ 15,00',
@@ -103,9 +103,9 @@ describe('Product (e2e)', () => {
   it('/products (PATCH): should not update a product if dont have the bearer token', async () => {
     await addProduct(createProductDto);
 
-    const queryParams = 1;
+    const queryParams = '1';
     const updateUserDto = {
-      id: `${queryParams}`,
+      id: queryParams,
       title: 'Iscas de Frango atualizadas',
       description: '150g de filézinho empanado',
       price: 'R$ 15,00',
@@ -123,9 +123,9 @@ describe('Product (e2e)', () => {
   });
 
   it('/products (PATCH): should not update a product if does not exist', async () => {
-    const productId = 1;
+    const productId = '1;';
     const updateUserDto = {
-      id: `${productId}`,
+      id: productId,
       title: 'Iscas de Frango atualizadas',
       description: '150g de filézinho empanado',
       price: 'R$ 15,00',

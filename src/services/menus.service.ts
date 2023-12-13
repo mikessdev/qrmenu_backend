@@ -18,6 +18,10 @@ export class MenusService {
     return this.menuRepository.findAll({ where: { userId: userId } });
   }
 
+  findMenuByURL(url: string) {
+    return this.menuRepository.findOne({ where: { url: url } });
+  }
+
   update(id: string, updateMenuDto: UpdateMenuDto) {
     return this.menuRepository.update(updateMenuDto, {
       where: { id: id },

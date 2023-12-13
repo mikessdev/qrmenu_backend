@@ -16,12 +16,10 @@ export class CategoriesService {
     return this.categoryRepository.create(createCategoryDto);
   }
 
-  findAll() {
-    return this.categoryRepository.findAll();
-  }
-
-  findOneWithProducts(id: string) {
-    return this.categoryRepository.findByPk(id, {
+  findAllIncludingProducts(menuId: string) {
+    return this.categoryRepository.findAll({
+      where: { menuId: menuId },
+      order: [['createdAt', 'ASC']],
       include: { model: Product },
     });
   }

@@ -16,22 +16,36 @@ module.exports = {
       },
 
       headerImg: {
-        type: Sequelize.STRING(150),
+        type: Sequelize.STRING(300),
         allowNull: true,
       },
 
       profileImg: {
-        type: Sequelize.STRING(150),
+        type: Sequelize.STRING(300),
         allowNull: true,
       },
+
       name: {
         type: Sequelize.STRING(60),
+        allowNull: true,
+      },
+
+      primaryColor: {
+        type: Sequelize.STRING(10),
+        allowNull: true,
+      },
+
+      url: {
+        type: Sequelize.STRING(30),
         allowNull: false,
       },
+
       phoneNumber: {
         type: Sequelize.STRING(60),
         allowNull: true,
+        defaultValue: '00000000000',
       },
+
       instagram: {
         type: Sequelize.STRING(60),
         allowNull: true,
@@ -51,6 +65,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,

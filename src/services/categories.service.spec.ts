@@ -23,13 +23,6 @@ describe('CategoriesService', () => {
     jest.spyOn(categoriesRepositoryMock, 'findAll').mockResolvedValue(Empty);
   };
 
-  const cleanDataForFindOneMethod = (
-    categoriesRepositoryMock: typeof Category,
-  ) => {
-    const Empty: Category = {} as Category;
-    jest.spyOn(categoriesRepositoryMock, 'findByPk').mockResolvedValue(Empty);
-  };
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -70,28 +63,18 @@ describe('CategoriesService', () => {
   });
 
   it('should return all of categories', () => {
-    expect(categoriesService.findAll()).resolves.toEqual([
-      createCategoryDto,
-      createCategoryDto,
-    ]);
-  });
-
-  it('should return an empty array if there is no category in database ', () => {
-    cleanDataForFindAllMethod(categoriesRepositoryMock);
-    expect(categoriesService.findAll()).resolves.toEqual([]);
-  });
-
-  it('should return category by Id if it exists', () => {
-    const { id } = createCategoryDto;
-    expect(categoriesService.findOneWithProducts(id)).resolves.toEqual(
-      createCategoryDto,
+    const menuId = '1';
+    expect(categoriesService.findAllIncludingProducts(menuId)).resolves.toEqual(
+      [createCategoryDto, createCategoryDto],
     );
   });
 
-  it('should not return category by Id if it not exists', () => {
-    const { id } = createCategoryDto;
-    cleanDataForFindOneMethod(categoriesRepositoryMock);
-    expect(categoriesService.findOneWithProducts(id)).resolves.toEqual({});
+  it('should return an empty array if there is no category in database ', () => {
+    const menuId = '1';
+    cleanDataForFindAllMethod(categoriesRepositoryMock);
+    expect(categoriesService.findAllIncludingProducts(menuId)).resolves.toEqual(
+      [],
+    );
   });
 
   it('should return 1 when a category is updated', () => {

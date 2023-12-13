@@ -25,6 +25,11 @@ export class MenusController {
     return this.menusService.findAllByUserId(id);
   }
 
+  @Get('url/:url')
+  findMenuByURL(@Param('url') url: string) {
+    return this.menusService.findMenuByURL(url);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMenuDto: UpdateMenuDto) {
     return this.menusService.update(id, updateMenuDto);
