@@ -12,6 +12,7 @@ const createMenuDto: CreateMenuDto = {
   name: 'restaurant do Japa',
   url: 'test-test',
   phoneNumber: '123',
+  primaryColor: '#DD212',
   instagram: 'dddddddddddd',
   openDays: 'ddddddddd',
   address: 'dddddddddd',

@@ -6,11 +6,7 @@ import { CreateCategoryDto } from '@dtos/create/create-category.dto';
 import { CategoriesService } from '@services/categories.service';
 import { createUserDto, addUser, cleanUser } from './utils/objects/User';
 import { createMenuDto, addMenu, cleanMenu } from './utils/objects/Menu';
-import {
-  createProductDto,
-  addProduct,
-  cleanProduct,
-} from './utils/objects/Product';
+import { createProductDto, cleanProduct } from './utils/objects/Product';
 import {
   createCategoryDto,
   addCategory,
@@ -162,15 +158,8 @@ describe('Category (e2e)', () => {
     expect(response.body.message).toEqual('Access Denied');
   });
 
-  it('/categories (GET): should get all categories', async () => {
+  it('/categories (GET): should get all categories by menuId', async () => {
     const categories: CreateCategoryDto[] = [
-      {
-        id: '1',
-        menuId: '1',
-        title: 'Petiscos',
-        createdAt: new Date('2023-09-16T18:21:27.454Z'),
-        updatedAt: new Date('2023-09-16T18:21:27.454Z'),
-      },
       {
         id: '3',
         menuId: '1',
@@ -185,14 +174,22 @@ describe('Category (e2e)', () => {
         createdAt: new Date('2023-09-16T18:21:27.454Z'),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       },
+      {
+        id: '1',
+        menuId: '1',
+        title: 'Petiscos',
+        createdAt: new Date('2023-09-16T18:21:27.454Z'),
+        updatedAt: new Date('2023-09-16T18:21:27.454Z'),
+      },
     ];
+    const menuId = '1';
 
     categories.forEach(async (category) => {
       await addCategory(category);
     });
 
     const response = await request(app.getHttpServer())
-      .get(`/categories`)
+      .get(`/categories/${menuId}`)
       .set('Authorization', `Bearer ${accessToken}`);
 
     const responseTimestamps = response.body.map((category) => {
@@ -209,50 +206,14 @@ describe('Category (e2e)', () => {
     expect(responseTimestamps).toEqual(categories);
   });
 
-  it('/categories (GET): should get any category if there isnt one', async () => {
+  it("/categories (GET): shouldn't get any categories by menu id if they don't exist", async () => {
+    const menuId = '1';
+
     const response = await request(app.getHttpServer())
-      .get(`/categories`)
+      .get(`/categories/${menuId}`)
       .set('Authorization', `Bearer ${accessToken}`);
 
     expect(response.statusCode).toEqual(200);
     expect(response.body).toEqual([]);
-  });
-
-  it('/categories (GET): should get a category by ID containing products', async () => {
-    const { id } = createCategoryDto;
-    const categoryWithProduct = {
-      ...createCategoryDto,
-      createdAt: new Date('2023-09-16T18:21:20.454Z'),
-      updatedAt: new Date('2023-09-16T18:21:27.454Z'),
-      product: [
-        {
-          ...createProductDto,
-          createdAt: new Date('2023-09-16T18:21:20.454Z'),
-          updatedAt: new Date('2023-09-16T18:21:27.454Z'),
-        },
-      ],
-    };
-    await addCategory(createCategoryDto);
-    await addProduct(createProductDto);
-
-    const response = await request(app.getHttpServer())
-      .get(`/categories/${id}`)
-      .set('Authorization', `Bearer ${accessToken}`);
-
-    const responseTimestamps = {
-      ...response.body,
-      createdAt: new Date('2023-09-16T18:21:20.454Z'),
-      updatedAt: new Date('2023-09-16T18:21:27.454Z'),
-      product: [
-        {
-          ...response.body.product[0],
-          createdAt: new Date('2023-09-16T18:21:20.454Z'),
-          updatedAt: new Date('2023-09-16T18:21:27.454Z'),
-        },
-      ],
-    };
-
-    expect(response.statusCode).toEqual(200);
-    expect(responseTimestamps).toEqual(categoryWithProduct);
   });
 });

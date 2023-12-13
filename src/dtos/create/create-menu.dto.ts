@@ -4,6 +4,7 @@ export class CreateMenuDto {
   readonly headerImg: string;
   readonly profileImg: string;
   readonly name: string;
+  readonly primaryColor: string;
   readonly url: string;
   readonly phoneNumber: string;
   readonly instagram: string;
