@@ -161,16 +161,16 @@ describe('Category (e2e)', () => {
   it('/categories (GET): should get all categories by menuId', async () => {
     const categories: CreateCategoryDto[] = [
       {
-        id: '1',
+        id: '2',
         menuId: '1',
-        title: 'Petiscos',
+        title: 'Bebidas',
         createdAt: new Date('2023-09-16T18:21:27.454Z'),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       },
       {
-        id: '2',
+        id: '1',
         menuId: '1',
-        title: 'Bebidas',
+        title: 'Petiscos',
         createdAt: new Date('2023-09-16T18:21:27.454Z'),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       },
