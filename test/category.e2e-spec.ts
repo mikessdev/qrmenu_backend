@@ -168,14 +168,14 @@ describe('Category (e2e)', () => {
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       },
       {
-        id: '3',
+        id: '2',
         menuId: '1',
         title: 'Bebidas',
         createdAt: new Date('2023-09-16T18:21:27.454Z'),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       },
       {
-        id: '4',
+        id: '3',
         menuId: '1',
         title: 'Pasteis',
         createdAt: new Date('2023-09-16T18:21:27.454Z'),
