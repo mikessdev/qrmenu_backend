@@ -78,9 +78,9 @@ describe('Category (e2e)', () => {
   it('/categories (PATCH): should update a category', async () => {
     await addCategory(createCategoryDto);
 
-    const queryParams = 1;
+    const queryParams = '1';
     const updateCategoryDto = {
-      id: `${queryParams}`,
+      id: queryParams,
       title: 'Petiscos atualizadas',
       menuId: '1',
       createdAT: new Date(),
@@ -99,9 +99,9 @@ describe('Category (e2e)', () => {
   it('/categories (PATCH): should not update a category if dont have the bearer token', async () => {
     await addCategory(createCategoryDto);
 
-    const queryParams = 1;
+    const queryParams = '1';
     const updateUserDto = {
-      id: `${queryParams}`,
+      id: queryParams,
       title: 'Petiscos atualizadas',
       createdAT: new Date(),
       updatedAt: new Date(),
@@ -117,9 +117,9 @@ describe('Category (e2e)', () => {
   });
 
   it('/categories (PATCH): should not update a categories if does not exist', async () => {
-    const categoryId = 1;
+    const categoryId = '1';
     const updateUserDto = {
-      id: `${categoryId}`,
+      id: categoryId,
       title: 'Petiscos atualizadas',
       createdAT: new Date(),
       updatedAt: new Date(),
@@ -136,7 +136,7 @@ describe('Category (e2e)', () => {
 
   it('/categories (DEL): should delete a category', async () => {
     await addCategory(createCategoryDto);
-    const categoryId = 1;
+    const categoryId = '1';
 
     const response = await request(app.getHttpServer())
       .del(`/categories/${categoryId}`)
@@ -148,7 +148,7 @@ describe('Category (e2e)', () => {
 
   it('/categories (DEL): should not delete a category if dont have the bearer token', async () => {
     await addCategory(createCategoryDto);
-    const categoryId = 1;
+    const categoryId = '1';
 
     const response = await request(app.getHttpServer())
       .del(`/categories/${categoryId}`)
@@ -161,6 +161,13 @@ describe('Category (e2e)', () => {
   it('/categories (GET): should get all categories by menuId', async () => {
     const categories: CreateCategoryDto[] = [
       {
+        id: '1',
+        menuId: '1',
+        title: 'Petiscos',
+        createdAt: new Date('2023-09-16T18:21:27.454Z'),
+        updatedAt: new Date('2023-09-16T18:21:27.454Z'),
+      },
+      {
         id: '3',
         menuId: '1',
         title: 'Bebidas',
@@ -171,13 +178,6 @@ describe('Category (e2e)', () => {
         id: '4',
         menuId: '1',
         title: 'Pasteis',
-        createdAt: new Date('2023-09-16T18:21:27.454Z'),
-        updatedAt: new Date('2023-09-16T18:21:27.454Z'),
-      },
-      {
-        id: '1',
-        menuId: '1',
-        title: 'Petiscos',
         createdAt: new Date('2023-09-16T18:21:27.454Z'),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       },
@@ -193,12 +193,12 @@ describe('Category (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`);
 
     const responseTimestamps = response.body.map((category) => {
-      const { id, title, menuId, createdAt } = category;
+      const { id, title, menuId } = category;
       return {
         id,
         title,
         menuId,
-        createdAt: new Date(createdAt),
+        createdAt: new Date('2023-09-16T18:21:27.454Z'),
         updatedAt: new Date('2023-09-16T18:21:27.454Z'),
       };
     });
