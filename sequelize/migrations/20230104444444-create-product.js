@@ -59,7 +59,7 @@ module.exports = {
     await queryInterface.addConstraint('products', {
       fields: ['categoryId'],
       type: 'foreign key',
-      name: 'fk_category_Id',
+      name: 'fk_category_id',
       references: {
         table: 'categories',
         field: 'id',
@@ -70,7 +70,7 @@ module.exports = {
   },
 
   async down(queryInterface) {
-    await queryInterface.removeConstraint('products', 'fk_category_Id');
+    await queryInterface.removeConstraint('products', 'fk_category_id');
     await queryInterface.dropTable('products');
   },
 };
