@@ -55,7 +55,6 @@ module.exports = {
         type: Sequelize.DATE,
       },
     });
-
     await queryInterface.addConstraint('products', {
       fields: ['categoryId'],
       type: 'foreign key',
