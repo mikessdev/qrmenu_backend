@@ -29,7 +29,7 @@ module.exports = {
     await queryInterface.addConstraint('categories', {
       fields: ['menuId'],
       type: 'foreign key',
-      name: 'menuId',
+      name: 'fk_menu_id',
       references: {
         table: 'menus',
         field: 'id',
