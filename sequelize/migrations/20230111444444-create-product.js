@@ -13,10 +13,6 @@ module.exports = {
       categoryId: {
         type: Sequelize.STRING,
         allowNull: false,
-        references: {
-          model: 'categories',
-          key: 'id',
-        },
       },
 
       title: {
@@ -58,6 +54,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+    });
+    await queryInterface.addConstraint('products', {
+      fields: ['categoryId'],
+      type: 'foreign key',
+      name: 'fk_category_id',
+      references: {
+        table: 'categories',
+        field: 'id',
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     });
   },
 

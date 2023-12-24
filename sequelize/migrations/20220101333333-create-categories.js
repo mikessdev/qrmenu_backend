@@ -12,10 +12,6 @@ module.exports = {
       menuId: {
         type: Sequelize.STRING,
         allowNull: false,
-        references: {
-          model: 'menus',
-          key: 'id',
-        },
       },
       title: {
         type: Sequelize.STRING(150),
@@ -29,6 +25,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+    });
+    await queryInterface.addConstraint('categories', {
+      fields: ['menuId'],
+      type: 'foreign key',
+      name: 'fk_menu_id',
+      references: {
+        table: 'menus',
+        field: 'id',
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     });
   },
   async down(queryInterface) {
