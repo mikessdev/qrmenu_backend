@@ -75,7 +75,7 @@ module.exports = {
     await queryInterface.addConstraint('menus', {
       fields: ['userId'],
       type: 'foreign key',
-      name: 'fk_user_id',
+      name: 'userId',
       references: {
         table: 'users',
         field: 'id',
