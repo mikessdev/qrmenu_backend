@@ -55,6 +55,9 @@ export class User extends Model<User> {
   })
   updatedAt: Date;
 
-  @HasMany(() => Menu)
+  @HasMany(() => Menu, {
+    onDelete: 'CASCADE',
+    foreignKey: 'userId',
+  })
   menu: Menu[];
 }

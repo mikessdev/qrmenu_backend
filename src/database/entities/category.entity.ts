@@ -48,7 +48,10 @@ export class Category extends Model<Category> {
   })
   updatedAt: Date;
 
-  @HasMany(() => Product)
+  @HasMany(() => Product, {
+    onDelete: 'CASCADE',
+    foreignKey: 'categoryId',
+  })
   products: Product[];
 
   @BelongsTo(() => Menu)

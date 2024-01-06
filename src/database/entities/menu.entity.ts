@@ -88,6 +88,9 @@ export class Menu extends Model<Menu> {
   @BelongsTo(() => User)
   user: User;
 
-  @HasMany(() => Category)
+  @HasMany(() => Category, {
+    onDelete: 'CASCADE',
+    foreignKey: 'menuId',
+  })
   category: Category[];
 }
