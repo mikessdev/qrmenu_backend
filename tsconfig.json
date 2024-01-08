@@ -18,8 +18,8 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@modules/*": ["./src/modules/*"],
-      "@services/*": ["./src/services/*"],
+      "@modules/*": ["./src/Modules/*"],
+      "@services/*": ["./src/Services/*"],
       "@dtos/*": ["./src/dtos/*"],
       "@controllers/*": ["./src/controllers/*"],
       "@middlewares/*": ["./src/middlewares/*"],
