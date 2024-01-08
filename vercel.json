@@ -14,12 +14,8 @@
                 "GET",
                 "POST",
                 "PUT",
-                "PATCH",
-                "OPTIONS",
                 "DELETE",
-                "HEAD",
-                "CONNECT",
-                "TRACE"
+                "OPTIONS"
             ],
             "headers": {
                 "Access-Control-Allow-Origin": "*"
