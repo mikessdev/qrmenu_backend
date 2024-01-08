@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import AppModule from '@modules/app.module';
+import AppModule from '../src/app.module';
 import { ProductsService } from '@services/products.service';
 import * as request from 'supertest';
 import { createUserDto, addUser, cleanUser } from './utils/objects/User';
