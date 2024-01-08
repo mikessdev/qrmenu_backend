@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import AppModule from '../src/app.module';
+import { AppModule } from '@modules/app.module';
 import * as request from 'supertest';
 import { CreateCategoryDto } from '@dtos/create/create-category.dto';
 import { CategoriesService } from '@services/categories.service';
