@@ -84,8 +84,8 @@
     "verbose": true,
     "moduleNameMapper": {
       "^~/(.*)$": "<rootDir>/src/$1",
-      "@modules/(.*)": "<rootDir>/src/Modules/$1",
-      "@services/(.*)": "<rootDir>/src/Services/$1",
+      "@modules/(.*)": "<rootDir>/src/modules/$1",
+      "@services/(.*)": "<rootDir>/src/services/$1",
       "@dtos/(.*)": "<rootDir>/src/dtos/$1",
       "@controllers/(.*)": "<rootDir>/src/controllers/$1",
       "@middlewares/(.*)": "<rootDir>/src/middlewares/$1",
