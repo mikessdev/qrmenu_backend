@@ -27,7 +27,7 @@ import { MenusModule } from '@modules/menus.module';
   providers: [AppService],
   controllers: [AppController],
 })
-export class AppModule implements NestModule {
+export default class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
