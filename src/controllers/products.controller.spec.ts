@@ -9,11 +9,9 @@ const createProductDto: CreateProductDto = {
   title: 'Iscas de Frango',
   description: '300g de filézinho empanado',
   price: 'R$ 15,00',
-  productImg: 'imgURL',
-  unit: '500mg',
+  productImg: 'http://products/image',
+  unit: '500g',
   likes: 12,
-  createdAt: new Date(),
-  updatedAt: new Date(),
 };
 
 describe('ProductsController', () => {
@@ -32,6 +30,9 @@ describe('ProductsController', () => {
               .mockImplementation((product: CreateProductDto) => {
                 return Promise.resolve(product);
               }),
+            findAll: jest
+              .fn()
+              .mockResolvedValue([createProductDto, createProductDto]),
             update: jest.fn().mockResolvedValue(1),
             remove: jest.fn().mockResolvedValue(1),
           },
@@ -61,5 +62,13 @@ describe('ProductsController', () => {
   it('should return 1 when a product is removed', () => {
     const { id } = createProductDto;
     expect(productsController.remove(id)).resolves.toEqual(1);
+  });
+
+  it('should return all products by categoryId', () => {
+    const { categoryId } = createProductDto;
+    expect(productsController.findAll(categoryId)).resolves.toEqual([
+      createProductDto,
+      createProductDto,
+    ]);
   });
 });
