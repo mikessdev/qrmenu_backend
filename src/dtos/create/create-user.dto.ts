@@ -5,6 +5,6 @@ export class CreateUserDto {
   readonly email: string;
   readonly emailVerified: boolean;
   readonly phoneNumber: string;
-  readonly createdAt: Date;
-  readonly updatedAt: Date;
+  readonly createdAt?: Date;
+  readonly updatedAt?: Date;
 }
