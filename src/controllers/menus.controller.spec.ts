@@ -30,8 +30,8 @@ describe('MenusController', () => {
         {
           provide: MenusService,
           useValue: {
-            create: jest.fn().mockImplementation((category: CreateMenuDto) => {
-              return Promise.resolve(category);
+            create: jest.fn().mockImplementation((menu: CreateMenuDto) => {
+              return Promise.resolve(menu);
             }),
             findAllByUserId: jest
               .fn()
