@@ -16,7 +16,7 @@ export class CategoriesService {
     return this.categoryRepository.create(createCategoryDto);
   }
 
-  findAllIncludingProducts(menuId: string) {
+  findAllWithProducts(menuId: string) {
     return this.categoryRepository.findAll({
       where: { menuId: menuId },
       order: [['createdAt', 'ASC']],
