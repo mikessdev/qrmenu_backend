@@ -13,8 +13,6 @@ const createProductDto: CreateProductDto = {
   productImg: 'imgURL',
   likes: 22,
   unit: '500 kg',
-  createdAt: new Date(),
-  updatedAt: new Date(),
 };
 
 describe('ProductsService', () => {
@@ -34,6 +32,9 @@ describe('ProductsService', () => {
               }),
             update: jest.fn().mockResolvedValue(1),
             destroy: jest.fn().mockResolvedValue(1),
+            findAll: jest
+              .fn()
+              .mockResolvedValue([createProductDto, createProductDto]),
           },
         },
       ],
@@ -50,6 +51,14 @@ describe('ProductsService', () => {
     expect(productsService.create(createProductDto)).resolves.toEqual(
       createProductDto,
     );
+  });
+
+  it('should return all products by categoryId', () => {
+    const { categoryId } = createProductDto;
+    expect(productsService.findAll(categoryId)).resolves.toEqual([
+      createProductDto,
+      createProductDto,
+    ]);
   });
 
   it('should return 1 when a product is updated', () => {

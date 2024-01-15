@@ -7,6 +7,6 @@ export class CreateProductDto {
   readonly price: string;
   readonly unit: string;
   readonly likes: number;
-  readonly createdAt: Date;
-  readonly updatedAt: Date;
+  readonly createdAt?: Date;
+  readonly updatedAt?: Date;
 }
