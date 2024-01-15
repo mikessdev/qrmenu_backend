@@ -21,8 +21,8 @@ export class CategoriesController {
   }
 
   @Get(':menuId')
-  findAllIncludingProducts(@Param('menuId') menuId: string) {
-    return this.categoriesService.findAllIncludingProducts(menuId);
+  findAllWithProducts(@Param('menuId') menuId: string) {
+    return this.categoriesService.findAllWithProducts(menuId);
   }
 
   @Patch(':id')
