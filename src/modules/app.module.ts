@@ -48,6 +48,10 @@ export class AppModule implements NestModule {
           path: 'menus/url/(.*)',
           method: RequestMethod.GET,
         },
+        {
+          path: '/',
+          method: RequestMethod.GET,
+        },
       )
       .forRoutes({
         path: '*',
