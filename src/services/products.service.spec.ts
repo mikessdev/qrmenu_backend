@@ -1,19 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProductsService } from '@services/products.service';
 import { CreateProductDto } from '@dtos/create/create-product.dto';
-import { getModelToken } from '@nestjs/sequelize';
-import { Product } from '@database/entities/product.entity';
-
-const createProductDto: CreateProductDto = {
-  id: '1',
-  categoryId: '1',
-  title: 'Iscas de Frango',
-  description: '300g de filézinho empanado',
-  price: 'R$ 15,00',
-  image: 'imgURL',
-  likes: 22,
-  unit: '500 kg',
-};
+import { ProductsRepository } from '@repository/product.repository';
 
 describe('ProductsService', () => {
   let productsService: ProductsService;
@@ -23,18 +11,12 @@ describe('ProductsService', () => {
       providers: [
         ProductsService,
         {
-          provide: getModelToken(Product),
+          provide: ProductsRepository,
           useValue: {
-            create: jest
-              .fn()
-              .mockImplementation((product: CreateProductDto) => {
-                return Promise.resolve(product);
-              }),
+            findAll: jest.fn().mockResolvedValue(1),
             update: jest.fn().mockResolvedValue(1),
-            destroy: jest.fn().mockResolvedValue(1),
-            findAll: jest
-              .fn()
-              .mockResolvedValue([createProductDto, createProductDto]),
+            create: jest.fn().mockResolvedValue(1),
+            remove: jest.fn().mockResolvedValue(1),
           },
         },
       ],
@@ -47,28 +29,27 @@ describe('ProductsService', () => {
     expect(productsService).toBeDefined();
   });
 
-  it('should create a product', () => {
-    expect(productsService.create(createProductDto)).resolves.toEqual(
-      createProductDto,
-    );
+  it('should create a product', async () => {
+    const result = await productsService.create({} as CreateProductDto);
+    expect(result).toBe(1);
   });
 
-  it('should return all products by categoryId', () => {
-    const { categoryId } = createProductDto;
-    expect(productsService.findAll(categoryId)).resolves.toEqual([
-      createProductDto,
-      createProductDto,
-    ]);
+  it('should return all products by categoryId', async () => {
+    const categoryId = '1';
+    const result = await productsService.findAll(categoryId);
+    expect(result).toBe(1);
   });
 
-  it('should return 1 when a product is updated', () => {
-    const { id } = createProductDto;
-    const requestBody = createProductDto;
-    expect(productsService.update(id, requestBody)).resolves.toEqual(1);
+  it('should return 1 when a product is updated', async () => {
+    const id = '1';
+    const requestBody = {} as CreateProductDto;
+    const result = await productsService.update(id, requestBody);
+    expect(result).toBe(1);
   });
 
-  it('should return 1 when a product is removed', () => {
-    const { id } = createProductDto;
-    expect(productsService.remove(id)).resolves.toEqual(1);
+  it('should return 1 when a product is removed', async () => {
+    const id = '1';
+    const result = await productsService.remove(id);
+    expect(result).toBe(1);
   });
 });

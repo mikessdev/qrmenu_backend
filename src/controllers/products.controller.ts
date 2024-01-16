@@ -9,6 +9,7 @@ import {
   Param,
   Delete,
   Get,
+  Query,
 } from '@nestjs/common';
 import { ApiHeader, ApiTags } from '@nestjs/swagger';
 
@@ -17,8 +18,8 @@ import { ApiHeader, ApiTags } from '@nestjs/swagger';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  @Get(':categoryId')
-  findAll(@Param('categoryId') categoryId: string) {
+  @Get()
+  findAll(@Query('categoryId') categoryId: string) {
     return this.productsService.findAll(categoryId);
   }
 

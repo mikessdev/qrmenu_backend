@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProductsController } from '@controllers/products.controller';
 import { ProductsService } from '@services/products.service';
 import { CreateProductDto } from '@dtos/create/create-product.dto';
+import { ProductsRepository } from '@repository/product.repository';
 
 const createProductDto: CreateProductDto = {
   id: '1',
@@ -23,7 +24,7 @@ describe('ProductsController', () => {
       providers: [
         ProductsService,
         {
-          provide: ProductsService,
+          provide: ProductsRepository,
           useValue: {
             create: jest
               .fn()
