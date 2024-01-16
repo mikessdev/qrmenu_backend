@@ -8,7 +8,6 @@ import {
   createMenuDto,
   updateMenuDto,
 } from './utils/objects/Menu';
-import { cleanProduct } from './utils/objects/Product';
 import * as request from 'supertest';
 import { getAccessToken } from './firebaseAuth/accessToken';
 import { MenusService } from '@services/menus.service';
