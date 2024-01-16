@@ -14,5 +14,5 @@ export const addCategory = async (category: CreateCategoryDto) => {
 };
 
 export const cleanCategory = async () => {
-  await Category.destroy({ where: {} });
+  await Category.destroy({ where: { id: createCategoryDto.id } });
 };

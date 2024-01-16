@@ -25,5 +25,5 @@ export const addUser = async (user: CreateUserDto) => {
 };
 
 export const cleanUser = async () => {
-  await User.destroy({ where: {} });
+  await User.destroy({ where: { id: createUserDto.id } });
 };

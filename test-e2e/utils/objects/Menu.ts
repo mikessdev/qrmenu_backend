@@ -35,5 +35,5 @@ export const addMenu = async (menu: CreateMenuDto) => {
 };
 
 export const cleanMenu = async () => {
-  await Menu.destroy({ where: {} });
+  await Menu.destroy({ where: { id: createMenuDto.id } });
 };

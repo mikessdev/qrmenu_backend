@@ -19,5 +19,5 @@ export const addProduct = async (product: CreateProductDto) => {
 };
 
 export const cleanProduct = async () => {
-  await Product.destroy({ where: {} });
+  await Product.destroy({ where: { id: createProductDto.id } });
 };
