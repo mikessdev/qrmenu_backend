@@ -11,7 +11,7 @@ export class CreateProductDto {
   readonly title: string;
 
   @ApiProperty()
-  readonly productImg: string;
+  readonly image: string;
 
   @ApiProperty()
   readonly description: string;
