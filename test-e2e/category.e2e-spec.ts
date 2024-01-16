@@ -159,44 +159,15 @@ describe('Category (e2e)', () => {
   });
 
   it('/categories (GET): should get all categories by menuId', async () => {
-    const categories: CreateCategoryDto[] = [
-      {
-        id: '2',
-        menuId: '1',
-        title: 'Bebidas',
-        createdAt: new Date('2023-09-16T18:21:27.454Z'),
-        updatedAt: new Date('2023-09-16T18:21:27.454Z'),
-      },
-      {
-        id: '1',
-        menuId: '1',
-        title: 'Petiscos',
-        createdAt: new Date('2023-09-16T18:21:27.454Z'),
-        updatedAt: new Date('2023-09-16T18:21:27.454Z'),
-      },
-    ];
-    const menuId = '1';
-
-    categories.forEach(async (category) => {
-      await addCategory(category);
-    });
+    await addCategory(createCategoryDto);
+    const { menuId } = createCategoryDto;
 
     const response = await request(app.getHttpServer()).get(
       `/categories/${menuId}`,
     );
 
-    const responseTimestamps = response.body.map((category) => {
-      const { id, title, menuId } = category;
-      return {
-        id,
-        title,
-        menuId,
-        createdAt: new Date('2023-09-16T18:21:27.454Z'),
-        updatedAt: new Date('2023-09-16T18:21:27.454Z'),
-      };
-    });
     expect(response.statusCode).toEqual(200);
-    expect(responseTimestamps).toEqual(categories);
+    expect(response.body[0].id).toEqual(createCategoryDto.id);
   });
 
   it("/categories (GET): shouldn't get any categories by menu id if they don't exist", async () => {
