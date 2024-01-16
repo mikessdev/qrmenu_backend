@@ -170,9 +170,9 @@ describe('Product (e2e)', () => {
     await addProduct(createProductDto);
     const { categoryId } = createProductDto;
 
-    const response = await request(app.getHttpServer())
-      .get(`/products/${categoryId}`)
-      .set('Authorization', `Bearer ${accessToken}`);
+    const response = await request(app.getHttpServer()).get(
+      `/products/${categoryId}`,
+    );
 
     expect(response.statusCode).toEqual(200);
     expect(response.body.length).toEqual(1);

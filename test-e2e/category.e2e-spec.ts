@@ -181,9 +181,9 @@ describe('Category (e2e)', () => {
       await addCategory(category);
     });
 
-    const response = await request(app.getHttpServer())
-      .get(`/categories/${menuId}`)
-      .set('Authorization', `Bearer ${accessToken}`);
+    const response = await request(app.getHttpServer()).get(
+      `/categories/${menuId}`,
+    );
 
     const responseTimestamps = response.body.map((category) => {
       const { id, title, menuId } = category;
@@ -202,9 +202,9 @@ describe('Category (e2e)', () => {
   it("/categories (GET): shouldn't get any categories by menu id if they don't exist", async () => {
     const menuId = '1';
 
-    const response = await request(app.getHttpServer())
-      .get(`/categories/${menuId}`)
-      .set('Authorization', `Bearer ${accessToken}`);
+    const response = await request(app.getHttpServer()).get(
+      `/categories/${menuId}`,
+    );
 
     expect(response.statusCode).toEqual(200);
     expect(response.body).toEqual([]);

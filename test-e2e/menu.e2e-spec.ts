@@ -153,9 +153,9 @@ describe('Menu (e2e)', () => {
     await addMenu(createMenuDto);
     const { url } = createMenuDto;
 
-    const response = await request(app.getHttpServer())
-      .get(`/menus/url/${url}`)
-      .set('Authorization', `Bearer ${accessToken}`);
+    const response = await request(app.getHttpServer()).get(
+      `/menus/url/${url}`,
+    );
 
     expect(response.statusCode).toEqual(200);
     expect(response.body.url).toEqual(createMenuDto.url);

@@ -26,13 +26,13 @@ export class MenusController {
     return this.menusService.create(createMenuDto);
   }
 
-  @Get(':id')
+  @Get(':userId')
   @ApiHeader({
     name: 'Authorization',
     description: 'JWT Token for authentication',
   })
-  findAllByUserId(@Param('id') id: string) {
-    return this.menusService.findAllByUserId(id);
+  findAllByUserId(@Param('userId') userId: string) {
+    return this.menusService.findAllByUserId(userId);
   }
 
   @Get('url/:url')
