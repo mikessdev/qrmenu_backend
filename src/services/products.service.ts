@@ -11,8 +11,8 @@ export class ProductsService {
     private productRepository: typeof Product,
   ) {}
 
-  findAll(categoryId: string) {
-    return this.productRepository.findAll({
+  async findAll(categoryId: string) {
+    return await this.productRepository.findAll({
       where: { categoryId: categoryId },
       order: [['createdAt', 'ASC']],
     });
