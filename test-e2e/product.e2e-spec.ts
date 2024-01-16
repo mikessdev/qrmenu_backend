@@ -171,7 +171,7 @@ describe('Product (e2e)', () => {
     const { categoryId } = createProductDto;
 
     const response = await request(app.getHttpServer()).get(
-      `/products/${categoryId}`,
+      `/products?categoryId=${categoryId}`,
     );
 
     expect(response.statusCode).toEqual(200);
