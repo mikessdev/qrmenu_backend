@@ -100,7 +100,7 @@ describe('Category (e2e)', () => {
     await addCategory(createCategoryDto);
 
     const queryParams = '1';
-    const updateUserDto = {
+    const updateCategoryDto = {
       id: queryParams,
       title: 'Petiscos atualizadas',
       createdAT: new Date(),
@@ -110,7 +110,7 @@ describe('Category (e2e)', () => {
     const response = await request(app.getHttpServer())
       .patch(`/categories/${queryParams}`)
       .set('Authorization', 'Bearer ')
-      .send(updateUserDto);
+      .send(updateCategoryDto);
 
     expect(response.statusCode).toEqual(401);
     expect(response.body.message).toEqual('Access Denied');
@@ -118,7 +118,7 @@ describe('Category (e2e)', () => {
 
   it('/categories (PATCH): should not update a categories if does not exist', async () => {
     const categoryId = '1';
-    const updateUserDto = {
+    const updateCategoryDto = {
       id: categoryId,
       title: 'Petiscos atualizadas',
       createdAT: new Date(),
@@ -128,7 +128,7 @@ describe('Category (e2e)', () => {
     const response = await request(app.getHttpServer())
       .patch(`/categories/${categoryId}`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send(updateUserDto);
+      .send(updateCategoryDto);
 
     expect(response.statusCode).toEqual(200);
     expect(response.body).toEqual([0]);
