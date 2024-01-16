@@ -21,7 +21,8 @@
     "test:unit:watch:cov": "jest --coverage --watchAll --detectOpenHandles --silent",
     "test:unit:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --runInBand --config ./jest-e2e.json",
-    "test:e2e:watch": "jest --runInBand --watchAll --config ./jest-e2e.json"
+    "test:e2e:watch": "jest --runInBand --watchAll --config ./jest-e2e.json",
+    "test:e2e:watch:cov": "jest --runInBand --coverage --watchAll --config ./jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/bull": "^10.0.1",

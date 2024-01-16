@@ -151,6 +151,9 @@ $ npm run test:e2e
 
 # running e2e test with watch
 $ npm run test:e2e:watch
+
+# running e2e tests with watch and coverage
+$ npm run test:e2e:watch:cov
 ```
 
 ### To generate a new module nestjs (for development only)
