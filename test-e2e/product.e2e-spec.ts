@@ -165,4 +165,18 @@ describe('Product (e2e)', () => {
     expect(response.statusCode).toEqual(401);
     expect(response.body.message).toEqual('Access Denied');
   });
+
+  it('/products (GET): should find all products by categoryId', async () => {
+    await addProduct(createProductDto);
+    const { categoryId } = createProductDto;
+
+    const response = await request(app.getHttpServer())
+      .get(`/products/${categoryId}`)
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    expect(response.statusCode).toEqual(200);
+    expect(response.body.length).toEqual(1);
+    expect(response.body[0].categoryId).toEqual(createProductDto.categoryId);
+    expect(response.body[0].id).toEqual(createProductDto.id);
+  });
 });
