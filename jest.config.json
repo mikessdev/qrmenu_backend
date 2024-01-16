@@ -22,6 +22,7 @@
       "@dtos/(.*)": "<rootDir>/src/dtos/$1",
       "@controllers/(.*)": "<rootDir>/src/controllers/$1",
       "@middlewares/(.*)": "<rootDir>/src/middlewares/$1",
-      "@database/(.*)": "<rootDir>/src/database/$1"
+      "@database/(.*)": "<rootDir>/src/database/$1",
+      "@repository/(.*)": "<rootDir>/src/repository/$1"
     }
   }
