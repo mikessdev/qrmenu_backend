@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@modules/app.module';
 import { ProductsService } from '@services/products.service';
@@ -56,7 +56,7 @@ describe('Product (e2e)', () => {
       .post('/products')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(body);
-    expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(HttpStatus.CREATED);
   });
 
   it('/products (POST): should not create a product if the body is empty', async () => {
@@ -65,7 +65,7 @@ describe('Product (e2e)', () => {
       .post('/products')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(body);
-    expect(response.statusCode).toEqual(500);
+    expect(response.statusCode).toEqual(HttpStatus.BAD_REQUEST);
   });
 
   it('/products (POST): should not create a product if dont have the bearer token', async () => {
