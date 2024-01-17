@@ -4,17 +4,11 @@
 
 # How to run this
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px;">
-<a href="https://nodejs.org/en" style="display: flex; align-items: center; cursor: pointer; margin-right: 60px;">
-<img style="margin-right: 10px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-plain-wordmark.svg" height="80"/>
+<img  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-plain-wordmark.svg" height="80"/>
 <span>v21.5.0</span>
-</a>
 
-<a href="https://nodejs.org/en" style="display: flex; align-items: center; cursor: pointer;">
-<img style="margin-right: 20px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-plain-wordmark.svg" height="40"/>
+<img 20px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-plain-wordmark.svg" height="40"/>
 <span>v24.0.7 + docker compose</span>
-</a>
-</div>
 
 ### Environment variables needed to run the project locally
 
