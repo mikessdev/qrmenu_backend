@@ -3,6 +3,7 @@ import { Product } from '@database/entities/product.entity';
 import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from '@dtos/create/create-product.dto';
 import { UpdateProductDto } from '@dtos/update/update-product.dto';
+import { Status } from '@utils/enum/status.enum';
 
 @Injectable()
 export class ProductsRepository {
@@ -18,18 +19,34 @@ export class ProductsRepository {
         order: [['createdAt', 'ASC']],
       });
     } catch (error) {
-      console.log(error);
+      console.error(error.errors[0].message);
     }
   }
 
   async create(createProductDto: CreateProductDto) {
-    return await this.productRepository.create(createProductDto);
+    try {
+      const result = await this.productRepository.create(createProductDto);
+      return {
+        status: Status.SUCCESS,
+        message: result,
+      };
+    } catch (error) {
+      console.error(error.errors[0].message);
+      return {
+        status: Status.FAILED,
+        message: error.errors[0].message,
+      };
+    }
   }
 
   update(id: string, updateProductDto: UpdateProductDto) {
-    return this.productRepository.update(updateProductDto, {
-      where: { id: id },
-    });
+    try {
+      return this.productRepository.update(updateProductDto, {
+        where: { id: id },
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   remove(id: string) {

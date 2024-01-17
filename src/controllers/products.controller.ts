@@ -1,5 +1,5 @@
 import { ProductsService } from '@services/products.service';
-import { CreateProductDto } from '@dtos/create/create-product.dto';
+import { CreateProductDto, Result } from '@dtos/create/create-product.dto';
 import { UpdateProductDto } from '@dtos/update/update-product.dto';
 import {
   Controller,
@@ -10,8 +10,12 @@ import {
   Delete,
   Get,
   Query,
+  Res,
+  HttpStatus,
 } from '@nestjs/common';
-import { ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Status } from '@utils/enum/status.enum';
+import { Response } from 'express';
 
 @ApiTags('product')
 @Controller('products')
@@ -28,8 +32,23 @@ export class ProductsController {
     name: 'Authorization',
     description: 'JWT Token for authentication',
   })
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: Result,
+  })
+  async create(
+    @Res() response: Response,
+    @Body() createProductDto: CreateProductDto,
+  ) {
+    const result = await this.productsService.create(createProductDto);
+    if (result.status === Status.SUCCESS) {
+      return response.status(HttpStatus.CREATED).send(JSON.stringify(result));
+    }
+    if (result.status === Status.FAILED) {
+      return response
+        .status(HttpStatus.BAD_REQUEST)
+        .send(JSON.stringify(result));
+    }
   }
 
   @Patch(':id')
