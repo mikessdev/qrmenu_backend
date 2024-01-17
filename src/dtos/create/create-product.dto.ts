@@ -31,17 +31,3 @@ export class CreateProductDto {
   @ApiProperty()
   readonly updatedAt?: Date;
 }
-
-export class Result {
-  @ApiProperty()
-  readonly status: string;
-  @ApiProperty()
-  readonly message: CreateProductDto;
-}
-
-export class Results {
-  @ApiProperty()
-  readonly status: string;
-  @ApiProperty()
-  readonly message: CreateProductDto[];
-}
