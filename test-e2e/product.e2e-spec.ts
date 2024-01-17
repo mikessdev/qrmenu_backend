@@ -153,8 +153,7 @@ describe('Product (e2e)', () => {
       .del(`/products/${productId}`)
       .set('Authorization', `Bearer ${accessToken}`);
 
-    expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual({});
+    expect(response.statusCode).toEqual(HttpStatus.NO_CONTENT);
   });
 
   it('/products (DEL): should not delete a product if dont have the bearer token', async () => {
@@ -165,7 +164,7 @@ describe('Product (e2e)', () => {
       .del(`/products/${productId}`)
       .set('Authorization', 'Bearer ');
 
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
