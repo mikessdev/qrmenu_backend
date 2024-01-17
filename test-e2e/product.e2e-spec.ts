@@ -16,6 +16,7 @@ import {
   cleanCategory,
 } from './utils/objects/Category';
 import { getAccessToken } from './firebaseAuth/accessToken';
+import { Status } from '@utils/enum/status.enum';
 
 describe('Product (e2e)', () => {
   let productsServiceMock: ProductsService;
@@ -40,9 +41,7 @@ describe('Product (e2e)', () => {
   });
 
   afterAll(async () => {
-    await cleanCategory();
     await cleanUser();
-    await cleanMenu();
     await app.close();
   });
 
@@ -74,7 +73,7 @@ describe('Product (e2e)', () => {
       .post('/products')
       .set('Authorization', 'Bearer ')
       .send(body);
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
@@ -173,10 +172,28 @@ describe('Product (e2e)', () => {
     const response = await request(app.getHttpServer()).get(
       `/products?categoryId=${categoryId}`,
     );
+    const deserializing = JSON.parse(response.text);
 
-    expect(response.statusCode).toEqual(200);
-    expect(response.body.length).toEqual(1);
-    expect(response.body[0].categoryId).toEqual(createProductDto.categoryId);
-    expect(response.body[0].id).toEqual(createProductDto.id);
+    expect(response.statusCode).toEqual(HttpStatus.OK);
+    expect(deserializing.status).toEqual(Status.SUCCESS);
+    expect(deserializing.message.length).toEqual(1);
+    expect(deserializing.message[0].categoryId).toEqual(
+      createProductDto.categoryId,
+    );
+    expect(deserializing.message[0].id).toEqual(createProductDto.id);
+  });
+
+  it('/products (GET): should not find all products by categoryId', async () => {
+    await addProduct(createProductDto);
+    const categoryId = 'b';
+
+    const response = await request(app.getHttpServer()).get(
+      `/products?categoryId=${categoryId}`,
+    );
+    const deserializing = JSON.parse(response.text);
+
+    expect(response.statusCode).toEqual(HttpStatus.OK);
+    expect(deserializing.status).toEqual(Status.SUCCESS);
+    expect(deserializing.message.length).toEqual(0);
   });
 });

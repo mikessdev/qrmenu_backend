@@ -28,9 +28,10 @@ describe('ProductsController', () => {
         {
           provide: ProductsService,
           useValue: {
-            findAll: jest
-              .fn()
-              .mockResolvedValue([createProductDto, createProductDto]),
+            findAll: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: [createProductDto],
+            }),
             create: jest.fn().mockResolvedValue({
               status: Status.SUCCESS,
               message: createProductDto,
@@ -97,11 +98,44 @@ describe('ProductsController', () => {
     expect(productsController.remove(id)).resolves.toEqual(1);
   });
 
-  it('should return all products by categoryId', () => {
+  it('should return all products by categoryId', async () => {
     const { categoryId } = createProductDto;
-    expect(productsController.findAll(categoryId)).resolves.toEqual([
-      createProductDto,
-      createProductDto,
-    ]);
+
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
+    await productsController.findAll(response, categoryId);
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: [createProductDto],
+      }),
+    );
+  });
+
+  it('should handle a failed product find all by category', async () => {
+    jest.spyOn(productsService, 'findAll').mockResolvedValueOnce({
+      status: Status.FAILED,
+      message: 'Failed Find ALL Products By CategoryId',
+    });
+
+    const { categoryId } = createProductDto;
+
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
+    await productsController.findAll(response, categoryId);
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.FAILED,
+        message: 'Failed Find ALL Products By CategoryId',
+      }),
+    );
   });
 });
