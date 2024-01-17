@@ -1,4 +1,4 @@
-import { HttpCode, HttpStatus, INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@modules/app.module';
 import * as request from 'supertest';
@@ -111,7 +111,7 @@ describe('Category (e2e)', () => {
       .set('Authorization', 'Bearer ')
       .send(updateCategoryDto);
 
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
@@ -131,7 +131,7 @@ describe('Category (e2e)', () => {
 
     const deserializing = JSON.parse(response.text);
 
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(HttpStatus.OK);
     expect(deserializing.message).toEqual([0]);
   });
 
@@ -154,7 +154,7 @@ describe('Category (e2e)', () => {
       .del(`/categories/${categoryId}`)
       .set('Authorization', 'Bearer ');
 
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
@@ -180,7 +180,7 @@ describe('Category (e2e)', () => {
 
     const deserializing = JSON.parse(response.text);
 
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(HttpStatus.OK);
     expect(deserializing.message).toEqual([]);
   });
 });
