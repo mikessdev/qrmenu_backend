@@ -14,21 +14,29 @@ export class ProductsRepository {
 
   async findAll(categoryId: string) {
     try {
-      return await this.productRepository.findAll({
+      const products = await this.productRepository.findAll({
         where: { categoryId: categoryId },
         order: [['createdAt', 'ASC']],
       });
+      return {
+        status: Status.SUCCESS,
+        message: products,
+      };
     } catch (error) {
       console.error(error.errors[0].message);
+      return {
+        status: Status.FAILED,
+        message: error.errors[0].message,
+      };
     }
   }
 
   async create(createProductDto: CreateProductDto) {
     try {
-      const result = await this.productRepository.create(createProductDto);
+      const product = await this.productRepository.create(createProductDto);
       return {
         status: Status.SUCCESS,
-        message: result,
+        message: product,
       };
     } catch (error) {
       console.error(error.errors[0].message);

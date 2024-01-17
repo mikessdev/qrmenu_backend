@@ -13,7 +13,13 @@ import {
   Res,
   HttpStatus,
 } from '@nestjs/common';
-import { ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiHeader,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Status } from '@utils/enum/status.enum';
 import { Response } from 'express';
 
@@ -23,8 +29,26 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  findAll(@Query('categoryId') categoryId: string) {
-    return this.productsService.findAll(categoryId);
+  @ApiQuery({
+    name: 'categoryId',
+    description: 'ID of the category',
+    type: String,
+    required: true,
+    example: '88b7fedf-59fa-4b02-875d-4345bb74c186',
+  })
+  async findAll(
+    @Res() response: Response,
+    @Query('categoryId') categoryId: string,
+  ) {
+    const result = await this.productsService.findAll(categoryId);
+    if (result.status === Status.SUCCESS) {
+      return response.status(HttpStatus.OK).send(JSON.stringify(result));
+    }
+    if (result.status === Status.FAILED) {
+      return response
+        .status(HttpStatus.BAD_REQUEST)
+        .send(JSON.stringify(result));
+    }
   }
 
   @Post()
