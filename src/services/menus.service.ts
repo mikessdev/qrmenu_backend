@@ -1,34 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
 import { CreateMenuDto } from '@dtos/create/create-menu.dto';
 import { UpdateMenuDto } from '@dtos/update/update-menu.dto';
-import { Menu } from '@database/entities/menu.entity';
+import { MenusRepository } from '@repository/menus.repository';
 
 @Injectable()
 export class MenusService {
-  constructor(
-    @InjectModel(Menu)
-    private menuRepository: typeof Menu,
-  ) {}
-  create(createMenuDto: CreateMenuDto) {
-    return this.menuRepository.create(createMenuDto);
+  constructor(private readonly menuRepository: MenusRepository) {}
+  async create(createMenuDto: CreateMenuDto) {
+    return await this.menuRepository.create(createMenuDto);
   }
 
-  findAllByUserId(userId: string) {
-    return this.menuRepository.findAll({ where: { userId: userId } });
+  async findAllByUserId(userId: string) {
+    return await this.menuRepository.findAllByUserId(userId);
   }
 
-  findMenuByURL(url: string) {
-    return this.menuRepository.findOne({ where: { url: url } });
+  async findMenuByURL(url: string) {
+    return await this.menuRepository.findMenuByURL(url);
   }
 
-  update(id: string, updateMenuDto: UpdateMenuDto) {
-    return this.menuRepository.update(updateMenuDto, {
-      where: { id: id },
-    });
+  async update(id: string, updateMenuDto: UpdateMenuDto) {
+    return await this.menuRepository.update(id, updateMenuDto);
   }
 
-  remove(id: string) {
-    return this.menuRepository.destroy({ where: { id: id } });
+  async remove(id: string) {
+    return await this.menuRepository.remove(id);
   }
 }

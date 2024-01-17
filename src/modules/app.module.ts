@@ -57,6 +57,10 @@ export class AppModule implements NestModule {
           method: RequestMethod.GET,
         },
         {
+          path: 'menus(.*)',
+          method: RequestMethod.GET,
+        },
+        {
           path: '/',
           method: RequestMethod.GET,
         },
