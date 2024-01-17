@@ -24,7 +24,8 @@
       "@controllers/*": ["./src/controllers/*"],
       "@middlewares/*": ["./src/middlewares/*"],
       "@database/*": ["./src/database/*"],
-      "@repository/*": ["./src/repository/*"]
+      "@repository/*": ["./src/repository/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   }
 }
