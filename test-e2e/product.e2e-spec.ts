@@ -95,8 +95,10 @@ describe('Product (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send(updateUserDto);
 
+    const deserializing = JSON.parse(response.text);
+
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([1]);
+    expect(deserializing.message).toEqual([1]);
   });
 
   it('/products (PATCH): should not update a product if dont have the bearer token', async () => {
@@ -137,8 +139,10 @@ describe('Product (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send(updateUserDto);
 
+    const deserializing = JSON.parse(response.text);
+
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([0]);
+    expect(deserializing.message).toEqual([0]);
   });
 
   it('/products (DEL): should delete a product', async () => {

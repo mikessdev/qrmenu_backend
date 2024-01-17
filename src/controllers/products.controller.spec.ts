@@ -36,7 +36,10 @@ describe('ProductsController', () => {
               status: Status.SUCCESS,
               message: createProductDto,
             }),
-            update: jest.fn().mockResolvedValue(1),
+            update: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: {},
+            }),
             remove: jest.fn().mockResolvedValue(1),
           },
         },
@@ -87,10 +90,47 @@ describe('ProductsController', () => {
     );
   });
 
-  it('should return 1 when a product is updated', () => {
+  it('should update a product', async () => {
     const { id } = createProductDto;
     const requestBody = createProductDto;
-    expect(productsController.update(id, requestBody)).resolves.toEqual(1);
+
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
+    await productsController.update(response, id, requestBody);
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: {},
+      }),
+    );
+  });
+
+  it('should handle a failed product update', async () => {
+    jest.spyOn(productsService, 'update').mockResolvedValueOnce({
+      status: Status.FAILED,
+      message: 'Failed To Update Product',
+    });
+
+    const { id } = createProductDto;
+    const requestBody = createProductDto;
+
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
+    await productsController.update(response, id, requestBody);
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.FAILED,
+        message: 'Failed To Update Product',
+      }),
+    );
   });
 
   it('should return 1 when a product is removed', () => {
