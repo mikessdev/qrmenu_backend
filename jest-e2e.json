@@ -4,19 +4,20 @@
     "json",
     "ts"
   ],
-  "rootDir": "../",
+  "rootDir": "./",
   "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
+  "testRegex": "test-e2e/.*\\.e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
     "^src/(.*)$": "<rootDir>/$1",
-    "@modules/(.*)": "<rootDir>/src/Modules/$1",
-    "@services/(.*)": "<rootDir>/src/Services/$1",
+    "@modules/(.*)": "<rootDir>/src/modules/$1",
+    "@services/(.*)": "<rootDir>/src/services/$1",
     "@dtos/(.*)": "<rootDir>/src/dtos/$1",
     "@controllers/(.*)": "<rootDir>/src/controllers/$1",
     "@middlewares/(.*)": "<rootDir>/src/middlewares/$1",
-    "@database/(.*)": "<rootDir>/src/database/$1"
+    "@database/(.*)": "<rootDir>/src/database/$1",
+    "@repository/(.*)": "<rootDir>/src/repository/$1"
   }
 }

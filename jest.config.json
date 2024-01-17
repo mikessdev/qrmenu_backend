@@ -1,0 +1,28 @@
+  {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "./",
+    "testRegex": "src/.*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "src/**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "verbose": true,
+    "moduleNameMapper": {
+      "^~/(.*)$": "<rootDir>/src/$1",
+      "@modules/(.*)": "<rootDir>/src/modules/$1",
+      "@services/(.*)": "<rootDir>/src/services/$1",
+      "@dtos/(.*)": "<rootDir>/src/dtos/$1",
+      "@controllers/(.*)": "<rootDir>/src/controllers/$1",
+      "@middlewares/(.*)": "<rootDir>/src/middlewares/$1",
+      "@database/(.*)": "<rootDir>/src/database/$1",
+      "@repository/(.*)": "<rootDir>/src/repository/$1"
+    }
+  }

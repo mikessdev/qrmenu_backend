@@ -1,25 +1,29 @@
+import { InjectModel } from '@nestjs/sequelize';
+import { Product } from '@database/entities/product.entity';
 import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from '@dtos/create/create-product.dto';
 import { UpdateProductDto } from '@dtos/update/update-product.dto';
-import { Product } from '@database/entities/product.entity';
-import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
-export class ProductsService {
+export class ProductsRepository {
   constructor(
     @InjectModel(Product)
     private productRepository: typeof Product,
   ) {}
 
-  findAll(categoryId: string) {
-    return this.productRepository.findAll({
-      where: { categoryId: categoryId },
-      order: [['createdAt', 'ASC']],
-    });
+  async findAll(categoryId: string) {
+    try {
+      return await this.productRepository.findAll({
+        where: { categoryId: categoryId },
+        order: [['createdAt', 'ASC']],
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  create(createProductDto: CreateProductDto) {
-    return this.productRepository.create(createProductDto);
+  async create(createProductDto: CreateProductDto) {
+    return await this.productRepository.create(createProductDto);
   }
 
   update(id: string, updateProductDto: UpdateProductDto) {

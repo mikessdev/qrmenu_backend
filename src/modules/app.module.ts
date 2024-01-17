@@ -37,12 +37,12 @@ export class AppModule implements NestModule {
           method: RequestMethod.GET,
         },
         {
-          path: 'categories/(.*)',
+          path: 'products(.*)',
           method: RequestMethod.GET,
         },
         {
-          path: 'users',
-          method: RequestMethod.POST,
+          path: 'categories/(.*)',
+          method: RequestMethod.GET,
         },
         {
           path: 'users/(.*)',
@@ -50,6 +50,10 @@ export class AppModule implements NestModule {
         },
         {
           path: 'menus/url/(.*)',
+          method: RequestMethod.GET,
+        },
+        {
+          path: '/',
           method: RequestMethod.GET,
         },
       )

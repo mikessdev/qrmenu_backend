@@ -7,15 +7,15 @@ import { Menu } from '@database/entities/menu.entity';
 const createMenuDto: CreateMenuDto = {
   id: '1',
   userId: '1',
-  headerImg: 'dddddddddd',
-  profileImg: 'ddddddddddddd',
-  name: 'restaurant do Japa',
-  url: 'test-test',
-  phoneNumber: '123',
+  headerImg: 'http://menu/image',
+  profileImg: 'http://profile/image',
+  name: 'Restaurante do Japa',
+  url: 'restaurante-do-japa',
+  phoneNumber: '1199229922',
   primaryColor: '#DD212',
-  instagram: 'dddddddddddd',
-  openDays: 'ddddddddd',
-  address: 'dddddddddd',
+  instagram: '@restaurantedojapa',
+  openDays: 'segunda-sexta',
+  address: 'brasil-sp',
 };
 
 describe('MenusService', () => {
@@ -41,6 +41,7 @@ describe('MenusService', () => {
               .fn()
               .mockResolvedValue([createMenuDto, createMenuDto]),
             findByPk: jest.fn().mockResolvedValue(createMenuDto),
+            findOne: jest.fn().mockResolvedValue(createMenuDto),
             update: jest.fn().mockResolvedValue(1),
             destroy: jest.fn().mockResolvedValue(1),
           },
@@ -74,27 +75,19 @@ describe('MenusService', () => {
     expect(menusService.findAllByUserId(userId)).resolves.toEqual([]);
   });
 
-  //   it('should return category by Id if it exists', () => {
-  //     const { id } = createCategoryDto;
-  //     expect(categoriesService.findOneWithProducts(id)).resolves.toEqual(
-  //       createCategoryDto,
-  //     );
-  //   });
+  it('should return menu by URL', () => {
+    const { url } = createMenuDto;
+    expect(menusService.findMenuByURL(url)).resolves.toEqual(createMenuDto);
+  });
 
-  //   it('should not return category by Id if it not exists', () => {
-  //     const { id } = createCategoryDto;
-  //     cleanDataForFindOneMethod(categoriesRepositoryMock);
-  //     expect(categoriesService.findOneWithProducts(id)).resolves.toEqual({});
-  //   });
+  it('should return 1 when a menu is updated', () => {
+    const { id } = createMenuDto;
+    const requestBody = createMenuDto;
+    expect(menusService.update(id, requestBody)).resolves.toEqual(1);
+  });
 
-  //   it('should return 1 when a category is updated', () => {
-  //     const { id } = createCategoryDto;
-  //     const requestBody = createCategoryDto;
-  //     expect(categoriesService.update(id, requestBody)).resolves.toEqual(1);
-  //   });
-
-  //   it('should return 1 when a category is removed', () => {
-  //     const { id } = createCategoryDto;
-  //     expect(categoriesService.remove(id)).resolves.toEqual(1);
-  //   });
+  it('should return 1 when a menu is removed', () => {
+    const { id } = createMenuDto;
+    expect(menusService.remove(id)).resolves.toEqual(1);
+  });
 });

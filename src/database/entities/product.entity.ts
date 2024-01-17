@@ -38,7 +38,7 @@ export class Product extends Model<Product> {
     type: DataType.STRING(300),
     allowNull: true,
   })
-  productImg: string;
+  image: string;
 
   @Column({
     type: DataType.STRING(150),

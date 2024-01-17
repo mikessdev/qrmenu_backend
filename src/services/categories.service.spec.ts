@@ -64,17 +64,16 @@ describe('CategoriesService', () => {
 
   it('should return all of categories', () => {
     const menuId = '1';
-    expect(categoriesService.findAllIncludingProducts(menuId)).resolves.toEqual(
-      [createCategoryDto, createCategoryDto],
-    );
+    expect(categoriesService.findAllWithProducts(menuId)).resolves.toEqual([
+      createCategoryDto,
+      createCategoryDto,
+    ]);
   });
 
   it('should return an empty array if there is no category in database ', () => {
     const menuId = '1';
     cleanDataForFindAllMethod(categoriesRepositoryMock);
-    expect(categoriesService.findAllIncludingProducts(menuId)).resolves.toEqual(
-      [],
-    );
+    expect(categoriesService.findAllWithProducts(menuId)).resolves.toEqual([]);
   });
 
   it('should return 1 when a category is updated', () => {
