@@ -8,7 +8,6 @@ import {
   cleanUser,
   updateUserDto,
 } from './utils/objects/User';
-import { createProductDto } from './utils/objects/Product';
 import { getAccessToken } from './firebaseAuth/accessToken';
 import { UsersService } from '@services/users.service';
 
