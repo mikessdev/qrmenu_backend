@@ -13,12 +13,19 @@ import {
   Res,
   HttpStatus,
 } from '@nestjs/common';
-import { ApiHeader, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiHeader,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Status } from '@utils/enum/status.enum';
 import { Response } from 'express';
 import {
   ProductApiResponse,
   ProductApiResponses,
+  ProductUpdateApiResponses,
 } from '@utils/swagger/apiResponse/product.api.response';
 
 @ApiTags('product')
@@ -82,6 +89,11 @@ export class ProductsController {
     name: 'Authorization',
     description: 'JWT Token for authentication',
   })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: ProductUpdateApiResponses,
+  })
+  @ApiBody({ type: UpdateProductDto })
   async update(
     @Res() response: Response,
     @Param('id') id: string,
@@ -103,7 +115,19 @@ export class ProductsController {
     name: 'Authorization',
     description: 'JWT Token for authentication',
   })
-  remove(@Param('id') id: string) {
-    return this.productsService.remove(id);
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+  })
+  async remove(@Res() response: Response, @Param('id') id: string) {
+    const result = await this.productsService.remove(id);
+
+    if (result.status === Status.SUCCESS) {
+      return response.status(HttpStatus.NO_CONTENT).send();
+    }
+    if (result.status === Status.FAILED) {
+      return response
+        .status(HttpStatus.BAD_REQUEST)
+        .send(JSON.stringify(result));
+    }
   }
 }

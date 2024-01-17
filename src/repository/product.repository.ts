@@ -65,7 +65,21 @@ export class ProductsRepository {
     }
   }
 
-  remove(id: string) {
-    return this.productRepository.destroy({ where: { id: id } });
+  async remove(id: string) {
+    try {
+      const result = await this.productRepository.destroy({
+        where: { id: id },
+      });
+      return {
+        status: Status.SUCCESS,
+        message: result,
+      };
+    } catch (error) {
+      console.error(error.errors[0].message);
+      return {
+        status: Status.FAILED,
+        message: error.errors[0].message,
+      };
+    }
   }
 }
