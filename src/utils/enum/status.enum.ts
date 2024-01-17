@@ -1,4 +1,4 @@
-export enum Status {
+export const enum Status {
   SUCCESS = 'success',
   FAILED = 'failed',
 }
