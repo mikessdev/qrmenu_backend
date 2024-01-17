@@ -44,3 +44,13 @@ export class ProductApiResponses {
   })
   readonly message: CreateProductDto[];
 }
+
+export class ProductUpdateApiResponses {
+  @ApiProperty({ example: 'success' })
+  readonly status: string;
+  @ApiProperty({
+    type: [],
+    example: [1],
+  })
+  readonly message: CreateProductDto[];
+}
