@@ -4,11 +4,9 @@
 
 # How to run this
 
-<img  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-plain-wordmark.svg" height="80"/>
-<span>v21.5.0</span>
+<span>Node > v21.5.0</span>
 
-<img 20px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-plain-wordmark.svg" height="40"/>
-<span>v24.0.7 + docker compose</span>
+<span>Docker > v24.0.7 + docker compose</span>
 
 ### Environment variables needed to run the project locally
 
