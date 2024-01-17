@@ -1,11 +1,11 @@
-import { INestApplication } from '@nestjs/common';
+import { HttpCode, HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@modules/app.module';
 import * as request from 'supertest';
 import { CategoriesService } from '@services/categories.service';
 import { createUserDto, addUser, cleanUser } from './utils/objects/User';
-import { createMenuDto, addMenu, cleanMenu } from './utils/objects/Menu';
-import { createProductDto, cleanProduct } from './utils/objects/Product';
+import { createMenuDto, addMenu } from './utils/objects/Menu';
+import { createProductDto } from './utils/objects/Product';
 import {
   createCategoryDto,
   addCategory,
@@ -37,13 +37,11 @@ describe('Category (e2e)', () => {
 
   afterAll(async () => {
     await cleanUser();
-    await cleanMenu();
     await app.close();
   });
 
   afterEach(async () => {
     await cleanCategory();
-    await cleanProduct();
   });
 
   it('/categories (POST): should create a category', async () => {
@@ -52,7 +50,7 @@ describe('Category (e2e)', () => {
       .post('/categories')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(body);
-    expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(HttpStatus.CREATED);
   });
 
   it('/categories (POST): should not create a category if the body is empty', async () => {
@@ -61,7 +59,7 @@ describe('Category (e2e)', () => {
       .post('/categories')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(body);
-    expect(response.statusCode).toEqual(500);
+    expect(response.statusCode).toEqual(HttpStatus.BAD_REQUEST);
   });
 
   it('/categories (POST): should not create a category if dont have the bearer token', async () => {
@@ -70,7 +68,7 @@ describe('Category (e2e)', () => {
       .post('/categories')
       .set('Authorization', 'Bearer ')
       .send(body);
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
@@ -91,8 +89,10 @@ describe('Category (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send(updateCategoryDto);
 
+    const deserializing = JSON.parse(response.text);
+
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([1]);
+    expect(deserializing.message).toEqual([1]);
   });
 
   it('/categories (PATCH): should not update a category if dont have the bearer token', async () => {
@@ -129,8 +129,10 @@ describe('Category (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send(updateCategoryDto);
 
+    const deserializing = JSON.parse(response.text);
+
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([0]);
+    expect(deserializing.message).toEqual([0]);
   });
 
   it('/categories (DEL): should delete a category', async () => {
@@ -141,8 +143,7 @@ describe('Category (e2e)', () => {
       .del(`/categories/${categoryId}`)
       .set('Authorization', `Bearer ${accessToken}`);
 
-    expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual({});
+    expect(response.statusCode).toEqual(HttpStatus.NO_CONTENT);
   });
 
   it('/categories (DEL): should not delete a category if dont have the bearer token', async () => {
@@ -162,21 +163,24 @@ describe('Category (e2e)', () => {
     const { menuId } = createCategoryDto;
 
     const response = await request(app.getHttpServer()).get(
-      `/categories/${menuId}`,
+      `/categories?menuId=${menuId}`,
     );
+    const deserializing = JSON.parse(response.text);
 
-    expect(response.statusCode).toEqual(200);
-    expect(response.body[0].id).toEqual(createCategoryDto.id);
+    expect(response.statusCode).toEqual(HttpStatus.OK);
+    expect(deserializing.message[0].id).toEqual(createCategoryDto.id);
   });
 
   it("/categories (GET): shouldn't get any categories by menu id if they don't exist", async () => {
     const menuId = '1';
 
     const response = await request(app.getHttpServer()).get(
-      `/categories/${menuId}`,
+      `/categories?menuId=${menuId}`,
     );
 
+    const deserializing = JSON.parse(response.text);
+
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([]);
+    expect(deserializing.message).toEqual([]);
   });
 });
