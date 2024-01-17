@@ -3,10 +3,11 @@ import { CategoriesService } from '@services/categories.service';
 import { CategoriesController } from '@controllers/categories.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Category } from '@database/entities/category.entity';
+import { CategoriesRepository } from '@repository/categories.repository';
 
 @Module({
   imports: [SequelizeModule.forFeature([Category])],
   controllers: [CategoriesController],
-  providers: [CategoriesService],
+  providers: [CategoriesService, CategoriesRepository],
 })
 export class CategoriesModule {}

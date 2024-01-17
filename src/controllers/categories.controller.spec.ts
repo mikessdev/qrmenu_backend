@@ -2,7 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CategoriesController } from '@controllers/categories.controller';
 import { CategoriesService } from '@services/categories.service';
 import { CreateCategoryDto } from '@dtos/create/create-category.dto';
-import { Category } from '@database/entities/category.entity';
+import { Status } from '@utils/enum/status.enum';
+import { HttpStatus } from '@nestjs/common';
+import { Response } from 'express';
 
 const createCategoryDto: CreateCategoryDto = {
   id: '1',
@@ -14,16 +16,7 @@ const createCategoryDto: CreateCategoryDto = {
 
 describe('CategoriesController', () => {
   let categoriesController: CategoriesController;
-  let categoriesServiceMock: CategoriesService;
-
-  const cleanDataForFindAllMethod = (
-    categoriesServiceMock: CategoriesService,
-  ) => {
-    const Empty: Category[] = [];
-    jest
-      .spyOn(categoriesServiceMock, 'findAllWithProducts')
-      .mockResolvedValue(Empty);
-  };
+  let categoriesService: CategoriesService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -33,16 +26,22 @@ describe('CategoriesController', () => {
         {
           provide: CategoriesService,
           useValue: {
-            create: jest
-              .fn()
-              .mockImplementation((category: CreateCategoryDto) => {
-                return Promise.resolve(category);
-              }),
-            findAllWithProducts: jest
-              .fn()
-              .mockResolvedValue([createCategoryDto, createCategoryDto]),
-            update: jest.fn().mockResolvedValue(1),
-            remove: jest.fn().mockResolvedValue(1),
+            create: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: createCategoryDto,
+            }),
+            findAllWithProducts: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: [createCategoryDto],
+            }),
+            update: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: [],
+            }),
+            remove: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: [],
+            }),
           },
         },
       ],
@@ -50,43 +49,102 @@ describe('CategoriesController', () => {
 
     categoriesController =
       module.get<CategoriesController>(CategoriesController);
-    categoriesServiceMock = module.get<CategoriesService>(CategoriesService);
+    categoriesService = module.get<CategoriesService>(CategoriesService);
   });
 
   it('should be defined', () => {
     expect(categoriesController).toBeDefined();
   });
 
-  it('should create a category', () => {
-    expect(categoriesController.create(createCategoryDto)).resolves.toEqual(
-      createCategoryDto,
+  it('should create a category with success', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
+    await categoriesController.create(response, createCategoryDto);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.CREATED);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: createCategoryDto,
+      }),
     );
   });
 
-  it('should return all of categories', () => {
-    const menuId = '1';
-    expect(categoriesController.findAllWithProducts(menuId)).resolves.toEqual([
-      createCategoryDto,
-      createCategoryDto,
-    ]);
-  });
+  it('should return all of categories', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
 
-  it('should return an empty array if there is no category in database ', () => {
-    const menuId = '1';
-    cleanDataForFindAllMethod(categoriesServiceMock);
-    expect(categoriesController.findAllWithProducts(menuId)).resolves.toEqual(
-      [],
+    const { menuId } = createCategoryDto;
+    await categoriesController.findAllWithProducts(response, menuId);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: [createCategoryDto],
+      }),
     );
   });
 
-  it('should return 1 when a category is updated', () => {
+  it('should return an empty array if there is no category in database ', async () => {
+    jest.spyOn(categoriesService, 'findAllWithProducts').mockResolvedValueOnce({
+      status: Status.SUCCESS,
+      message: [],
+    });
+
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
+    const { menuId } = createCategoryDto;
+
+    await categoriesController.findAllWithProducts(response, menuId);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: [],
+      }),
+    );
+  });
+
+  it('should update a category ', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
     const { id } = createCategoryDto;
+
     const requestBody = createCategoryDto;
-    expect(categoriesController.update(id, requestBody)).resolves.toEqual(1);
+    await categoriesController.update(response, id, requestBody);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: [],
+      }),
+    );
   });
 
-  it('should return 1 when a category is removed', () => {
+  it('should remove a category', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
     const { id } = createCategoryDto;
-    expect(categoriesController.remove(id)).resolves.toEqual(1);
+
+    await categoriesController.remove(response, id);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.NO_CONTENT);
   });
 });
