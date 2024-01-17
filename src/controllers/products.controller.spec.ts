@@ -38,11 +38,11 @@ describe('ProductsController', () => {
             }),
             update: jest.fn().mockResolvedValue({
               status: Status.SUCCESS,
-              message: {},
+              message: [],
             }),
             remove: jest.fn().mockResolvedValue({
               status: Status.SUCCESS,
-              message: {},
+              message: [],
             }),
           },
         },
@@ -108,7 +108,7 @@ describe('ProductsController', () => {
     expect(response.send).toHaveBeenCalledWith(
       JSON.stringify({
         status: Status.SUCCESS,
-        message: {},
+        message: [],
       }),
     );
   });

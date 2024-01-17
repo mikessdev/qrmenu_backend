@@ -4,17 +4,13 @@ import { AppModule } from '@modules/app.module';
 import { ProductsService } from '@services/products.service';
 import * as request from 'supertest';
 import { createUserDto, addUser, cleanUser } from './utils/objects/User';
-import { createMenuDto, addMenu, cleanMenu } from './utils/objects/Menu';
+import { createMenuDto, addMenu } from './utils/objects/Menu';
 import {
   createProductDto,
   addProduct,
   cleanProduct,
 } from './utils/objects/Product';
-import {
-  createCategoryDto,
-  addCategory,
-  cleanCategory,
-} from './utils/objects/Category';
+import { createCategoryDto, addCategory } from './utils/objects/Category';
 import { getAccessToken } from './firebaseAuth/accessToken';
 import { Status } from '@utils/enum/status.enum';
 

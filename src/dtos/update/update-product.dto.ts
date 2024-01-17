@@ -26,10 +26,4 @@ export class UpdateProductDto extends PartialType(CreateProductDto) {
 
   @ApiProperty()
   readonly likes: number;
-
-  @ApiProperty()
-  readonly createdAt?: Date;
-
-  @ApiProperty()
-  readonly updatedAt?: Date;
 }

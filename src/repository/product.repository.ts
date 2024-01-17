@@ -9,12 +9,12 @@ import { Status } from '@utils/enum/status.enum';
 export class ProductsRepository {
   constructor(
     @InjectModel(Product)
-    private productRepository: typeof Product,
+    private product: typeof Product,
   ) {}
 
   async findAll(categoryId: string) {
     try {
-      const products = await this.productRepository.findAll({
+      const products = await this.product.findAll({
         where: { categoryId: categoryId },
         order: [['createdAt', 'ASC']],
       });
@@ -33,7 +33,7 @@ export class ProductsRepository {
 
   async create(createProductDto: CreateProductDto) {
     try {
-      const product = await this.productRepository.create(createProductDto);
+      const product = await this.product.create(createProductDto);
       return {
         status: Status.SUCCESS,
         message: product,
@@ -49,7 +49,7 @@ export class ProductsRepository {
 
   async update(id: string, updateProductDto: UpdateProductDto) {
     try {
-      const result = await this.productRepository.update(updateProductDto, {
+      const result = await this.product.update(updateProductDto, {
         where: { id: id },
       });
       return {
@@ -67,7 +67,7 @@ export class ProductsRepository {
 
   async remove(id: string) {
     try {
-      const result = await this.productRepository.destroy({
+      const result = await this.product.destroy({
         where: { id: id },
       });
       return {
