@@ -47,13 +47,21 @@ export class ProductsRepository {
     }
   }
 
-  update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: string, updateProductDto: UpdateProductDto) {
     try {
-      return this.productRepository.update(updateProductDto, {
+      const result = await this.productRepository.update(updateProductDto, {
         where: { id: id },
       });
+      return {
+        status: Status.SUCCESS,
+        message: result,
+      };
     } catch (error) {
-      console.error(error);
+      console.error(error.errors[0].message);
+      return {
+        status: Status.FAILED,
+        message: error.errors[0].message,
+      };
     }
   }
 
