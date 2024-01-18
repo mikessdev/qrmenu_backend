@@ -1,26 +1,22 @@
-import { InjectModel } from '@nestjs/sequelize';
-import { Product } from '@database/entities/product.entity';
 import { Injectable } from '@nestjs/common';
-import { CreateProductDto } from '@dtos/create/create-product.dto';
-import { UpdateProductDto } from '@dtos/update/update-product.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { CreateMenuDto } from '@dtos/create/create-menu.dto';
+import { UpdateMenuDto } from '@dtos/update/update-menu.dto';
+import { Menu } from '@database/entities/menu.entity';
 import { Status } from '@utils/enum/status.enum';
 
 @Injectable()
-export class ProductsRepository {
+export class MenusRepository {
   constructor(
-    @InjectModel(Product)
-    private product: typeof Product,
+    @InjectModel(Menu)
+    private menu: typeof Menu,
   ) {}
-
-  async findAll(categoryId: string) {
+  async create(createMenuDto: CreateMenuDto) {
     try {
-      const products = await this.product.findAll({
-        where: { categoryId: categoryId },
-        order: [['createdAt', 'ASC']],
-      });
+      const menu = await this.menu.create(createMenuDto);
       return {
         status: Status.SUCCESS,
-        message: products,
+        message: menu,
       };
     } catch (error) {
       console.error(error.errors[0].message);
@@ -31,12 +27,12 @@ export class ProductsRepository {
     }
   }
 
-  async create(createProductDto: CreateProductDto) {
+  async findAllByUserId(userId: string) {
     try {
-      const product = await this.product.create(createProductDto);
+      const menus = await this.menu.findAll({ where: { userId: userId } });
       return {
         status: Status.SUCCESS,
-        message: product,
+        message: menus,
       };
     } catch (error) {
       console.error(error.errors[0].message);
@@ -47,9 +43,25 @@ export class ProductsRepository {
     }
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async findMenuByURL(url: string) {
     try {
-      const result = await this.product.update(updateProductDto, {
+      const menu = await this.menu.findOne({ where: { url: url } });
+      return {
+        status: Status.SUCCESS,
+        message: menu,
+      };
+    } catch (error) {
+      console.error(error.errors[0].message);
+      return {
+        status: Status.FAILED,
+        message: error.errors[0].message,
+      };
+    }
+  }
+
+  async update(id: string, updateMenuDto: UpdateMenuDto) {
+    try {
+      const result = await this.menu.update(updateMenuDto, {
         where: { id: id },
       });
       return {
@@ -67,9 +79,7 @@ export class ProductsRepository {
 
   async remove(id: string) {
     try {
-      const result = await this.product.destroy({
-        where: { id: id },
-      });
+      const result = await this.menu.destroy({ where: { id: id } });
       return {
         status: Status.SUCCESS,
         message: result,

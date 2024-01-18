@@ -1,26 +1,23 @@
-import { InjectModel } from '@nestjs/sequelize';
-import { Product } from '@database/entities/product.entity';
 import { Injectable } from '@nestjs/common';
-import { CreateProductDto } from '@dtos/create/create-product.dto';
-import { UpdateProductDto } from '@dtos/update/update-product.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { CreateUserDto } from '@dtos/create/create-user.dto';
+import { UpdateUserDto } from '@dtos/update/update-user.dto';
+import { User } from '@database/entities/user.entity';
 import { Status } from '@utils/enum/status.enum';
 
 @Injectable()
-export class ProductsRepository {
+export class UsersRepository {
   constructor(
-    @InjectModel(Product)
-    private product: typeof Product,
+    @InjectModel(User)
+    private user: typeof User,
   ) {}
 
-  async findAll(categoryId: string) {
+  async create(createUserDto: CreateUserDto) {
     try {
-      const products = await this.product.findAll({
-        where: { categoryId: categoryId },
-        order: [['createdAt', 'ASC']],
-      });
+      const menu = await this.user.create(createUserDto);
       return {
         status: Status.SUCCESS,
-        message: products,
+        message: menu,
       };
     } catch (error) {
       console.error(error.errors[0].message);
@@ -31,12 +28,12 @@ export class ProductsRepository {
     }
   }
 
-  async create(createProductDto: CreateProductDto) {
+  async findOne(id: string) {
     try {
-      const product = await this.product.create(createProductDto);
+      const user = await this.user.findByPk(id);
       return {
         status: Status.SUCCESS,
-        message: product,
+        message: user,
       };
     } catch (error) {
       console.error(error.errors[0].message);
@@ -47,9 +44,9 @@ export class ProductsRepository {
     }
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     try {
-      const result = await this.product.update(updateProductDto, {
+      const result = await this.user.update(updateUserDto, {
         where: { id: id },
       });
       return {
@@ -67,9 +64,7 @@ export class ProductsRepository {
 
   async remove(id: string) {
     try {
-      const result = await this.product.destroy({
-        where: { id: id },
-      });
+      const result = await this.user.destroy({ where: { id: id } });
       return {
         status: Status.SUCCESS,
         message: result,

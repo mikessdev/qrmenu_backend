@@ -1,19 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from '@services/users.service';
 import { CreateUserDto } from '@dtos/create/create-user.dto';
-import { getModelToken } from '@nestjs/sequelize';
-import { User } from '@database/entities/user.entity';
-
-const createUserDto: CreateUserDto = {
-  id: '1',
-  name: 'John',
-  lastName: 'Doe',
-  email: '<EMAIL>',
-  emailVerified: true,
-  phoneNumber: '123456789',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+import { UsersRepository } from '@repository/users.repository';
 
 describe('UsersService', () => {
   let usersService: UsersService;
@@ -23,16 +11,12 @@ describe('UsersService', () => {
       providers: [
         UsersService,
         {
-          provide: getModelToken(User),
+          provide: UsersRepository,
           useValue: {
-            create: jest.fn().mockImplementation((user: CreateUserDto) => {
-              return Promise.resolve(user);
-            }),
-            findByPk: jest.fn().mockImplementation(() => {
-              return Promise.resolve(createUserDto);
-            }),
+            findOne: jest.fn().mockResolvedValue(1),
             update: jest.fn().mockResolvedValue(1),
-            destroy: jest.fn().mockResolvedValue(1),
+            create: jest.fn().mockResolvedValue(1),
+            remove: jest.fn().mockResolvedValue(1),
           },
         },
       ],
@@ -46,21 +30,22 @@ describe('UsersService', () => {
   });
 
   it('should create a user', () => {
-    expect(usersService.create(createUserDto)).resolves.toEqual(createUserDto);
+    expect(usersService.create({} as CreateUserDto)).resolves.toEqual(1);
   });
 
   it('should find user by id', () => {
-    expect(usersService.findOne('1')).resolves.toEqual(createUserDto);
+    const id = '1';
+    expect(usersService.findOne(id)).resolves.toEqual(1);
   });
 
   it('should return 1 when a user is updated', () => {
-    const { id } = createUserDto;
-    const requestBody = createUserDto;
+    const id = '1';
+    const requestBody = {} as CreateUserDto;
     expect(usersService.update(id, requestBody)).resolves.toEqual(1);
   });
 
   it('should return 1 when a user is removed', () => {
-    const { id } = createUserDto;
+    const id = '1';
     expect(usersService.remove(id)).resolves.toEqual(1);
   });
 });

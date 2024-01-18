@@ -1,39 +1,21 @@
-import { InjectModel } from '@nestjs/sequelize';
-import { Product } from '@database/entities/product.entity';
 import { Injectable } from '@nestjs/common';
-import { CreateProductDto } from '@dtos/create/create-product.dto';
-import { UpdateProductDto } from '@dtos/update/update-product.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { CreateCategoryDto } from '@dtos/create/create-category.dto';
+import { UpdateCategoryDto } from '@dtos/update/update-category.dto';
+import { Category } from '@database/entities/category.entity';
+import { Product } from '@database/entities/product.entity';
 import { Status } from '@utils/enum/status.enum';
 
 @Injectable()
-export class ProductsRepository {
+export class CategoriesRepository {
   constructor(
-    @InjectModel(Product)
-    private product: typeof Product,
+    @InjectModel(Category)
+    private category: typeof Category,
   ) {}
 
-  async findAll(categoryId: string) {
+  async create(createCategoryDto: CreateCategoryDto) {
     try {
-      const products = await this.product.findAll({
-        where: { categoryId: categoryId },
-        order: [['createdAt', 'ASC']],
-      });
-      return {
-        status: Status.SUCCESS,
-        message: products,
-      };
-    } catch (error) {
-      console.error(error.errors[0].message);
-      return {
-        status: Status.FAILED,
-        message: error.errors[0].message,
-      };
-    }
-  }
-
-  async create(createProductDto: CreateProductDto) {
-    try {
-      const product = await this.product.create(createProductDto);
+      const product = await this.category.create(createCategoryDto);
       return {
         status: Status.SUCCESS,
         message: product,
@@ -47,9 +29,29 @@ export class ProductsRepository {
     }
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async findAllWithProducts(menuId: string) {
     try {
-      const result = await this.product.update(updateProductDto, {
+      const categories = await this.category.findAll({
+        where: { menuId: menuId },
+        order: [['createdAt', 'ASC']],
+        include: { model: Product },
+      });
+      return {
+        status: Status.SUCCESS,
+        message: categories,
+      };
+    } catch (error) {
+      console.error(error.errors[0].message);
+      return {
+        status: Status.FAILED,
+        message: error.errors[0].message,
+      };
+    }
+  }
+
+  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+    try {
+      const result = await this.category.update(updateCategoryDto, {
         where: { id: id },
       });
       return {
@@ -67,7 +69,7 @@ export class ProductsRepository {
 
   async remove(id: string) {
     try {
-      const result = await this.product.destroy({
+      const result = await this.category.destroy({
         where: { id: id },
       });
       return {

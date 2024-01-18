@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@modules/app.module';
 import { createUserDto, addUser, cleanUser } from './utils/objects/User';
@@ -34,7 +34,6 @@ describe('Menu (e2e)', () => {
 
   afterAll(async () => {
     await cleanUser();
-    await cleanMenu();
     await app.close();
   });
 
@@ -48,7 +47,7 @@ describe('Menu (e2e)', () => {
       .post('/menus')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(body);
-    expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(HttpStatus.CREATED);
   });
 
   it('/menus (POST): should not create a menu if the body is empty', async () => {
@@ -57,7 +56,7 @@ describe('Menu (e2e)', () => {
       .post('/menus')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(body);
-    expect(response.statusCode).toEqual(500);
+    expect(response.statusCode).toEqual(HttpStatus.BAD_REQUEST);
   });
 
   it('/menus (POST): should not create a menu if dont have the bearer token', async () => {
@@ -66,7 +65,7 @@ describe('Menu (e2e)', () => {
       .post('/menus')
       .set('Authorization', 'Bearer ')
       .send(body);
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
@@ -80,8 +79,10 @@ describe('Menu (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send(updateMenuDto);
 
+    const deserializing = JSON.parse(response.text);
+
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([1]);
+    expect(deserializing.message).toEqual([1]);
   });
 
   it('/menu (PATCH): should not update a menu if dont have the bearer token', async () => {
@@ -94,7 +95,7 @@ describe('Menu (e2e)', () => {
       .set('Authorization', 'Bearer ')
       .send(updateMenuDto);
 
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
@@ -106,8 +107,10 @@ describe('Menu (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send(updateMenuDto);
 
-    expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([0]);
+    const deserializing = JSON.parse(response.text);
+
+    expect(response.statusCode).toEqual(HttpStatus.OK);
+    expect(deserializing.message).toEqual([0]);
   });
 
   it('/menus (DEL): should delete a menu', async () => {
@@ -118,7 +121,7 @@ describe('Menu (e2e)', () => {
       .del(`/menus/${queryParams}`)
       .set('Authorization', `Bearer ${accessToken}`);
 
-    expect(response.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(HttpStatus.NO_CONTENT);
     expect(response.body).toEqual({});
   });
 
@@ -130,7 +133,7 @@ describe('Menu (e2e)', () => {
       .del(`/menu/${queryParams}`)
       .set('Authorization', 'Bearer ');
 
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
@@ -142,10 +145,12 @@ describe('Menu (e2e)', () => {
       .get(`/menus/${userId}`)
       .set('Authorization', `Bearer ${accessToken}`);
 
-    expect(response.statusCode).toEqual(200);
-    expect(response.body.length).toEqual(1);
-    expect(response.body[0].userId).toEqual(createMenuDto.userId);
-    expect(response.body[0].id).toEqual(createMenuDto.id);
+    const deserializing = JSON.parse(response.text);
+
+    expect(response.statusCode).toEqual(HttpStatus.OK);
+    expect(deserializing.message.length).toEqual(1);
+    expect(deserializing.message[0].userId).toEqual(createMenuDto.userId);
+    expect(deserializing.message[0].id).toEqual(createMenuDto.id);
   });
 
   it('/menus (GET): should find menu by url', async () => {
@@ -153,11 +158,13 @@ describe('Menu (e2e)', () => {
     const { url } = createMenuDto;
 
     const response = await request(app.getHttpServer()).get(
-      `/menus/url/${url}`,
+      `/menus?url=${url}`,
     );
 
+    const deserializing = JSON.parse(response.text);
+
     expect(response.statusCode).toEqual(200);
-    expect(response.body.url).toEqual(createMenuDto.url);
-    expect(response.body.id).toEqual(createMenuDto.id);
+    expect(deserializing.message.url).toEqual(createMenuDto.url);
+    expect(deserializing.message.id).toEqual(createMenuDto.id);
   });
 });

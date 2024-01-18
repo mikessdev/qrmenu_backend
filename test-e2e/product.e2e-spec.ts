@@ -1,21 +1,18 @@
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@modules/app.module';
 import { ProductsService } from '@services/products.service';
 import * as request from 'supertest';
 import { createUserDto, addUser, cleanUser } from './utils/objects/User';
-import { createMenuDto, addMenu, cleanMenu } from './utils/objects/Menu';
+import { createMenuDto, addMenu } from './utils/objects/Menu';
 import {
   createProductDto,
   addProduct,
   cleanProduct,
 } from './utils/objects/Product';
-import {
-  createCategoryDto,
-  addCategory,
-  cleanCategory,
-} from './utils/objects/Category';
+import { createCategoryDto, addCategory } from './utils/objects/Category';
 import { getAccessToken } from './firebaseAuth/accessToken';
+import { Status } from '@utils/enum/status.enum';
 
 describe('Product (e2e)', () => {
   let productsServiceMock: ProductsService;
@@ -40,9 +37,7 @@ describe('Product (e2e)', () => {
   });
 
   afterAll(async () => {
-    await cleanCategory();
     await cleanUser();
-    await cleanMenu();
     await app.close();
   });
 
@@ -56,7 +51,7 @@ describe('Product (e2e)', () => {
       .post('/products')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(body);
-    expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(HttpStatus.CREATED);
   });
 
   it('/products (POST): should not create a product if the body is empty', async () => {
@@ -65,7 +60,7 @@ describe('Product (e2e)', () => {
       .post('/products')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(body);
-    expect(response.statusCode).toEqual(500);
+    expect(response.statusCode).toEqual(HttpStatus.BAD_REQUEST);
   });
 
   it('/products (POST): should not create a product if dont have the bearer token', async () => {
@@ -74,7 +69,7 @@ describe('Product (e2e)', () => {
       .post('/products')
       .set('Authorization', 'Bearer ')
       .send(body);
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
@@ -96,8 +91,10 @@ describe('Product (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send(updateUserDto);
 
+    const deserializing = JSON.parse(response.text);
+
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([1]);
+    expect(deserializing.message).toEqual([1]);
   });
 
   it('/products (PATCH): should not update a product if dont have the bearer token', async () => {
@@ -138,8 +135,10 @@ describe('Product (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send(updateUserDto);
 
+    const deserializing = JSON.parse(response.text);
+
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([0]);
+    expect(deserializing.message).toEqual([0]);
   });
 
   it('/products (DEL): should delete a product', async () => {
@@ -150,8 +149,7 @@ describe('Product (e2e)', () => {
       .del(`/products/${productId}`)
       .set('Authorization', `Bearer ${accessToken}`);
 
-    expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual({});
+    expect(response.statusCode).toEqual(HttpStatus.NO_CONTENT);
   });
 
   it('/products (DEL): should not delete a product if dont have the bearer token', async () => {
@@ -162,7 +160,7 @@ describe('Product (e2e)', () => {
       .del(`/products/${productId}`)
       .set('Authorization', 'Bearer ');
 
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
@@ -173,10 +171,28 @@ describe('Product (e2e)', () => {
     const response = await request(app.getHttpServer()).get(
       `/products?categoryId=${categoryId}`,
     );
+    const deserializing = JSON.parse(response.text);
 
-    expect(response.statusCode).toEqual(200);
-    expect(response.body.length).toEqual(1);
-    expect(response.body[0].categoryId).toEqual(createProductDto.categoryId);
-    expect(response.body[0].id).toEqual(createProductDto.id);
+    expect(response.statusCode).toEqual(HttpStatus.OK);
+    expect(deserializing.status).toEqual(Status.SUCCESS);
+    expect(deserializing.message.length).toEqual(1);
+    expect(deserializing.message[0].categoryId).toEqual(
+      createProductDto.categoryId,
+    );
+    expect(deserializing.message[0].id).toEqual(createProductDto.id);
+  });
+
+  it('/products (GET): should not find all products by categoryId', async () => {
+    await addProduct(createProductDto);
+    const categoryId = 'b';
+
+    const response = await request(app.getHttpServer()).get(
+      `/products?categoryId=${categoryId}`,
+    );
+    const deserializing = JSON.parse(response.text);
+
+    expect(response.statusCode).toEqual(HttpStatus.OK);
+    expect(deserializing.status).toEqual(Status.SUCCESS);
+    expect(deserializing.message.length).toEqual(0);
   });
 });

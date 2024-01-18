@@ -1,36 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
 import { CreateCategoryDto } from '@dtos/create/create-category.dto';
 import { UpdateCategoryDto } from '@dtos/update/update-category.dto';
-import { Category } from '@database/entities/category.entity';
-import { Product } from '@database/entities/product.entity';
+import { CategoriesRepository } from '@repository/categories.repository';
 
 @Injectable()
 export class CategoriesService {
-  constructor(
-    @InjectModel(Category)
-    private categoryRepository: typeof Category,
-  ) {}
+  constructor(private readonly categoriesRepository: CategoriesRepository) {}
 
-  create(createCategoryDto: CreateCategoryDto) {
-    return this.categoryRepository.create(createCategoryDto);
+  async create(createCategoryDto: CreateCategoryDto) {
+    return await this.categoriesRepository.create(createCategoryDto);
   }
 
-  findAllWithProducts(menuId: string) {
-    return this.categoryRepository.findAll({
-      where: { menuId: menuId },
-      order: [['createdAt', 'ASC']],
-      include: { model: Product },
-    });
+  async findAllWithProducts(menuId: string) {
+    return await this.categoriesRepository.findAllWithProducts(menuId);
   }
 
-  update(id: string, updateCategoryDto: UpdateCategoryDto) {
-    return this.categoryRepository.update(updateCategoryDto, {
-      where: { id: id },
-    });
+  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+    return await this.categoriesRepository.update(id, updateCategoryDto);
   }
 
-  remove(id: string) {
-    return this.categoryRepository.destroy({ where: { id: id } });
+  async remove(id: string) {
+    return await this.categoriesRepository.remove(id);
   }
 }

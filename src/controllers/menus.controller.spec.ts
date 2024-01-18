@@ -1,8 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CategoriesService } from '@services/categories.service';
 import { CreateMenuDto } from '@dtos/create/create-menu.dto';
 import { MenusController } from './menus.controller';
 import { MenusService } from '@services/menus.service';
+import { Response } from 'express';
+import { Status } from '@utils/enum/status.enum';
+import { HttpStatus } from '@nestjs/common';
 
 const createMenuDto: CreateMenuDto = {
   id: '1',
@@ -20,7 +22,7 @@ const createMenuDto: CreateMenuDto = {
 
 describe('MenusController', () => {
   let menusController: MenusController;
-  let menusServiceMock: MenusService;
+  let menusService: MenusService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,55 +32,146 @@ describe('MenusController', () => {
         {
           provide: MenusService,
           useValue: {
-            create: jest.fn().mockImplementation((menu: CreateMenuDto) => {
-              return Promise.resolve(menu);
+            create: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: createMenuDto,
             }),
-            findAllByUserId: jest
-              .fn()
-              .mockResolvedValue([createMenuDto, createMenuDto]),
-            findMenuByURL: jest.fn().mockResolvedValue(createMenuDto),
-            update: jest.fn().mockResolvedValue(1),
-            remove: jest.fn().mockResolvedValue(1),
+            findAllByUserId: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: [createMenuDto],
+            }),
+            findMenuByURL: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: createMenuDto,
+            }),
+            update: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: [],
+            }),
+            remove: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: [],
+            }),
           },
         },
       ],
     }).compile();
 
     menusController = module.get<MenusController>(MenusController);
-    menusServiceMock = module.get<MenusService>(MenusService);
+    menusService = module.get<MenusService>(MenusService);
   });
 
   it('should be defined', () => {
     expect(menusController).toBeDefined();
   });
 
-  it('should create a category', () => {
-    expect(menusController.create(createMenuDto)).resolves.toEqual(
-      createMenuDto,
+  it('should create a menu with success', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
+    await menusController.create(response, createMenuDto);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.CREATED);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: createMenuDto,
+      }),
     );
   });
 
-  it('should return menu by userId', () => {
+  it('should return all menus by userId', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
     const { userId } = createMenuDto;
-    expect(menusController.findAllByUserId(userId)).resolves.toEqual([
-      createMenuDto,
-      createMenuDto,
-    ]);
+    await menusController.findAllByUserId(response, userId);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: [createMenuDto],
+      }),
+    );
   });
 
-  it('should return menu by URL', () => {
+  it('should not return all menus by userId', async () => {
+    jest.spyOn(menusService, 'findAllByUserId').mockResolvedValueOnce({
+      status: Status.FAILED,
+      message: 'Menus not found',
+    });
+
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
+    const { userId } = createMenuDto;
+    await menusController.findAllByUserId(response, userId);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.FAILED,
+        message: 'Menus not found',
+      }),
+    );
+  });
+
+  it('should return menu by URL', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
     const { url } = createMenuDto;
-    expect(menusController.findMenuByURL(url)).resolves.toEqual(createMenuDto);
+
+    await menusController.findMenuByURL(response, url);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: createMenuDto,
+      }),
+    );
   });
 
-  it('should return 1 when a menu is updated', () => {
+  it('should update a menu', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
     const { id } = createMenuDto;
     const requestBody = createMenuDto;
-    expect(menusController.update(id, requestBody)).resolves.toEqual(1);
+
+    await menusController.update(response, id, requestBody);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: [],
+      }),
+    );
   });
 
-  it('should return 1 when a menu is removed', () => {
+  it('should remove a menu ', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
     const { id } = createMenuDto;
-    expect(menusController.remove(id)).resolves.toEqual(1);
+
+    await menusController.remove(response, id);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.NO_CONTENT);
   });
 });
