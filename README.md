@@ -116,7 +116,7 @@ $ npm run start:prod
 http://localhost:3005/
 
 # put this in your browser for see the openapi documentation
-http://localhost:3005/api-documentation
+http://localhost:3005/api
 ```
 
 ### Running Test (Optional)
