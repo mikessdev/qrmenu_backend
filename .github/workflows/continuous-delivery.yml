@@ -23,8 +23,14 @@ jobs:
       - name: 'Debug'
         run: 'ls -la'
 
+      - name: 'Install Nest-cli'
+        run: 'npm install -g @nestjs/cli'
+
       - name: 'Install Dependencies'
         run: 'npm ci'
+
+      - name: 'Bulding'
+        run: 'npx nest build'
 
       - name: 'Deploy to vercel (prod)'
         run: 'npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }}'
