@@ -64,6 +64,10 @@ export class AppModule implements NestModule {
           path: '/',
           method: RequestMethod.GET,
         },
+        {
+          path: 'api',
+          method: RequestMethod.GET,
+        },
       )
       .forRoutes({
         path: '*',
