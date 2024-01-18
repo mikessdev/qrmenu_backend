@@ -28,7 +28,6 @@ describe('User (e2e)', () => {
     await app.init();
 
     accessToken = await getAccessToken();
-    console.log(accessToken);
   });
 
   afterAll(async () => {
