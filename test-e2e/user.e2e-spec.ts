@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@modules/app.module';
 import * as request from 'supertest';
@@ -28,6 +28,7 @@ describe('User (e2e)', () => {
     await app.init();
 
     accessToken = await getAccessToken();
+    console.log(accessToken);
   });
 
   afterAll(async () => {
@@ -45,7 +46,7 @@ describe('User (e2e)', () => {
       .post('/users')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(body);
-    expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(HttpStatus.CREATED);
   });
 
   it('/users (POST): should not create an user if the body is empty', async () => {
@@ -54,7 +55,7 @@ describe('User (e2e)', () => {
       .post('/users')
       .set('Authorization', `Bearer ${accessToken}`)
       .send(body);
-    expect(response.statusCode).toEqual(500);
+    expect(response.statusCode).toEqual(HttpStatus.BAD_REQUEST);
   });
 
   it('/users (POST): should not create an user if dont have the bearer token', async () => {
@@ -63,7 +64,7 @@ describe('User (e2e)', () => {
       .post('/users')
       .set('Authorization', 'Bearer ')
       .send(body);
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
@@ -77,8 +78,10 @@ describe('User (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send(updateUserDto);
 
-    expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([1]);
+    const deserializing = JSON.parse(response.text);
+
+    expect(response.statusCode).toEqual(HttpStatus.OK);
+    expect(deserializing.message).toEqual([1]);
   });
 
   it('/users (PATCH): should not update an user if dont have the bearer token', async () => {
@@ -91,7 +94,7 @@ describe('User (e2e)', () => {
       .set('Authorization', 'Bearer ')
       .send(updateUserDto);
 
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
@@ -103,8 +106,10 @@ describe('User (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send(updateUserDto);
 
-    expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([0]);
+    const deserializing = JSON.parse(response.text);
+
+    expect(response.statusCode).toEqual(HttpStatus.OK);
+    expect(deserializing.message).toEqual([0]);
   });
 
   it('/categories (DEL): should delete an user', async () => {
@@ -115,8 +120,7 @@ describe('User (e2e)', () => {
       .del(`/users/${userId}`)
       .set('Authorization', `Bearer ${accessToken}`);
 
-    expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual({});
+    expect(response.statusCode).toEqual(HttpStatus.NO_CONTENT);
   });
 
   it('/users (DEL): should not delete an user if dont have the bearer token', async () => {
@@ -127,7 +131,7 @@ describe('User (e2e)', () => {
       .del(`/users/${userId}`)
       .set('Authorization', 'Bearer ');
 
-    expect(response.statusCode).toEqual(401);
+    expect(response.statusCode).toEqual(HttpStatus.UNAUTHORIZED);
     expect(response.body.message).toEqual('Access Denied');
   });
 
@@ -139,7 +143,9 @@ describe('User (e2e)', () => {
       .get(`/users/${userId}`)
       .set('Authorization', 'Bearer ');
 
-    expect(response.statusCode).toEqual(200);
-    expect(response.body.id).toEqual(createUserDto.id);
+    const deserializing = JSON.parse(response.text);
+
+    expect(response.statusCode).toEqual(HttpStatus.OK);
+    expect(deserializing.message.id).toEqual(createUserDto.id);
   });
 });

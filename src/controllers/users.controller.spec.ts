@@ -2,6 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserDto } from '@dtos/create/create-user.dto';
 import { UsersController } from '@controllers/users.controller';
 import { UsersService } from '@services/users.service';
+import { Status } from '@utils/enum/status.enum';
+import { HttpStatus } from '@nestjs/common';
+import { Response } from 'express';
 
 const createUserDto: CreateUserDto = {
   id: '1',
@@ -14,7 +17,6 @@ const createUserDto: CreateUserDto = {
 
 describe('UsersController', () => {
   let usersController: UsersController;
-  let usersServiceMock: UsersService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -24,45 +26,98 @@ describe('UsersController', () => {
         {
           provide: UsersService,
           useValue: {
-            create: jest.fn().mockImplementation((user: CreateUserDto) => {
-              return Promise.resolve(user);
+            create: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: createUserDto,
             }),
-            findOne: jest.fn().mockResolvedValue(createUserDto),
-            findMenuByURL: jest.fn().mockResolvedValue(createUserDto),
-            update: jest.fn().mockResolvedValue(1),
-            remove: jest.fn().mockResolvedValue(1),
+            findOne: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: createUserDto,
+            }),
+            update: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: [],
+            }),
+            remove: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: [],
+            }),
           },
         },
       ],
     }).compile();
 
     usersController = module.get<UsersController>(UsersController);
-    usersServiceMock = module.get<UsersService>(UsersService);
   });
 
   it('should be defined', () => {
     expect(usersController).toBeDefined();
   });
 
-  it('should create a user', () => {
-    expect(usersController.create(createUserDto)).resolves.toEqual(
-      createUserDto,
+  it('should create a user', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
+    await usersController.create(response, createUserDto);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.CREATED);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: createUserDto,
+      }),
     );
   });
 
-  it('should return user by id', () => {
+  it('should return user by id', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
     const { id } = createUserDto;
-    expect(usersController.findOne(id)).resolves.toEqual(createUserDto);
+    await usersController.findOne(response, id);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: createUserDto,
+      }),
+    );
   });
 
-  it('should return 1 when a user is updated', () => {
+  it('should update a user', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
     const { id } = createUserDto;
     const requestBody = createUserDto;
-    expect(usersController.update(id, requestBody)).resolves.toEqual(1);
+
+    await usersController.update(response, id, requestBody);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: [],
+      }),
+    );
   });
 
-  it('should return 1 when a user is removed', () => {
+  it('should remove a user ', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
     const { id } = createUserDto;
-    expect(usersController.remove(id)).resolves.toEqual(1);
+    await usersController.remove(response, id);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.NO_CONTENT);
   });
 });
