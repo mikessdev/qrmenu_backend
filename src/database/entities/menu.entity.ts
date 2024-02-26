@@ -57,6 +57,7 @@ export class Menu extends Model<Menu> {
   @Column({
     type: DataType.STRING(30),
     allowNull: false,
+    unique: true,
   })
   url: string;
 

@@ -38,6 +38,7 @@ module.exports = {
       url: {
         type: Sequelize.STRING(30),
         allowNull: false,
+        unique: true,
       },
 
       phoneNumber: {
