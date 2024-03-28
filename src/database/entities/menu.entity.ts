@@ -52,7 +52,7 @@ export class Menu extends Model<Menu> {
     type: DataType.STRING(10),
     allowNull: true,
   })
-  primaryColor: string;
+  color: string;
 
   @Column({
     type: DataType.STRING(30),

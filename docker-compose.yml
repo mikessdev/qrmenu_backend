@@ -6,7 +6,7 @@ services:
     user: postgres
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=Fsad213FSAD
+      - POSTGRES_PASSWORD=admin
     ports:
       - '5432:5432'
     volumes:

@@ -14,7 +14,7 @@ const createMenuDto: CreateMenuDto = {
   name: 'Restaurante do Japa',
   url: 'restaurante-do-japa',
   phoneNumber: '1199229922',
-  primaryColor: '#DD212',
+  color: '#DD212',
   instagram: '@restaurantedojapa',
   openDays: 'segunda-sexta',
   address: 'brasil-sp',
