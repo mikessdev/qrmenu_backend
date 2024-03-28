@@ -19,7 +19,7 @@ export class UpdateMenuDto extends PartialType(CreateMenuDto) {
   readonly name: string;
 
   @ApiProperty()
-  readonly primaryColor: string;
+  readonly color: string;
 
   @ApiProperty()
   readonly url: string;

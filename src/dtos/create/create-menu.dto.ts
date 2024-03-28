@@ -17,7 +17,7 @@ export class CreateMenuDto {
   readonly name: string;
 
   @ApiProperty()
-  readonly primaryColor: string;
+  readonly color: string;
 
   @ApiProperty()
   readonly url: string;

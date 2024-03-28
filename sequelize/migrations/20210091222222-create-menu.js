@@ -30,7 +30,7 @@ module.exports = {
         allowNull: true,
       },
 
-      primaryColor: {
+      color: {
         type: Sequelize.STRING(10),
         allowNull: true,
       },
