@@ -9,5 +9,6 @@ import { CategoriesRepository } from '@repository/categories.repository';
   imports: [SequelizeModule.forFeature([Category])],
   controllers: [CategoriesController],
   providers: [CategoriesService, CategoriesRepository],
+  exports: [CategoriesService],
 })
 export class CategoriesModule {}
