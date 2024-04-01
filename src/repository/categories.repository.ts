@@ -29,6 +29,22 @@ export class CategoriesRepository {
     }
   }
 
+  async createAll(categories: CreateCategoryDto[]) {
+    try {
+      const result = await this.category.bulkCreate(categories);
+      return {
+        status: Status.SUCCESS,
+        message: result,
+      };
+    } catch (error) {
+      console.error(error.errors[0].message);
+      return {
+        status: Status.FAILED,
+        message: error.errors[0].message,
+      };
+    }
+  }
+
   async findAllWithProducts(menuId: string) {
     try {
       const categories = await this.category.findAll({
