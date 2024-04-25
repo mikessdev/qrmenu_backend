@@ -47,6 +47,22 @@ export class ProductsRepository {
     }
   }
 
+  async createAll(products: CreateProductDto[]) {
+    try {
+      const result = await this.product.bulkCreate(products);
+      return {
+        status: Status.SUCCESS,
+        message: result,
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        status: Status.FAILED,
+        message: error,
+      };
+    }
+  }
+
   async update(id: string, updateProductDto: UpdateProductDto) {
     try {
       const result = await this.product.update(updateProductDto, {
