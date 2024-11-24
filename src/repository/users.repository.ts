@@ -64,13 +64,11 @@ export class UsersRepository {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
-      const result = await this.user.update(updateUserDto, {
+      await this.user.update(updateUserDto, {
         where: { id: id },
       });
-      return {
-        status: Status.SUCCESS,
-        message: result,
-      };
+
+      return await this.findOne(id);
     } catch (error) {
       console.error(error.errors[0].message);
       return {
