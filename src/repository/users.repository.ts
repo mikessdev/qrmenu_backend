@@ -44,6 +44,24 @@ export class UsersRepository {
     }
   }
 
+  async findOneByFirebaseId(firebaseId: string) {
+    try {
+      const user = await this.user.findOne({
+        where: { firebaseId: firebaseId },
+      });
+      return {
+        status: Status.SUCCESS,
+        message: user,
+      };
+    } catch (error) {
+      console.error(error.errors[0].message);
+      return {
+        status: Status.FAILED,
+        message: error.errors[0].message,
+      };
+    }
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
       const result = await this.user.update(updateUserDto, {

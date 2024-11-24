@@ -30,13 +30,13 @@ describe('User (e2e)', () => {
     accessToken = await getAccessToken();
   });
 
+  afterEach(async () => {
+    await cleanUser();
+  });
+
   afterAll(async () => {
     await cleanUser();
     await app.close();
-  });
-
-  afterEach(async () => {
-    await cleanUser();
   });
 
   it('/users (POST): should create an user', async () => {
@@ -140,7 +140,21 @@ describe('User (e2e)', () => {
 
     const response = await request(app.getHttpServer())
       .get(`/users/${userId}`)
-      .set('Authorization', 'Bearer ');
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    const deserializing = JSON.parse(response.text);
+
+    expect(response.statusCode).toEqual(HttpStatus.OK);
+    expect(deserializing.message.id).toEqual(createUserDto.id);
+  });
+
+  it('/users (GET): should get an user by firebaseId', async () => {
+    await addUser(createUserDto);
+    const firebaseId = '1';
+
+    const response = await request(app.getHttpServer())
+      .get(`/users?firebaseId=${firebaseId}`)
+      .set('Authorization', `Bearer ${accessToken}`);
 
     const deserializing = JSON.parse(response.text);
 

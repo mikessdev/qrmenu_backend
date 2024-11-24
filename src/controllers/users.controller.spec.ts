@@ -36,6 +36,10 @@ describe('UsersController', () => {
               status: Status.SUCCESS,
               message: createUserDto,
             }),
+            findOneByFirebaseId: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: createUserDto,
+            }),
             update: jest.fn().mockResolvedValue({
               status: Status.SUCCESS,
               message: [],
@@ -81,6 +85,24 @@ describe('UsersController', () => {
 
     const { id } = createUserDto;
     await usersController.findOne(response, id);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: createUserDto,
+      }),
+    );
+  });
+
+  it('should return user by firebaseId', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
+    const { firebaseId } = createUserDto;
+    await usersController.findOneByFirebaseId(response, firebaseId);
 
     expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
     expect(response.send).toHaveBeenCalledWith(

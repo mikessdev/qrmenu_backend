@@ -39,7 +39,7 @@ export class ProductsController {
     description: 'ID of the category',
     type: Number,
     required: true,
-    example: '88b7fedf-59fa-4b02-875d-4345bb74c186',
+    example: '111',
   })
   @ApiResponse({
     status: HttpStatus.OK,

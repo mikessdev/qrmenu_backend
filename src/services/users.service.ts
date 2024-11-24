@@ -15,6 +15,10 @@ export class UsersService {
     return await this.userRepository.findOne(id);
   }
 
+  async findOneByFirebaseId(firebaseId: string) {
+    return await this.userRepository.findOneByFirebaseId(firebaseId);
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     return await this.userRepository.update(id, updateUserDto);
   }
