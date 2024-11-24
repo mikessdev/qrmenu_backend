@@ -17,7 +17,8 @@ https://qrmenu-backend-prod.vercel.app/api/
 <span>Docker > v24.0.7 + docker compose</span>
 
 ### environment variables
-```bash 
+
+```bash
 cp .env_sample .env
 ```
 
@@ -39,6 +40,9 @@ $ docker compose up -d
 ```bash
 # migrations
 $ npx sequelize-cli db:migrate
+
+# create new migration
+$ npx sequelize-cli migration:generate --name <migration-name>
 ```
 
 ### Running the app

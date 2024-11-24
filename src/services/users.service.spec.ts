@@ -34,18 +34,18 @@ describe('UsersService', () => {
   });
 
   it('should find user by id', () => {
-    const id = '1';
+    const id = 1;
     expect(usersService.findOne(id)).resolves.toEqual(1);
   });
 
   it('should return 1 when a user is updated', () => {
-    const id = '1';
+    const id = 1;
     const requestBody = {} as CreateUserDto;
     expect(usersService.update(id, requestBody)).resolves.toEqual(1);
   });
 
   it('should return 1 when a user is removed', () => {
-    const id = '1';
+    const id = 1;
     expect(usersService.remove(id)).resolves.toEqual(1);
   });
 });

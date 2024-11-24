@@ -28,7 +28,7 @@ export class UsersRepository {
     }
   }
 
-  async findOne(id: string) {
+  async findOne(id: number) {
     try {
       const user = await this.user.findByPk(id);
       return {
@@ -44,7 +44,7 @@ export class UsersRepository {
     }
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto) {
     try {
       const result = await this.user.update(updateUserDto, {
         where: { id: id },
@@ -62,7 +62,7 @@ export class UsersRepository {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     try {
       const result = await this.user.destroy({ where: { id: id } });
       return {

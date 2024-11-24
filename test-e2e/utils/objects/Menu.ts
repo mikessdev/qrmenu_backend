@@ -3,8 +3,8 @@ import { CreateMenuDto } from '@dtos/create/create-menu.dto';
 import { UpdateMenuDto } from '@dtos/update/update-menu.dto';
 
 export const createMenuDto: CreateMenuDto = {
-  id: '1',
-  userId: '1',
+  id: 1,
+  userId: 1,
   headerImg: 'http://menu/header/image.png',
   profileImg: 'http://menu/profile/image.png',
   name: 'restaurante do Japa',
@@ -17,8 +17,8 @@ export const createMenuDto: CreateMenuDto = {
 };
 
 export const updateMenuDto: UpdateMenuDto = {
-  id: '1',
-  userId: '1',
+  id: 1,
+  userId: 1,
   headerImg: 'http://menu/header/image.png',
   profileImg: 'http://menu/profile/image.png',
   name: 'restaurante do fernando',

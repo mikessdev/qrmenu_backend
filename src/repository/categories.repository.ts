@@ -45,7 +45,7 @@ export class CategoriesRepository {
     }
   }
 
-  async findAllWithProducts(menuId: string) {
+  async findAllWithProducts(menuId: number) {
     try {
       const categories = await this.category.findAll({
         where: { menuId: menuId },
@@ -65,7 +65,7 @@ export class CategoriesRepository {
     }
   }
 
-  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
     try {
       const result = await this.category.update(updateCategoryDto, {
         where: { id: id },
@@ -83,7 +83,7 @@ export class CategoriesRepository {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     try {
       const result = await this.category.destroy({
         where: { id: id },

@@ -88,12 +88,12 @@ describe('MenusService', () => {
   });
 
   it('should return all of menus', () => {
-    const userId = '1';
+    const userId = 1;
     expect(menusService.findAllByUserId(userId)).resolves.toEqual(1);
   });
 
   it('should return an empty array if there is no menu in database ', () => {
-    const userId = '1';
+    const userId = 1;
     expect(menusService.findAllByUserId(userId)).resolves.toEqual(1);
   });
 
@@ -103,13 +103,13 @@ describe('MenusService', () => {
   });
 
   it('should return 1 when a menu is updated', () => {
-    const id = '1';
+    const id = 1;
     const requestBody = {} as CreateMenuDto;
     expect(menusService.update(id, requestBody)).resolves.toEqual(1);
   });
 
   it('should return 1 when a menu is removed', () => {
-    const id = '1';
+    const id = 1;
     expect(menusService.remove(id)).resolves.toEqual(1);
   });
 });

@@ -70,7 +70,7 @@ describe('User (e2e)', () => {
   it('/users (PATCH): should update an user', async () => {
     await addUser(createUserDto);
 
-    const queryParams = '1';
+    const queryParams = 1;
 
     const response = await request(app.getHttpServer())
       .patch(`/users/${queryParams}`)
@@ -86,7 +86,7 @@ describe('User (e2e)', () => {
   it('/users (PATCH): should not update an user if dont have the bearer token', async () => {
     await addUser(createUserDto);
 
-    const queryParams = '1';
+    const queryParams = 1;
 
     const response = await request(app.getHttpServer())
       .patch(`/users/${queryParams}`)
@@ -98,7 +98,7 @@ describe('User (e2e)', () => {
   });
 
   it('/users (PATCH): should not update an user if does not exist', async () => {
-    const userId = '1';
+    const userId = 1;
 
     const response = await request(app.getHttpServer())
       .patch(`/users/${userId}`)
@@ -113,7 +113,7 @@ describe('User (e2e)', () => {
 
   it('/categories (DEL): should delete an user', async () => {
     await addUser(createUserDto);
-    const userId = '1';
+    const userId = 1;
 
     const response = await request(app.getHttpServer())
       .del(`/users/${userId}`)
@@ -124,7 +124,7 @@ describe('User (e2e)', () => {
 
   it('/users (DEL): should not delete an user if dont have the bearer token', async () => {
     await addUser(createUserDto);
-    const userId = '1';
+    const userId = 1;
 
     const response = await request(app.getHttpServer())
       .del(`/users/${userId}`)
@@ -136,7 +136,7 @@ describe('User (e2e)', () => {
 
   it('/users (GET): should get an user by id', async () => {
     await addUser(createUserDto);
-    const userId = '1';
+    const userId = 1;
 
     const response = await request(app.getHttpServer())
       .get(`/users/${userId}`)

@@ -7,8 +7,8 @@ import { Status } from '@utils/enum/status.enum';
 import { HttpStatus } from '@nestjs/common';
 
 const createMenuDto: CreateMenuDto = {
-  id: '1',
-  userId: '1',
+  id: 1,
+  userId: 1,
   headerImg: 'http://menu/image',
   profileImg: 'http://profile/image',
   name: 'Restaurante do Japa',

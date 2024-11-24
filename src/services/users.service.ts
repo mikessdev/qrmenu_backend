@@ -11,15 +11,15 @@ export class UsersService {
     return await this.userRepository.create(createUserDto);
   }
 
-  async findOne(id: string) {
+  async findOne(id: number) {
     return await this.userRepository.findOne(id);
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto) {
     return await this.userRepository.update(id, updateUserDto);
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     return await this.userRepository.remove(id);
   }
 }

@@ -75,11 +75,11 @@ describe('Category (e2e)', () => {
   it('/categories (PATCH): should update a category', async () => {
     await addCategory(createCategoryDto);
 
-    const queryParams = '1';
+    const queryParams = 1;
     const updateCategoryDto = {
       id: queryParams,
       title: 'Petiscos atualizadas',
-      menuId: '1',
+      menuId: 1,
       createdAT: new Date(),
       updatedAt: new Date(),
     };
@@ -98,7 +98,7 @@ describe('Category (e2e)', () => {
   it('/categories (PATCH): should not update a category if dont have the bearer token', async () => {
     await addCategory(createCategoryDto);
 
-    const queryParams = '1';
+    const queryParams = 1;
     const updateCategoryDto = {
       id: queryParams,
       title: 'Petiscos atualizadas',
@@ -137,7 +137,7 @@ describe('Category (e2e)', () => {
 
   it('/categories (DEL): should delete a category', async () => {
     await addCategory(createCategoryDto);
-    const categoryId = '1';
+    const categoryId = 1;
 
     const response = await request(app.getHttpServer())
       .del(`/categories/${categoryId}`)
@@ -148,7 +148,7 @@ describe('Category (e2e)', () => {
 
   it('/categories (DEL): should not delete a category if dont have the bearer token', async () => {
     await addCategory(createCategoryDto);
-    const categoryId = '1';
+    const categoryId = 1;
 
     const response = await request(app.getHttpServer())
       .del(`/categories/${categoryId}`)
@@ -172,7 +172,7 @@ describe('Category (e2e)', () => {
   });
 
   it("/categories (GET): shouldn't get any categories by menu id if they don't exist", async () => {
-    const menuId = '1';
+    const menuId = 1;
 
     const response = await request(app.getHttpServer()).get(
       `/categories?menuId=${menuId}`,

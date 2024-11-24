@@ -2,23 +2,22 @@ import { CreateProductDto } from '@dtos/create/create-product.dto';
 import { UpdateProductDto } from '@dtos/update/update-product.dto';
 import { ProductsRepository } from '@repository/product.repository';
 import { Injectable } from '@nestjs/common';
-import { randomUUID as uuid } from 'crypto';
 
 @Injectable()
 export class ProductsService {
   constructor(private readonly productsRepository: ProductsRepository) {}
 
-  async findAll(categoryId: string) {
+  async findAll(categoryId: number) {
     return await this.productsRepository.findAll(categoryId);
   }
 
   async create(createProductDto: CreateProductDto) {
     return await this.productsRepository.create(createProductDto);
   }
-  async createAll(categoryId: string) {
+  async createAll(categoryId: number) {
     const products = [
       {
-        id: uuid(),
+        id: 1,
         categoryId,
         title: 'Product 01',
         image:
@@ -30,7 +29,7 @@ export class ProductsService {
         likes: 0,
       },
       {
-        id: uuid(),
+        id: 2,
         categoryId,
         title: 'Product 02',
         image:
@@ -42,7 +41,7 @@ export class ProductsService {
         likes: 0,
       },
       {
-        id: uuid(),
+        id: 3,
         categoryId,
         title: 'Product 03',
         image:
@@ -57,11 +56,11 @@ export class ProductsService {
     return await this.productsRepository.createAll(products);
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: number, updateProductDto: UpdateProductDto) {
     return await this.productsRepository.update(id, updateProductDto);
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     return await this.productsRepository.remove(id);
   }
 }

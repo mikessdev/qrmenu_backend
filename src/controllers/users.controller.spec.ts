@@ -5,9 +5,11 @@ import { UsersService } from '@services/users.service';
 import { Status } from '@utils/enum/status.enum';
 import { HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
+import { randomUUID as uuid } from 'crypto';
 
 const createUserDto: CreateUserDto = {
-  id: '1',
+  id: 1,
+  firebaseId: uuid(),
   name: 'Japa',
   lastName: 'da Silva',
   email: 'japa@gmail.com',

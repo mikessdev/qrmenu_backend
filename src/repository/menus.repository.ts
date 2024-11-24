@@ -27,7 +27,7 @@ export class MenusRepository {
     }
   }
 
-  async findAllByUserId(userId: string) {
+  async findAllByUserId(userId: number) {
     try {
       const menus = await this.menu.findAll({ where: { userId: userId } });
       return {
@@ -59,7 +59,7 @@ export class MenusRepository {
     }
   }
 
-  async update(id: string, updateMenuDto: UpdateMenuDto) {
+  async update(id: number, updateMenuDto: UpdateMenuDto) {
     try {
       const result = await this.menu.update(updateMenuDto, {
         where: { id: id },
@@ -77,7 +77,7 @@ export class MenusRepository {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     try {
       const result = await this.menu.destroy({ where: { id: id } });
       return {

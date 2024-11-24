@@ -36,7 +36,7 @@ export class MenusService {
     return resultMenu;
   }
 
-  async findAllByUserId(userId: string) {
+  async findAllByUserId(userId: number) {
     return await this.menuRepository.findAllByUserId(userId);
   }
 
@@ -44,11 +44,11 @@ export class MenusService {
     return await this.menuRepository.findMenuByURL(url);
   }
 
-  async update(id: string, updateMenuDto: UpdateMenuDto) {
+  async update(id: number, updateMenuDto: UpdateMenuDto) {
     return await this.menuRepository.update(id, updateMenuDto);
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     return await this.menuRepository.remove(id);
   }
 }

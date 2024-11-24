@@ -34,7 +34,7 @@ export class UsersController {
     status: HttpStatus.OK,
     type: UserApiResponse,
   })
-  async findOne(@Res() response: Response, @Param('id') id: string) {
+  async findOne(@Res() response: Response, @Param('id') id: number) {
     const user = await this.usersService.findOne(id);
     if (user.status === Status.SUCCESS) {
       return response.status(HttpStatus.OK).send(JSON.stringify(user));
@@ -77,7 +77,7 @@ export class UsersController {
   })
   async update(
     @Res() response: Response,
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     const result = await this.usersService.update(id, updateUserDto);
@@ -99,7 +99,7 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
   })
-  async remove(@Res() response: Response, @Param('id') id: string) {
+  async remove(@Res() response: Response, @Param('id') id: number) {
     const result = await this.usersService.remove(id);
     if (result.status === Status.SUCCESS) {
       return response.status(HttpStatus.NO_CONTENT).send();

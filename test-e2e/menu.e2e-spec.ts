@@ -72,7 +72,7 @@ describe('Menu (e2e)', () => {
   it('/menus (PATCH): should update a menu', async () => {
     await addMenu(createMenuDto);
 
-    const queryParams = '1';
+    const queryParams = 1;
 
     const response = await request(app.getHttpServer())
       .patch(`/menus/${queryParams}`)
@@ -88,7 +88,7 @@ describe('Menu (e2e)', () => {
   it('/menu (PATCH): should not update a menu if dont have the bearer token', async () => {
     await addMenu(createMenuDto);
 
-    const queryParams = '1';
+    const queryParams = 1;
 
     const response = await request(app.getHttpServer())
       .patch(`/menus/${queryParams}`)
@@ -100,7 +100,7 @@ describe('Menu (e2e)', () => {
   });
 
   it('/menus (PATCH): should not update a menu if does not exist', async () => {
-    const queryParams = '1';
+    const queryParams = 1;
 
     const response = await request(app.getHttpServer())
       .patch(`/menus/${queryParams}`)

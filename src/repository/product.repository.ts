@@ -12,7 +12,7 @@ export class ProductsRepository {
     private product: typeof Product,
   ) {}
 
-  async findAll(categoryId: string) {
+  async findAll(categoryId: number) {
     try {
       const products = await this.product.findAll({
         where: { categoryId: categoryId },
@@ -63,7 +63,7 @@ export class ProductsRepository {
     }
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: number, updateProductDto: UpdateProductDto) {
     try {
       const result = await this.product.update(updateProductDto, {
         where: { id: id },
@@ -81,7 +81,7 @@ export class ProductsRepository {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     try {
       const result = await this.product.destroy({
         where: { id: id },

@@ -7,9 +7,9 @@ import { HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 
 const createCategoryDto: CreateCategoryDto = {
-  id: '1',
+  id: 1,
   title: 'Porções',
-  menuId: '1',
+  menuId: 1,
   createdAt: new Date(),
   updatedAt: new Date(),
 };

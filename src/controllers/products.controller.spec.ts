@@ -7,8 +7,8 @@ import { Status } from '@utils/enum/status.enum';
 import { HttpStatus } from '@nestjs/common';
 
 const createProductDto: CreateProductDto = {
-  id: '1',
-  categoryId: '1',
+  id: 1,
+  categoryId: 1,
   title: 'Iscas de Frango',
   description: '300g de filézinho empanado',
   price: 'R$ 15,00',

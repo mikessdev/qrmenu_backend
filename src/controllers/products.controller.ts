@@ -37,7 +37,7 @@ export class ProductsController {
   @ApiQuery({
     name: 'categoryId',
     description: 'ID of the category',
-    type: String,
+    type: Number,
     required: true,
     example: '88b7fedf-59fa-4b02-875d-4345bb74c186',
   })
@@ -47,7 +47,7 @@ export class ProductsController {
   })
   async findAll(
     @Res() response: Response,
-    @Query('categoryId') categoryId: string,
+    @Query('categoryId') categoryId: number,
   ) {
     const result = await this.productsService.findAll(categoryId);
     if (result.status === Status.SUCCESS) {
@@ -96,7 +96,7 @@ export class ProductsController {
   @ApiBody({ type: UpdateProductDto })
   async update(
     @Res() response: Response,
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateProductDto: UpdateProductDto,
   ) {
     const result = await this.productsService.update(id, updateProductDto);
@@ -118,7 +118,7 @@ export class ProductsController {
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
   })
-  async remove(@Res() response: Response, @Param('id') id: string) {
+  async remove(@Res() response: Response, @Param('id') id: number) {
     const result = await this.productsService.remove(id);
 
     if (result.status === Status.SUCCESS) {
