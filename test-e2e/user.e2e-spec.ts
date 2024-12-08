@@ -80,7 +80,7 @@ describe('User (e2e)', () => {
     const deserializing = JSON.parse(response.text);
 
     expect(response.statusCode).toEqual(HttpStatus.OK);
-    expect(deserializing.message).toEqual([1]);
+    expect(deserializing.message.name).toEqual(updateUserDto.name);
   });
 
   it('/users (PATCH): should not update an user if dont have the bearer token', async () => {
@@ -108,7 +108,7 @@ describe('User (e2e)', () => {
     const deserializing = JSON.parse(response.text);
 
     expect(response.statusCode).toEqual(HttpStatus.OK);
-    expect(deserializing.message).toEqual([0]);
+    expect(deserializing.message).toEqual(null);
   });
 
   it('/categories (DEL): should delete an user', async () => {
@@ -159,6 +159,6 @@ describe('User (e2e)', () => {
     const deserializing = JSON.parse(response.text);
 
     expect(response.statusCode).toEqual(HttpStatus.OK);
-    expect(deserializing.message.id).toEqual(createUserDto.id);
+    expect(deserializing.id).toEqual(createUserDto.id);
   });
 });

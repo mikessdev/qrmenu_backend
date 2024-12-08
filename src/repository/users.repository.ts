@@ -46,19 +46,13 @@ export class UsersRepository {
 
   async findOneByFirebaseId(firebaseId: string) {
     try {
-      const user = await this.user.findOne({
+      return await this.user.findOne({
         where: { firebaseId: firebaseId },
       });
-      return {
-        status: Status.SUCCESS,
-        message: user,
-      };
     } catch (error) {
+      console.log(error);
       console.error(error.errors[0].message);
-      return {
-        status: Status.FAILED,
-        message: error.errors[0].message,
-      };
+      throw new Error(error);
     }
   }
 

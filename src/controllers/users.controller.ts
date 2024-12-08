@@ -72,12 +72,12 @@ export class UsersController {
     @Query('firebaseId') firebaseId: string,
   ) {
     const user = await this.usersService.findOneByFirebaseId(firebaseId);
-    if (user.status === Status.SUCCESS) {
+
+    if (user) {
       return response.status(HttpStatus.OK).send(JSON.stringify(user));
     }
-    if (user.status === Status.FAILED) {
-      return response.status(HttpStatus.BAD_REQUEST).send(JSON.stringify(user));
-    }
+
+    return response.status(HttpStatus.NOT_FOUND).send(JSON.stringify({}));
   }
 
   @Post()
