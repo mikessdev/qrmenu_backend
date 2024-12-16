@@ -12,6 +12,7 @@ import {
   Query,
   Res,
   HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -73,14 +74,15 @@ export class ProductsController {
     @Res() response: Response,
     @Body() createProductDto: CreateProductDto,
   ) {
-    const result = await this.productsService.create(createProductDto);
-    if (result.status === Status.SUCCESS) {
-      return response.status(HttpStatus.CREATED).send(JSON.stringify(result));
-    }
-    if (result.status === Status.FAILED) {
-      return response
-        .status(HttpStatus.BAD_REQUEST)
-        .send(JSON.stringify(result));
+    try {
+      const product = await this.productsService.create(createProductDto);
+
+      return response.status(HttpStatus.CREATED).send(JSON.stringify(product));
+    } catch (error) {
+      throw new HttpException(
+        { message: error.message },
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 

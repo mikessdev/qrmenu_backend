@@ -14,6 +14,7 @@ export class ProductsService {
   async create(createProductDto: CreateProductDto) {
     return await this.productsRepository.create(createProductDto);
   }
+
   async createAll(categoryId: number) {
     const products = [
       {

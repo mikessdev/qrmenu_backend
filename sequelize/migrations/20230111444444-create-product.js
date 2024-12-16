@@ -22,7 +22,7 @@ module.exports = {
 
       image: {
         type: Sequelize.STRING(300),
-        allowNull: false,
+        allowNull: true,
       },
 
       description: {
@@ -42,16 +42,16 @@ module.exports = {
 
       likes: {
         type: Sequelize.INTEGER(),
-        allowNull: false,
+        allowNull: true,
       },
 
       createdAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE,
       },
 
       updatedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE,
       },
     });

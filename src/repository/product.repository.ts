@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from '@dtos/create/create-product.dto';
 import { UpdateProductDto } from '@dtos/update/update-product.dto';
 import { Status } from '@utils/enum/status.enum';
+import { Exception } from '@utils/classes/exception';
 
 @Injectable()
 export class ProductsRepository {
@@ -33,17 +34,9 @@ export class ProductsRepository {
 
   async create(createProductDto: CreateProductDto) {
     try {
-      const product = await this.product.create(createProductDto);
-      return {
-        status: Status.SUCCESS,
-        message: product,
-      };
+      return await this.product.create(createProductDto);
     } catch (error) {
-      console.error(error.errors[0].message);
-      return {
-        status: Status.FAILED,
-        message: error.errors[0].message,
-      };
+      Exception.handler(error);
     }
   }
 
