@@ -1,107 +1,117 @@
+# QR Menu Backend
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
 
-# Documentation
+> Backend para sistema de cardápios digitais com QR Code
 
-(sometimes it goes offline)
+## 📋 Documentação
+
+A documentação da API está disponível em:
 
 ```bash
 https://qrmenu-backend-prod.vercel.app/api/
 ```
 
-# How to run this
+> ⚠️ Nota: A documentação pode ficar temporariamente offline em alguns momentos.
 
-<span>Node > v21.5.0</span>
+## 🚀 Começando
 
-<span>Docker > v24.0.7 + docker compose</span>
+### Pré-requisitos
 
-### environment variables
+- Node.js > v21.5.0
+- Docker > v24.0.7
+- Docker Compose
+
+### 🔧 Configuração
+
+1. Clone o repositório
+2. Configure as variáveis de ambiente:
 
 ```bash
 cp .env_sample .env
 ```
 
-### Installing dependencies
+3. Instale as dependências:
 
 ```bash
-$ npm install
+npm install
 ```
 
-### Running Database
+### 🏗️ Banco de Dados
+
+Para iniciar o banco de dados:
 
 ```bash
-# migrations
-$ docker compose up -d
+docker compose up -d
 ```
 
-### Running Migrations
+Para executar as migrações:
 
 ```bash
-# migrations
-$ npx sequelize-cli db:migrate
-
-# create new migration
-$ npx sequelize-cli migration:generate --name <migration-name>
+npx sequelize-cli db:migrate
 ```
 
-### Running the app
+### 🏃‍♂️ Executando o Projeto
 
 ```bash
-# development
-$ npm run start
+# Modo desenvolvimento
+npm run start
 
-# watch mode (recommended to local)
-$ npm run start:dev
+# Modo desenvolvimento com hot-reload (recomendado para desenvolvimento local)
+npm run start:dev
 
-# production mode
-$ npm run start:prod
+# Modo produção
+npm run start:prod
 ```
 
-### Check if the app is running in localhost
+### 🌐 Verificando a Aplicação
+
+- Aplicação rodando: http://localhost:3005/
+- Documentação Swagger: http://localhost:3005/api
+
+## 🧪 Testes
+
+### Testes Unitários
 
 ```bash
-# put this in your browser for see the project running
-http://localhost:3005/
+# Executar testes unitários
+npm run test:unit
 
-# put this in your browser for see the openapi documentation
-http://localhost:3005/api
+# Executar testes unitários com watch
+npm run test:unit:watch
+
+# Executar testes unitários com cobertura
+npm run test:unit:cov
+
+# Executar testes unitários com debug
+npm run test:unit:debug
+
+# Executar testes unitários com watch e cobertura
+npm run test:unit:watch:cov
 ```
 
-### Running Test (Optional)
+### Testes E2E
+
+> ⚠️ Importante: Antes de executar os testes E2E, é necessário que o projeto esteja rodando (ex: `npm run start:dev`)
 
 ```bash
-# running unit tests
-$ npm run test:unit
+# Executar testes E2E
+npm run test:e2e
 
-# running unit tests with watch
-$ npm run test:unit:watch
+# Executar testes E2E com watch
+npm run test:e2e:watch
 
-# running unit tests with cov
-$ npm run test:unit:cov
-
-# running unit tests with debug
-$ npm run test:unit:debug
-
-# running unit tests with watch and coverage
-$ npm run test:unit:watch:cov
-
-
-#Obs: Before running the e2e tests you need to run the project, for example, with the command > npm run start:dev.
-
-# running e2e tests
-$ npm run test:e2e
-
-# running e2e test with watch
-$ npm run test:e2e:watch
-
-# running e2e tests with watch and coverage
-$ npm run test:e2e:watch:cov
+# Executar testes E2E com watch e cobertura
+npm run test:e2e:watch:cov
 ```
 
-### To generate a new module nestjs (for development only)
+## 🛠️ Desenvolvimento
+
+Para gerar um novo módulo NestJS:
 
 ```bash
-$ nest g res {moduleName} --no-spec
-# ex: nest g res user --no-spec
+nest g res {moduleName} --no-spec
+# Exemplo: nest g res user --no-spec
 ```
