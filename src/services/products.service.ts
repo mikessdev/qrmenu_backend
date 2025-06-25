@@ -16,45 +16,27 @@ export class ProductsService {
   }
 
   async createAll(categoryId: number) {
-    const products = [
-      {
-        id: 1,
-        categoryId,
-        title: 'Product 01',
-        image:
-          'https://firebasestorage.googleapis.com/v0/b/qrmenu-f0493.appspot.com/o/exemplos%2Fproduct.png?alt=media&token=ff809a3d-2532-4182-80dd-ded61c536d59',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id blandit erat. Mauris nisi velit, eleifend et tristique sit amet.',
-        price: 'R$ 15,00',
-        unit: '500g',
-        likes: 0,
-      },
-      {
-        id: 2,
-        categoryId,
-        title: 'Product 02',
-        image:
-          'https://firebasestorage.googleapis.com/v0/b/qrmenu-f0493.appspot.com/o/exemplos%2Fproduct.png?alt=media&token=ff809a3d-2532-4182-80dd-ded61c536d59',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id blandit erat. Mauris nisi velit, eleifend et tristique sit amet.',
-        price: 'R$ 15,00',
-        unit: '500g',
-        likes: 0,
-      },
-      {
-        id: 3,
-        categoryId,
-        title: 'Product 03',
-        image:
-          'https://firebasestorage.googleapis.com/v0/b/qrmenu-f0493.appspot.com/o/exemplos%2Fproduct.png?alt=media&token=ff809a3d-2532-4182-80dd-ded61c536d59',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id blandit erat. Mauris nisi velit, eleifend et tristique sit amet.',
-        price: 'R$ 15,00',
-        unit: '500g',
-        likes: 0,
-      },
-    ];
-    return await this.productsRepository.createAll(products);
+    const commonProductData = {
+      categoryId,
+      image:
+        'https://firebasestorage.googleapis.com/v0/b/qrmenu-f0493.appspot.com/o/exemplos%2Fproduct.png?alt=media&token=ff809a3d-2532-4182-80dd-ded61c536d59',
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id blandit erat. Mauris nisi velit, eleifend et tristique sit amet.',
+      price: 'R$ 15,00',
+      unit: '500g',
+      likes: 0,
+    };
+
+    const products = Array.from({ length: 3 }, (_, i) => ({
+      ...commonProductData,
+      title: `Product 0${i + 1}`,
+    }));
+
+    try {
+      return await this.productsRepository.createAll(products);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {

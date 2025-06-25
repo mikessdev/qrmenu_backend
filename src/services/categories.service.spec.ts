@@ -43,7 +43,7 @@ describe('CategoriesService', () => {
   it('should return 1 when a category is updated', () => {
     const id = 1;
     expect(
-      categoriesService.update(id, {} as CreateCategoryDto),
+      categoriesService.update(id, {} as CreateCategoryDto & { id: number }),
     ).resolves.toEqual(1);
   });
 

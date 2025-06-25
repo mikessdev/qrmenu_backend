@@ -90,14 +90,13 @@ export class MenusController {
     @Res() response: Response,
     @Body() createMenuDto: CreateMenuDto,
   ) {
-    const result = await this.menusService.create(createMenuDto);
-    if (result.status === Status.SUCCESS) {
-      return response.status(HttpStatus.CREATED).send(JSON.stringify(result));
-    }
-    if (result.status === Status.FAILED) {
+    try {
+      const menu = await this.menusService.create(createMenuDto);
+      return response.status(HttpStatus.CREATED).send(JSON.stringify(menu));
+    } catch (error) {
       return response
         .status(HttpStatus.BAD_REQUEST)
-        .send(JSON.stringify(result));
+        .send(JSON.stringify(error.message));
     }
   }
 

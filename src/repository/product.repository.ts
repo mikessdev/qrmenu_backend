@@ -42,17 +42,9 @@ export class ProductsRepository {
 
   async createAll(products: CreateProductDto[]) {
     try {
-      const result = await this.product.bulkCreate(products);
-      return {
-        status: Status.SUCCESS,
-        message: result,
-      };
+      return await this.product.bulkCreate(products);
     } catch (error) {
-      console.error(error);
-      return {
-        status: Status.FAILED,
-        message: error,
-      };
+      throw error;
     }
   }
 

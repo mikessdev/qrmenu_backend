@@ -3,7 +3,6 @@ import { CreateMenuDto } from '@dtos/create/create-menu.dto';
 import { UpdateMenuDto } from '@dtos/update/update-menu.dto';
 import { MenusRepository } from '@repository/menus.repository';
 import { CategoriesService } from './categories.service';
-import { Status } from '@utils/enum/status.enum';
 import { ProductsService } from './products.service';
 
 @Injectable()
@@ -14,26 +13,19 @@ export class MenusService {
     private readonly productsService: ProductsService,
   ) {}
   async create(createMenuDto: CreateMenuDto) {
-    const resultMenu = await this.menuRepository.create(createMenuDto);
+    try {
+      const menu = await this.menuRepository.create(createMenuDto);
+      const resultCategories = await this.categoriesService.createAll(menu.id);
 
-    if (resultMenu.status === Status.FAILED) {
-      return resultMenu;
+      resultCategories.forEach(async (category) => {
+        const categoryId = category.dataValues.id;
+        await this.productsService.createAll(categoryId);
+      });
+
+      return menu;
+    } catch (error) {
+      throw error;
     }
-
-    const resultCategories = await this.categoriesService.createAll(
-      resultMenu.message.id,
-    );
-
-    if (resultCategories.status === Status.FAILED) {
-      return resultMenu;
-    }
-
-    resultCategories.message.forEach(async (category) => {
-      const categoryId = category.dataValues.id;
-      await this.productsService.createAll(categoryId);
-    });
-
-    return resultMenu;
   }
 
   async findAllByUserId(userId: number) {

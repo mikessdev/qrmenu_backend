@@ -9,12 +9,15 @@ export class CategoriesService {
 
   async createAll(menuId: number) {
     const categories: CreateCategoryDto[] = [
-      { id: 1, menuId, title: 'Pratos principais' },
-      { id: 2, menuId, title: 'Bebidas' },
-      { id: 3, menuId, title: 'Sobremesas' },
+      { menuId, title: 'Pratos principais' },
+      { menuId, title: 'Bebidas' },
+      { menuId, title: 'Sobremesas' },
     ];
-
-    return await this.categoriesRepository.createAll(categories);
+    try {
+      return await this.categoriesRepository.createAll(categories);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async create(createCategoryDto: CreateCategoryDto) {

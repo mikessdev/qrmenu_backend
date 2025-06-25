@@ -1,7 +1,7 @@
 import { Category } from '@database/entities/category.entity';
 import { CreateCategoryDto } from '@dtos/create/create-category.dto';
 
-export const createCategoryDto: CreateCategoryDto = {
+export const createCategoryDto: CreateCategoryDto & { id: number } = {
   id: 1,
   menuId: 1,
   title: 'Iscas de Frango',

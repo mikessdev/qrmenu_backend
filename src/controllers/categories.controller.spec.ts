@@ -6,7 +6,7 @@ import { Status } from '@utils/enum/status.enum';
 import { HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 
-const createCategoryDto: CreateCategoryDto = {
+const createCategoryDto: CreateCategoryDto & { id: number } = {
   id: 1,
   title: 'Porções',
   menuId: 1,

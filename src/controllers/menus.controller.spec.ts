@@ -32,10 +32,7 @@ describe('MenusController', () => {
         {
           provide: MenusService,
           useValue: {
-            create: jest.fn().mockResolvedValue({
-              status: Status.SUCCESS,
-              message: createMenuDto,
-            }),
+            create: jest.fn().mockResolvedValue(createMenuDto),
             findAllByUserId: jest.fn().mockResolvedValue({
               status: Status.SUCCESS,
               message: [createMenuDto],
@@ -74,12 +71,7 @@ describe('MenusController', () => {
     await menusController.create(response, createMenuDto);
 
     expect(response.status).toHaveBeenCalledWith(HttpStatus.CREATED);
-    expect(response.send).toHaveBeenCalledWith(
-      JSON.stringify({
-        status: Status.SUCCESS,
-        message: createMenuDto,
-      }),
-    );
+    expect(response.send).toHaveBeenCalledWith(JSON.stringify(createMenuDto));
   });
 
   it('should return all menus by userId', async () => {

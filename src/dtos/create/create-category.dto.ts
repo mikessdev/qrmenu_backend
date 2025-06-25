@@ -2,9 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty } from 'class-validator';
 export class CreateCategoryDto {
   @ApiProperty()
-  readonly id: number;
-
-  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   readonly title: string;

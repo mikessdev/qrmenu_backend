@@ -13,17 +13,9 @@ export class MenusRepository {
   ) {}
   async create(createMenuDto: CreateMenuDto) {
     try {
-      const menu = await this.menu.create(createMenuDto);
-      return {
-        status: Status.SUCCESS,
-        message: menu,
-      };
+      return await this.menu.create(createMenuDto);
     } catch (error) {
-      console.error(error.errors[0].message);
-      return {
-        status: Status.FAILED,
-        message: error.errors[0].message,
-      };
+      throw error;
     }
   }
 

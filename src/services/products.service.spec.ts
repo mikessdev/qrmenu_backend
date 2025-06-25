@@ -42,7 +42,7 @@ describe('ProductsService', () => {
 
   it('should return 1 when a product is updated', async () => {
     const id = 1;
-    const requestBody = {} as CreateProductDto;
+    const requestBody = {} as CreateProductDto & { id: number };
     const result = await productsService.update(id, requestBody);
     expect(result).toBe(1);
   });
