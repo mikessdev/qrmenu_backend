@@ -13,19 +13,15 @@ export class MenusService {
     private readonly productsService: ProductsService,
   ) {}
   async create(createMenuDto: CreateMenuDto) {
-    try {
-      const menu = await this.menuRepository.create(createMenuDto);
-      const resultCategories = await this.categoriesService.createAll(menu.id);
+    const menu = await this.menuRepository.create(createMenuDto);
+    const resultCategories = await this.categoriesService.createAll(menu.id);
 
-      resultCategories.forEach(async (category) => {
-        const categoryId = category.dataValues.id;
-        await this.productsService.createAll(categoryId);
-      });
+    resultCategories.forEach(async (category) => {
+      const categoryId = category.dataValues.id;
+      await this.productsService.createAll(categoryId);
+    });
 
-      return menu;
-    } catch (error) {
-      throw error;
-    }
+    return menu;
   }
 
   async findAllByUserId(userId: number) {

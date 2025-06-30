@@ -13,11 +13,7 @@ export class CategoriesService {
       { menuId, title: 'Bebidas' },
       { menuId, title: 'Sobremesas' },
     ];
-    try {
-      return await this.categoriesRepository.createAll(categories);
-    } catch (error) {
-      throw error;
-    }
+    return await this.categoriesRepository.createAll(categories);
   }
 
   async create(createCategoryDto: CreateCategoryDto) {

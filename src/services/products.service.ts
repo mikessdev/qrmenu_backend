@@ -32,11 +32,7 @@ export class ProductsService {
       title: `Product 0${i + 1}`,
     }));
 
-    try {
-      return await this.productsRepository.createAll(products);
-    } catch (error) {
-      throw error;
-    }
+    return await this.productsRepository.createAll(products);
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
