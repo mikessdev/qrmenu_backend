@@ -36,19 +36,19 @@ describe('CategoriesService', () => {
   });
 
   it('should return all of categories', () => {
-    const menuId = '1';
+    const menuId = 1;
     expect(categoriesService.findAllWithProducts(menuId)).resolves.toEqual(1);
   });
 
   it('should return 1 when a category is updated', () => {
-    const id = '1';
+    const id = 1;
     expect(
-      categoriesService.update(id, {} as CreateCategoryDto),
+      categoriesService.update(id, {} as CreateCategoryDto & { id: number }),
     ).resolves.toEqual(1);
   });
 
   it('should return 1 when a category is removed', () => {
-    const id = '1';
+    const id = 1;
     expect(categoriesService.remove(id)).resolves.toEqual(1);
   });
 });

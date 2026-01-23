@@ -2,7 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @ApiProperty()
-  readonly id: string;
+  readonly id: number;
+
+  @ApiProperty()
+  readonly firebaseId: string;
 
   @ApiProperty()
   readonly name: string;

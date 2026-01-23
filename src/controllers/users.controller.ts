@@ -8,11 +8,18 @@ import {
   Delete,
   HttpStatus,
   Res,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from '@services/users.service';
 import { CreateUserDto } from '@dtos/create/create-user.dto';
 import { UpdateUserDto } from '@dtos/update/update-user.dto';
-import { ApiBody, ApiHeader, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiHeader,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Status } from '@utils/enum/status.enum';
 import { Response } from 'express';
 import {
@@ -34,7 +41,7 @@ export class UsersController {
     status: HttpStatus.OK,
     type: UserApiResponse,
   })
-  async findOne(@Res() response: Response, @Param('id') id: string) {
+  async findOne(@Res() response: Response, @Param('id') id: number) {
     const user = await this.usersService.findOne(id);
     if (user.status === Status.SUCCESS) {
       return response.status(HttpStatus.OK).send(JSON.stringify(user));
@@ -43,6 +50,36 @@ export class UsersController {
       return response.status(HttpStatus.BAD_REQUEST).send(JSON.stringify(user));
     }
   }
+
+  @Get()
+  @ApiQuery({
+    name: 'firebaseId',
+    description: 'ID of the firebase user',
+    type: String,
+    required: true,
+    example: '88b7fedf-59fa-4b02-875d-4345bb74c186',
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'JWT Token for authentication',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: UserApiResponse,
+  })
+  async findOneByFirebaseId(
+    @Res() response: Response,
+    @Query('firebaseId') firebaseId: string,
+  ) {
+    const user = await this.usersService.findOneByFirebaseId(firebaseId);
+
+    if (user) {
+      return response.status(HttpStatus.OK).send(JSON.stringify(user));
+    }
+
+    return response.status(HttpStatus.NOT_FOUND).send(JSON.stringify({}));
+  }
+
   @Post()
   @ApiHeader({
     name: 'Authorization',
@@ -77,7 +114,7 @@ export class UsersController {
   })
   async update(
     @Res() response: Response,
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     const result = await this.usersService.update(id, updateUserDto);
@@ -99,7 +136,7 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
   })
-  async remove(@Res() response: Response, @Param('id') id: string) {
+  async remove(@Res() response: Response, @Param('id') id: number) {
     const result = await this.usersService.remove(id);
     if (result.status === Status.SUCCESS) {
       return response.status(HttpStatus.NO_CONTENT).send();

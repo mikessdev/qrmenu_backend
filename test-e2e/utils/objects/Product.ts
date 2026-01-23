@@ -1,9 +1,9 @@
 import { Product } from '@database/entities/product.entity';
 import { CreateProductDto } from '@dtos/create/create-product.dto';
 
-export const createProductDto: CreateProductDto = {
-  id: '1',
-  categoryId: '1',
+export const createProductDto: CreateProductDto & { id: number } = {
+  id: 1,
+  categoryId: 1,
   title: 'Iscas de Frango',
   image: 'imgURL',
   description: '300g de filézinho empanado',

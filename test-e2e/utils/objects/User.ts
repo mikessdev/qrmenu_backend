@@ -3,7 +3,8 @@ import { CreateUserDto } from '@dtos/create/create-user.dto';
 import { UpdateUserDto } from '@dtos/update/update-user.dto';
 
 export const createUserDto: CreateUserDto = {
-  id: '1',
+  id: 1,
+  firebaseId: '1',
   name: 'Japa',
   lastName: 'da Silva',
   email: 'japa@gmail.com',
@@ -12,7 +13,8 @@ export const createUserDto: CreateUserDto = {
 };
 
 export const updateUserDto: UpdateUserDto = {
-  id: '1',
+  id: 1,
+  firebaseId: '1',
   name: 'Fernando',
   lastName: 'Moreira',
   email: 'fernando@gmail.com',

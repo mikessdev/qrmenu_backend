@@ -9,6 +9,7 @@
 ## 📋 Documentação
 
 A documentação da API está disponível em:
+
 ```bash
 https://qrmenu-backend-prod.vercel.app/api/
 ```
@@ -27,11 +28,13 @@ https://qrmenu-backend-prod.vercel.app/api/
 
 1. Clone o repositório
 2. Configure as variáveis de ambiente:
+
 ```bash
 cp .env_sample .env
 ```
 
 3. Instale as dependências:
+
 ```bash
 npm install
 ```
@@ -39,11 +42,13 @@ npm install
 ### 🏗️ Banco de Dados
 
 Para iniciar o banco de dados:
+
 ```bash
 docker compose up -d
 ```
 
 Para executar as migrações:
+
 ```bash
 npx sequelize-cli db:migrate
 ```
@@ -105,6 +110,7 @@ npm run test:e2e:watch:cov
 ## 🛠️ Desenvolvimento
 
 Para gerar um novo módulo NestJS:
+
 ```bash
 nest g res {moduleName} --no-spec
 # Exemplo: nest g res user --no-spec

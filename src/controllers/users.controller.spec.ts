@@ -5,9 +5,11 @@ import { UsersService } from '@services/users.service';
 import { Status } from '@utils/enum/status.enum';
 import { HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
+import { randomUUID as uuid } from 'crypto';
 
 const createUserDto: CreateUserDto = {
-  id: '1',
+  id: 1,
+  firebaseId: uuid(),
   name: 'Japa',
   lastName: 'da Silva',
   email: 'japa@gmail.com',
@@ -31,6 +33,10 @@ describe('UsersController', () => {
               message: createUserDto,
             }),
             findOne: jest.fn().mockResolvedValue({
+              status: Status.SUCCESS,
+              message: createUserDto,
+            }),
+            findOneByFirebaseId: jest.fn().mockResolvedValue({
               status: Status.SUCCESS,
               message: createUserDto,
             }),
@@ -79,6 +85,24 @@ describe('UsersController', () => {
 
     const { id } = createUserDto;
     await usersController.findOne(response, id);
+
+    expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
+    expect(response.send).toHaveBeenCalledWith(
+      JSON.stringify({
+        status: Status.SUCCESS,
+        message: createUserDto,
+      }),
+    );
+  });
+
+  it('should return user by firebaseId', async () => {
+    const response = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    } as unknown as Response;
+
+    const { firebaseId } = createUserDto;
+    await usersController.findOneByFirebaseId(response, firebaseId);
 
     expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
     expect(response.send).toHaveBeenCalledWith(

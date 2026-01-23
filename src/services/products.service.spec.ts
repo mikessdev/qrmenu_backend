@@ -35,20 +35,20 @@ describe('ProductsService', () => {
   });
 
   it('should return all products by categoryId', async () => {
-    const categoryId = '1';
+    const categoryId = 1;
     const result = await productsService.findAll(categoryId);
     expect(result).toBe(1);
   });
 
   it('should return 1 when a product is updated', async () => {
-    const id = '1';
-    const requestBody = {} as CreateProductDto;
+    const id = 1;
+    const requestBody = {} as CreateProductDto & { id: number };
     const result = await productsService.update(id, requestBody);
     expect(result).toBe(1);
   });
 
   it('should return 1 when a product is removed', async () => {
-    const id = '1';
+    const id = 1;
     const result = await productsService.remove(id);
     expect(result).toBe(1);
   });

@@ -1,11 +1,9 @@
+import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProductDto {
   @ApiProperty()
-  readonly id: string;
-
-  @ApiProperty()
-  readonly categoryId: string;
+  readonly categoryId: number;
 
   @ApiProperty()
   readonly title: string;

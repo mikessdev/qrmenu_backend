@@ -30,13 +30,13 @@ describe('User (e2e)', () => {
     accessToken = await getAccessToken();
   });
 
+  afterEach(async () => {
+    await cleanUser();
+  });
+
   afterAll(async () => {
     await cleanUser();
     await app.close();
-  });
-
-  afterEach(async () => {
-    await cleanUser();
   });
 
   it('/users (POST): should create an user', async () => {
@@ -70,7 +70,7 @@ describe('User (e2e)', () => {
   it('/users (PATCH): should update an user', async () => {
     await addUser(createUserDto);
 
-    const queryParams = '1';
+    const queryParams = 1;
 
     const response = await request(app.getHttpServer())
       .patch(`/users/${queryParams}`)
@@ -80,13 +80,13 @@ describe('User (e2e)', () => {
     const deserializing = JSON.parse(response.text);
 
     expect(response.statusCode).toEqual(HttpStatus.OK);
-    expect(deserializing.message).toEqual([1]);
+    expect(deserializing.message.name).toEqual(updateUserDto.name);
   });
 
   it('/users (PATCH): should not update an user if dont have the bearer token', async () => {
     await addUser(createUserDto);
 
-    const queryParams = '1';
+    const queryParams = 1;
 
     const response = await request(app.getHttpServer())
       .patch(`/users/${queryParams}`)
@@ -98,7 +98,7 @@ describe('User (e2e)', () => {
   });
 
   it('/users (PATCH): should not update an user if does not exist', async () => {
-    const userId = '1';
+    const userId = 1;
 
     const response = await request(app.getHttpServer())
       .patch(`/users/${userId}`)
@@ -108,12 +108,12 @@ describe('User (e2e)', () => {
     const deserializing = JSON.parse(response.text);
 
     expect(response.statusCode).toEqual(HttpStatus.OK);
-    expect(deserializing.message).toEqual([0]);
+    expect(deserializing.message).toEqual(null);
   });
 
   it('/categories (DEL): should delete an user', async () => {
     await addUser(createUserDto);
-    const userId = '1';
+    const userId = 1;
 
     const response = await request(app.getHttpServer())
       .del(`/users/${userId}`)
@@ -124,7 +124,7 @@ describe('User (e2e)', () => {
 
   it('/users (DEL): should not delete an user if dont have the bearer token', async () => {
     await addUser(createUserDto);
-    const userId = '1';
+    const userId = 1;
 
     const response = await request(app.getHttpServer())
       .del(`/users/${userId}`)
@@ -136,15 +136,29 @@ describe('User (e2e)', () => {
 
   it('/users (GET): should get an user by id', async () => {
     await addUser(createUserDto);
-    const userId = '1';
+    const userId = 1;
 
     const response = await request(app.getHttpServer())
       .get(`/users/${userId}`)
-      .set('Authorization', 'Bearer ');
+      .set('Authorization', `Bearer ${accessToken}`);
 
     const deserializing = JSON.parse(response.text);
 
     expect(response.statusCode).toEqual(HttpStatus.OK);
     expect(deserializing.message.id).toEqual(createUserDto.id);
+  });
+
+  it('/users (GET): should get an user by firebaseId', async () => {
+    await addUser(createUserDto);
+    const firebaseId = '1';
+
+    const response = await request(app.getHttpServer())
+      .get(`/users?firebaseId=${firebaseId}`)
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    const deserializing = JSON.parse(response.text);
+
+    expect(response.statusCode).toEqual(HttpStatus.OK);
+    expect(deserializing.id).toEqual(createUserDto.id);
   });
 });

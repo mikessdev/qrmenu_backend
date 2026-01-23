@@ -13,20 +13,18 @@ import { Category } from '@database/entities/category.entity';
 })
 export class Product extends Model<Product> {
   @Column({
-    type: DataType.STRING,
-    autoIncrement: false,
+    type: DataType.INTEGER,
+    autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   })
-  id: string;
+  id: number;
 
   @ForeignKey(() => Category)
   @Column({
-    type: DataType.STRING,
-    autoIncrement: false,
-    allowNull: false,
+    type: DataType.INTEGER,
   })
-  categoryId: string;
+  categoryId: number;
 
   @Column({
     type: DataType.STRING(150),

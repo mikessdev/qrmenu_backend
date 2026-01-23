@@ -3,7 +3,6 @@ import { CreateMenuDto } from '@dtos/create/create-menu.dto';
 import { UpdateMenuDto } from '@dtos/update/update-menu.dto';
 import { MenusRepository } from '@repository/menus.repository';
 import { CategoriesService } from './categories.service';
-import { Status } from '@utils/enum/status.enum';
 import { ProductsService } from './products.service';
 
 @Injectable()
@@ -14,29 +13,18 @@ export class MenusService {
     private readonly productsService: ProductsService,
   ) {}
   async create(createMenuDto: CreateMenuDto) {
-    const resultMenu = await this.menuRepository.create(createMenuDto);
+    const menu = await this.menuRepository.create(createMenuDto);
+    const resultCategories = await this.categoriesService.createAll(menu.id);
 
-    if (resultMenu.status === Status.FAILED) {
-      return resultMenu;
-    }
-
-    const resultCategories = await this.categoriesService.createAll(
-      resultMenu.message.id,
-    );
-
-    if (resultCategories.status === Status.FAILED) {
-      return resultMenu;
-    }
-
-    resultCategories.message.forEach(async (category) => {
+    resultCategories.forEach(async (category) => {
       const categoryId = category.dataValues.id;
       await this.productsService.createAll(categoryId);
     });
 
-    return resultMenu;
+    return menu;
   }
 
-  async findAllByUserId(userId: string) {
+  async findAllByUserId(userId: number) {
     return await this.menuRepository.findAllByUserId(userId);
   }
 
@@ -44,11 +32,11 @@ export class MenusService {
     return await this.menuRepository.findMenuByURL(url);
   }
 
-  async update(id: string, updateMenuDto: UpdateMenuDto) {
+  async update(id: number, updateMenuDto: UpdateMenuDto) {
     return await this.menuRepository.update(id, updateMenuDto);
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     return await this.menuRepository.remove(id);
   }
 }

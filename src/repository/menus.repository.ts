@@ -13,21 +13,13 @@ export class MenusRepository {
   ) {}
   async create(createMenuDto: CreateMenuDto) {
     try {
-      const menu = await this.menu.create(createMenuDto);
-      return {
-        status: Status.SUCCESS,
-        message: menu,
-      };
+      return await this.menu.create(createMenuDto);
     } catch (error) {
-      console.error(error.errors[0].message);
-      return {
-        status: Status.FAILED,
-        message: error.errors[0].message,
-      };
+      throw error;
     }
   }
 
-  async findAllByUserId(userId: string) {
+  async findAllByUserId(userId: number) {
     try {
       const menus = await this.menu.findAll({ where: { userId: userId } });
       return {
@@ -59,7 +51,7 @@ export class MenusRepository {
     }
   }
 
-  async update(id: string, updateMenuDto: UpdateMenuDto) {
+  async update(id: number, updateMenuDto: UpdateMenuDto) {
     try {
       const result = await this.menu.update(updateMenuDto, {
         where: { id: id },
@@ -77,7 +69,7 @@ export class MenusRepository {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     try {
       const result = await this.menu.destroy({ where: { id: id } });
       return {

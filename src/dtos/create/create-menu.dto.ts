@@ -2,10 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateMenuDto {
   @ApiProperty()
-  readonly id: string;
+  readonly id: number;
 
   @ApiProperty()
-  readonly userId: string;
+  readonly userId: number;
 
   @ApiProperty()
   readonly headerImg: string;

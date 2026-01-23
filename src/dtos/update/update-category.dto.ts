@@ -4,13 +4,13 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {
   @ApiProperty()
-  readonly id: string;
+  readonly id: number;
 
   @ApiProperty()
   readonly title: string;
 
   @ApiProperty()
-  readonly menuId: string;
+  readonly menuId: number;
 
   @ApiProperty()
   readonly createdAt?: Date;

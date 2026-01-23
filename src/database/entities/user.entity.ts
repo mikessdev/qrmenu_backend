@@ -6,12 +6,18 @@ import { Menu } from '@database/entities/menu.entity';
 })
 export class User extends Model<User> {
   @Column({
-    type: DataType.STRING,
-    autoIncrement: false,
+    type: DataType.INTEGER,
+    autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   })
-  id: string;
+  id: number;
+
+  @Column({
+    type: DataType.STRING(150),
+    allowNull: true,
+  })
+  firebaseId: string;
 
   @Column({
     type: DataType.STRING(60),

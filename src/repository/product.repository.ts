@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from '@dtos/create/create-product.dto';
 import { UpdateProductDto } from '@dtos/update/update-product.dto';
 import { Status } from '@utils/enum/status.enum';
+import { Exception } from '@utils/classes/exception';
 
 @Injectable()
 export class ProductsRepository {
@@ -12,7 +13,7 @@ export class ProductsRepository {
     private product: typeof Product,
   ) {}
 
-  async findAll(categoryId: string) {
+  async findAll(categoryId: number) {
     try {
       const products = await this.product.findAll({
         where: { categoryId: categoryId },
@@ -33,37 +34,21 @@ export class ProductsRepository {
 
   async create(createProductDto: CreateProductDto) {
     try {
-      const product = await this.product.create(createProductDto);
-      return {
-        status: Status.SUCCESS,
-        message: product,
-      };
+      return await this.product.create(createProductDto);
     } catch (error) {
-      console.error(error.errors[0].message);
-      return {
-        status: Status.FAILED,
-        message: error.errors[0].message,
-      };
+      Exception.handler(error);
     }
   }
 
   async createAll(products: CreateProductDto[]) {
     try {
-      const result = await this.product.bulkCreate(products);
-      return {
-        status: Status.SUCCESS,
-        message: result,
-      };
+      return await this.product.bulkCreate(products);
     } catch (error) {
-      console.error(error);
-      return {
-        status: Status.FAILED,
-        message: error,
-      };
+      throw error;
     }
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: number, updateProductDto: UpdateProductDto) {
     try {
       const result = await this.product.update(updateProductDto, {
         where: { id: id },
@@ -81,7 +66,7 @@ export class ProductsRepository {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     try {
       const result = await this.product.destroy({
         where: { id: id },

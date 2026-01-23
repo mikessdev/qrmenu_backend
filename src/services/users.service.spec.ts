@@ -14,6 +14,7 @@ describe('UsersService', () => {
           provide: UsersRepository,
           useValue: {
             findOne: jest.fn().mockResolvedValue(1),
+            findOneByFirebaseId: jest.fn().mockResolvedValue(1),
             update: jest.fn().mockResolvedValue(1),
             create: jest.fn().mockResolvedValue(1),
             remove: jest.fn().mockResolvedValue(1),
@@ -34,18 +35,23 @@ describe('UsersService', () => {
   });
 
   it('should find user by id', () => {
-    const id = '1';
+    const id = 1;
     expect(usersService.findOne(id)).resolves.toEqual(1);
   });
 
+  it('should find user by firebaseId', () => {
+    const firebaseId = '1';
+    expect(usersService.findOneByFirebaseId(firebaseId)).resolves.toEqual(1);
+  });
+
   it('should return 1 when a user is updated', () => {
-    const id = '1';
+    const id = 1;
     const requestBody = {} as CreateUserDto;
     expect(usersService.update(id, requestBody)).resolves.toEqual(1);
   });
 
   it('should return 1 when a user is removed', () => {
-    const id = '1';
+    const id = 1;
     expect(usersService.remove(id)).resolves.toEqual(1);
   });
 });

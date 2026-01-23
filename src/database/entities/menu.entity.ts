@@ -15,20 +15,18 @@ import { Category } from '@database/entities/category.entity';
 })
 export class Menu extends Model<Menu> {
   @Column({
-    type: DataType.STRING,
-    autoIncrement: false,
+    type: DataType.INTEGER,
+    autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   })
-  id: string;
+  id: number;
 
   @ForeignKey(() => User)
   @Column({
-    type: DataType.STRING,
-    autoIncrement: false,
-    allowNull: false,
+    type: DataType.INTEGER,
   })
-  userId: string;
+  userId: number;
 
   @Column({
     type: DataType.STRING(300),

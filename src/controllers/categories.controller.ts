@@ -47,7 +47,7 @@ export class CategoriesController {
   })
   async findAllWithProducts(
     @Res() response: Response,
-    @Query('menuId') menuId: string,
+    @Query('menuId') menuId: number,
   ) {
     const categories = await this.categoriesService.findAllWithProducts(menuId);
 
@@ -98,7 +98,7 @@ export class CategoriesController {
   @ApiBody({ type: UpdateCategoryDto })
   async update(
     @Res() response: Response,
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
     const result = await this.categoriesService.update(id, updateCategoryDto);
@@ -121,7 +121,7 @@ export class CategoriesController {
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
   })
-  async remove(@Res() response: Response, @Param('id') id: string) {
+  async remove(@Res() response: Response, @Param('id') id: number) {
     const result = await this.categoriesService.remove(id);
     if (result.status === Status.SUCCESS) {
       return response.status(HttpStatus.NO_CONTENT).send();

@@ -5,6 +5,8 @@ import { MenusRepository } from '@repository/menus.repository';
 import { CategoriesService } from './categories.service';
 import { ProductsService } from './products.service';
 import { Status } from '@utils/enum/status.enum';
+import { Menu } from '@database/entities/menu.entity';
+import { Category } from '@database/entities/category.entity';
 
 describe('MenusService', () => {
   let menusService: MenusService;
@@ -22,20 +24,14 @@ describe('MenusService', () => {
             findAllByUserId: jest.fn().mockResolvedValue(1),
             findMenuByURL: jest.fn().mockResolvedValue(1),
             update: jest.fn().mockResolvedValue(1),
-            create: jest.fn().mockResolvedValue({
-              status: Status.FAILED,
-              message: { id: 1 },
-            }),
+            create: jest.fn().mockRejectedValue(new Error()),
             remove: jest.fn().mockResolvedValue(1),
           },
         },
         {
           provide: CategoriesService,
           useValue: {
-            createAll: jest.fn().mockResolvedValue({
-              status: Status.SUCCESS,
-              message: [{ dataValues: { id: 22 } }],
-            }),
+            createAll: jest.fn().mockResolvedValue([] as Category[]),
           },
         },
         {
@@ -58,42 +54,18 @@ describe('MenusService', () => {
   });
 
   it('should create a menu with categories and products', async () => {
-    jest.spyOn(menuRepository, 'create').mockResolvedValue({
-      status: Status.SUCCESS,
-      message: { id: 1 },
-    });
-    expect(menusService.create({} as CreateMenuDto)).resolves.toEqual({
-      status: Status.SUCCESS,
-      message: { id: 1 },
-    });
+    jest.spyOn(menuRepository, 'create').mockResolvedValue({} as Menu);
+    expect(menusService.create({} as CreateMenuDto)).resolves.toEqual(
+      {} as CreateMenuDto,
+    );
   });
 
   it('should not create a menu with categories and products', async () => {
-    expect(menusService.create({} as CreateMenuDto)).resolves.toEqual({
-      status: Status.FAILED,
-      message: { id: 1 },
-    });
-  });
-
-  it('should only create a menu without categories and products', async () => {
-    jest.spyOn(categoriesService, 'createAll').mockResolvedValue({
-      status: Status.FAILED,
-      message: [{ dataValues: { id: 1 } }],
-    });
-
-    expect(menusService.create({} as CreateMenuDto)).resolves.toEqual({
-      status: Status.FAILED,
-      message: { id: 1 },
-    });
+    expect(menusService.create({} as CreateMenuDto)).rejects.toThrow();
   });
 
   it('should return all of menus', () => {
-    const userId = '1';
-    expect(menusService.findAllByUserId(userId)).resolves.toEqual(1);
-  });
-
-  it('should return an empty array if there is no menu in database ', () => {
-    const userId = '1';
+    const userId = 1;
     expect(menusService.findAllByUserId(userId)).resolves.toEqual(1);
   });
 
@@ -103,13 +75,13 @@ describe('MenusService', () => {
   });
 
   it('should return 1 when a menu is updated', () => {
-    const id = '1';
+    const id = 1;
     const requestBody = {} as CreateMenuDto;
     expect(menusService.update(id, requestBody)).resolves.toEqual(1);
   });
 
   it('should return 1 when a menu is removed', () => {
-    const id = '1';
+    const id = 1;
     expect(menusService.remove(id)).resolves.toEqual(1);
   });
 });

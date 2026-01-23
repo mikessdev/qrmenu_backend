@@ -6,9 +6,9 @@ import { Response } from 'express';
 import { Status } from '@utils/enum/status.enum';
 import { HttpStatus } from '@nestjs/common';
 
-const createProductDto: CreateProductDto = {
-  id: '1',
-  categoryId: '1',
+const createProductDto: CreateProductDto & { id: number } = {
+  id: 1,
+  categoryId: 1,
   title: 'Iscas de Frango',
   description: '300g de filézinho empanado',
   price: 'R$ 15,00',
@@ -69,26 +69,6 @@ describe('ProductsController', () => {
       JSON.stringify({
         status: Status.SUCCESS,
         message: createProductDto,
-      }),
-    );
-  });
-
-  it('should handle a failed product creation', async () => {
-    jest.spyOn(productsService, 'create').mockResolvedValueOnce({
-      status: Status.FAILED,
-      message: 'Failed to create product',
-    });
-    const response = {
-      status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
-    } as unknown as Response;
-
-    await productsController.create(response, createProductDto);
-    expect(response.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
-    expect(response.send).toHaveBeenCalledWith(
-      JSON.stringify({
-        status: Status.FAILED,
-        message: 'Failed to create product',
       }),
     );
   });

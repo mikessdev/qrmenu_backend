@@ -67,7 +67,7 @@ export class MenusController {
   })
   async findAllByUserId(
     @Res() response: Response,
-    @Param('userId') userId: string,
+    @Param('userId') userId: number,
   ) {
     const menu = await this.menusService.findAllByUserId(userId);
     if (menu.status === Status.SUCCESS) {
@@ -90,14 +90,13 @@ export class MenusController {
     @Res() response: Response,
     @Body() createMenuDto: CreateMenuDto,
   ) {
-    const result = await this.menusService.create(createMenuDto);
-    if (result.status === Status.SUCCESS) {
-      return response.status(HttpStatus.CREATED).send(JSON.stringify(result));
-    }
-    if (result.status === Status.FAILED) {
+    try {
+      const menu = await this.menusService.create(createMenuDto);
+      return response.status(HttpStatus.CREATED).send(JSON.stringify(menu));
+    } catch (error) {
       return response
         .status(HttpStatus.BAD_REQUEST)
-        .send(JSON.stringify(result));
+        .send(JSON.stringify(error.message));
     }
   }
 
@@ -113,7 +112,7 @@ export class MenusController {
   @ApiBody({ type: UpdateMenuDto })
   async update(
     @Res() response: Response,
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateMenuDto: UpdateMenuDto,
   ) {
     const result = await this.menusService.update(id, updateMenuDto);
@@ -136,7 +135,7 @@ export class MenusController {
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
   })
-  async remove(@Res() response: Response, @Param('id') id: string) {
+  async remove(@Res() response: Response, @Param('id') id: number) {
     const result = await this.menusService.remove(id);
 
     if (result.status === Status.SUCCESS) {

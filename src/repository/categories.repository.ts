@@ -31,21 +31,13 @@ export class CategoriesRepository {
 
   async createAll(categories: CreateCategoryDto[]) {
     try {
-      const result = await this.category.bulkCreate(categories);
-      return {
-        status: Status.SUCCESS,
-        message: result,
-      };
+      return await this.category.bulkCreate(categories);
     } catch (error) {
-      console.error(error.errors[0].message);
-      return {
-        status: Status.FAILED,
-        message: error.errors[0].message,
-      };
+      throw error;
     }
   }
 
-  async findAllWithProducts(menuId: string) {
+  async findAllWithProducts(menuId: number) {
     try {
       const categories = await this.category.findAll({
         where: { menuId: menuId },
@@ -65,7 +57,7 @@ export class CategoriesRepository {
     }
   }
 
-  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
     try {
       const result = await this.category.update(updateCategoryDto, {
         where: { id: id },
@@ -83,7 +75,7 @@ export class CategoriesRepository {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     try {
       const result = await this.category.destroy({
         where: { id: id },

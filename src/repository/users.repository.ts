@@ -28,7 +28,7 @@ export class UsersRepository {
     }
   }
 
-  async findOne(id: string) {
+  async findOne(id: number) {
     try {
       const user = await this.user.findByPk(id);
       return {
@@ -44,15 +44,25 @@ export class UsersRepository {
     }
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async findOneByFirebaseId(firebaseId: string) {
     try {
-      const result = await this.user.update(updateUserDto, {
+      return await this.user.findOne({
+        where: { firebaseId: firebaseId },
+      });
+    } catch (error) {
+      console.log(error);
+      console.error(error.errors[0].message);
+      throw new Error(error);
+    }
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    try {
+      await this.user.update(updateUserDto, {
         where: { id: id },
       });
-      return {
-        status: Status.SUCCESS,
-        message: result,
-      };
+
+      return await this.findOne(id);
     } catch (error) {
       console.error(error.errors[0].message);
       return {
@@ -62,7 +72,7 @@ export class UsersRepository {
     }
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     try {
       const result = await this.user.destroy({ where: { id: id } });
       return {
